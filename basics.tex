@@ -1,74 +1,104 @@
-%!TEX root = Practice.tex
-
-\chapter{Getting Started}
-\pagenumbering{arabic}
+\begin{chap}{Getting Started}
     
-\section{Getting Information}
-
-The sage tutorial at \url{http://www.sagemath.org/doc/tutorial/index.html}
+\begin{sect}{Getting Information}
+%
+\begin{para}
+The Sage tutorial at \url{http://www.sagemath.org/doc/tutorial/index.html}
 is the best starting point, and is very easy to read.  The "constructions" manual 
 is of very little use for graphs. The Sage reference manual at
 \url{http://www.sagemath.org/doc/reference/index.html} is vast. You will eventually 
 need to read the sections on graphs, matrices, vector spaces, finite fields,
 power series and commutative rings.
-                
+\end{para}
+%
+\begin{para}
 If you are not up to speed with python, the first four or five chapters of 
 "Dive into Python"  (\url{http://diveintopython.org/})
 could be useful and are available on line.  (I do not think
 you will get much out the later chapters dealing with XML and HTML.)
 I also recommend the Python Tutorial (\url{http://docs.python.org/tutorial/}).  
 You need to become comfortable with lists, dictionaries and list comprehensions.
-You can get quite a way in sage without knowing anything much about objects 
+You can get quite a way in Sage without knowing anything much about objects 
 and classes, but you will need some familiarity with python.
-
-There are two basic ways of running sage.  One is to start sage in a
+\end{para}
+%
+\begin{para}
+There are two basic ways of running Sage.  One is to start Sage in a
 terminal window and then type \texttt{notebook()}.  This starts up a 
 web browser and you work from there.
-                 
-The alternative, which I use, is to start sage in a terminal window and then 
-open up an editor. Set the working directory in sage to the directory where your 
+\end{para}
+%
+\begin{para}
+The alternative, which I use, is to start Sage in a terminal window and then 
+open up an editor. Set the working directory in Sage to the directory where your 
 files are. (Sage recognizes \texttt{ls}, \texttt{cd} and \texttt{pwd)}---so don't use
 \texttt{ls} as the name of a list!) Write your code in the editor, save it as
 'stuff.sage' (say), then type  \texttt{ load stuff.sage} in your terminal window. 
 Now you can run your code in sage. You can load as many files as you like, and if 
 you edit a file, load it again.
-                    
+\end{para}
+%
+\begin{para}
 You can load a file with the command \texttt{attach stuff.sage} and then
-sage will automatically reload your file each time
+Sage will automatically reload your file each time
 you save it.  A disadvantage of this approach is that certain syntax errors 
-in your file can confuse sage considerably.  In this case you may have to 
+in your file can confuse Sage considerably.  In this case you may have to 
 hit control-C (and perhaps wait a bit) to unlock things.  I have found it more
 convenient just to use the load command, as above,
-                    
+\end{para}
+%
+\begin{para}
 You can save data to a file:
-\begin{center}
-    \verb|save( a_big_list, 'ablst')|
-\end{center} 
+\end{para}
+%
+\begin{verbatim}
+save( a_big_list, 'ablst')
+\end{verbatim}
+%
+\begin{para}
 and reload it with: 
-\begin{center}
-    \verb|a_big_list = load('ablst')|
-\end{center}
+\end{para}
+%
+\begin{verbatim}
+a_big_list = load('ablst')
+\end{verbatim}
+%
+\begin{para}
 (The output to save is not human readable.)             
-When you're working in sage, on-line help can be obtained using \texttt{help()} 
+When you're working in Sage, on-line help can be obtained using \texttt{help()} 
 and \texttt{tab}. Thus typing tab after \texttt{graphs?} or \texttt{graphs??} gives 
 information about the command \texttt{graphs()}.  You will find situations where this
 does not work.  Tab completion can sometimes save you typing in the full name for
 some command, but you will also find there are many contexts where it does not.
-                
+\end{para}
+%
+\begin{para}
 Do not forget that the command you are trying to understand may be a python
-command; reasonably enough these are not explained in the sage docs.
-
-\section{Basics}
-
-(I'm assuming that you can get sage running and evaluate the sum 1+1, say.)
+command; reasonably enough these are not explained in the Sage docs.
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Basics}
+%
+\begin{para}
+(I'm assuming that you can get Sage running and evaluate the sum 1+1, say.)
 Sage comes with many graphs preinstalled.  Thus the command
-    \begin{sageblock}
-        K = graphs.CompleteGraph(5)
-    \end{sageblock}
+\end{para}
+%
+\begin{sageblock}
+K = graphs.CompleteGraph(5)
+\end{sageblock}
+%
+\begin{para}
 sets $K$ equal to the complete graph on 5 vertices.  Now 
-{\verb|K.show()| produces a drawing of the graph in a separate window. 
-
+\verb|K.show()| produces a drawing of the graph in a separate window. 
+\end{para}
+%
+\begin{para}
 The command
+\end{para}
+%
 \begin{sageexample}
     sage: K.vertices()
 \end{sageexample}
@@ -80,150 +110,236 @@ displays the edges. To avoid the empty labels, try
 \begin{sageexample}
     sage: K.edges(labels=False)
 \end{sageexample}
-
+%
+\begin{para}
 The command \verb|K.degree()| produces a list of the vertex degrees,
 while \verb|K.deg(u)| gives the degree of the vertex $u$. Further 
 \verb|K[i]| returns the neighbors of $i$ in $K$. If your graph is
 regular (\verb|G.is_regular()| returns \verb|True|) then its valency
 is given by
+\end{para}
+%
 \begin{verbatim}
-    G.degree()[0]
+G.degree()[0]
 \end{verbatim}
-
-There are many built-in graphs in sage. Thus:
+%
+\begin{para}
+There are many built-in graphs in Sage. Thus:
+\end{para}
+%
 \begin{sageblock}
-    C = graphs.CycleGraph(8)
+C = graphs.CycleGraph(8)
 \end{sageblock}
+%
+\begin{para}
 gives us the cycle on 8 vertices. To get the list of possible graphs,
 type \verb|graphs.| at the prompt, followed by a tab. (That's 8 characters---6 letters,
 a period and a tab.)
-
+\end{para}
+%
+\begin{para}
 There are many graph operations we can use. We can get the complement of
 our cycle by
+\end{para}
+%
 \begin{sageblock}
-    CC = C.complement()
+CC = C.complement()
 \end{sageblock}
 and its line graph by
 \begin{sageblock}
-    LC = C.line_graph()
+LC = C.line_graph()
 \end{sageblock}
 Of course a cycle is isomorphic to its line graph, which we can verify:
 \begin{sageexample}
-    sage: C.is_isomorphic( LC)
+sage: C.is_isomorphic( LC)
 \end{sageexample}
-
+%
+\begin{para}
 Another way to verify that $LC$ is the cycle $C_8$ is to verify that it
 is connected
+\end{para}
+%
 \begin{sageexample}
-    sage: LC.is_connected()
+sage: LC.is_connected()
 \end{sageexample}
 and that it is regular of degree two
 \begin{sageexample}
-    sage: LC.degree()
+sage: LC.degree()
 \end{sageexample}
 Sage supplies the Petersen graph
 \begin{sageblock}
-    P = graphs.PetersenGraph()
+P = graphs.PetersenGraph()
 \end{sageblock}
+%
+\begin{para}
 and we can verify this is correct by computing is diameter, girth
 and the number of vertices.
+\end{para}
+%
 \begin{sageexample}
     sage: P.diameter()
     sage: P.girth()
     sage: P.num_verts()
 \end{sageexample}
-
+%
+\begin{para}
 In practice it is very important to check that any graph you construct is
 the one you wanted.  It may be hard to prove that your graph is correct,
 but simple checks can still be useful. One common source of error is an incomplete
 understanding of the commands you use.  For example
+\end{para}
+%
 \begin{sageexample}
     sage: K2 = graphs.CompleteGraph(2)
     sage: K3 = graphs.CompleteGraph(3)
     sage: M = K2.union(K3)
-\end{sageexample}               
+\end{sageexample}
+%
+\begin{para}
 produces a graph on three vertices!
+\end{para}
+%
 \begin{sageexample}
     sage: M.num_verts()
 \end{sageexample}
+\begin{para}
 I should have used \verb|K2.disjoint_union(K3)|.
-
-
-\section{Fiddling with Vertices and Edges}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Fiddling with Vertices and Edges}
+%
+\begin{para}
 Although we can get a lot done with the graphs already in sage, most of the time
 we will need to construct our own. The simplest approach is to modify one of 
 the prebuilt graphs.
-
+\end{para}
+%
+\begin{para}
 For an examples, we start with the circulant graph $G$ on 9 vertices
 with connection set $C=\{1,2,7,8\}$. So $V(G)=\mathbb{Z}_9$ and
 vertices $i$ and $j$ are adjacent if their difference is in $C$.
+\end{para}
+%
 \begin{sageexample}
     sage: G = graphs.CirculantGraph( 9, [1,2])
 \end{sageexample}
 For later use we also make a copy of $G$:
 \begin{sageblock}
-    H = G.copy()
+H = G.copy()
 \end{sageblock}
+%
+\begin{para}
 You can use \verb|G.show()| to get a view of your graph, this can provide
 a useful check.
-
+\end{para}
+%
+\begin{para}
 We find the neighbors of 0:
+\end{para}
+%
 \begin{sageexample}
     sage: G[0]
 \end{sageexample}
+%
+\begin{para}    
 and attempt to confirm that $(0,1)$ is an edge by
+\end{para}
+%
 \begin{sageexample}
     sage: (0,1) in G.edges()
 \end{sageexample}
+%
+\begin{para}
 and then realize that we should have tried
+\end{para}
+%
 \begin{sageexample}
     sage: (0,1) in G.edges(labels=False)
 \end{sageexample}
+%
+\begin{para}
 or
+\end{para}
+%
 \begin{verbatim}
     sage: G.has_edge(0,1)
 \end{verbatim}
+%
+\begin{para}
 The last alternative is recommended.
 We can delete this edge:
+\end{para}
+%
 \begin{sageblock}
-    G.delete_edge(0,1)
+G.delete_edge(0,1)
 \end{sageblock}
+%
+\begin{para}
 and confirm the effect by
+\end{para}
+%
+\begin{para}
 \begin{sageexample}
     sage: G.degree()
 \end{sageexample}
+\end{para}
+%
+\begin{para}
 Note that \verb|G.delete_edge()| alters $G$ in place, which is why I
 prepared a copy of it. The copy is unaltered:
+\end{para}
+%
 \begin{sageexample}
     sage: H.degree()
 \end{sageexample}
+%
+\begin{para}
 Deleting an edge that is not present has no effect. We can delete
 the members of a list of edges with 
-\begin{center}
-    \verb|G.delete_edges( an_edge_list)|
-\end{center}
+\end{para}
+%
+\begin{verbatim}
+G.delete_edges( an_edge_list)
+\end{verbatim}
+%
+\begin{para}
 Similarly we can add an edge or list of edges---type \verb|G.add|
 followed by tab to see the things we can add and \verb|G.delete|
 followed by tab for the things we can delete (which of course include
 vertices and list of vertices).
-
-Adding a vertex increase the vertex set but, naturally enough, does
+\end{para}
+%
+\begin{para}
+Adding a vertex increases the vertex set but, naturally enough, does
 not add any edges.
 If $S$ is a list of vertices of $G$, we can add a new vertex adjacent to 
 each vertex in $S$ as follows.
+\end{para}
+%
 \begin{sageblock}
     G.add_edges( [(10,s) for s in [1,2,3]] )
 \end{sageblock}
+%
+\begin{para}
 Here the argument 
-\begin{center}
-    \verb|[ (10,s) for s in S ]|
-\end{center} 
+\end{para}
+%
+\begin{verbatim}
+[ (10,s) for s in S ]
+\end{verbatim}
+%
+\begin{para}
 to \verb|G.add_edges()| is a simple example of a list comprehension.  
 We will find these are very useful.
-
+\end{para}
+%
+\begin{para}
 Edge contraction is one basic operation in graph theory that is not built 
-into sage.  The following procedure identifies two vertices in a graph.
+into Sage.  The following procedure identifies two vertices in a graph.
+\end{para}
+%
 %% indent with spaces, not tabs
 \begin{sageblock} 
 def contract(H, e):
@@ -234,112 +350,170 @@ def contract(H, e):
     G.add_edges( vedges)
     return G
 \end{sageblock}
+%
+\begin{para}
 A useful generalization would be a procedure that took a graph $G$
 and a partition of its vertex set as its input, and returned
 a graph with the cells of the partition as vertices and where
 two cells are adjacent if there is an edge that joins a vertex
 in the first cell to a vertex in the second.
-
-
-\section{Graph()}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Graph()}
+%
+\begin{para}
 The command \verb|Graph()| provides are very useful way to construct graphs.
 To begin, we will invoke it as follows:
+\end{para}
+%
 \begin{verbatim}
     sage: X = Graph( [vertices, adj_pred] )
 \end{verbatim}
+%
+\begin{para}
 There is just one argument, a list consisting of the
 the vertices is the vertex set of X (itself a list), and a predicate
 \verb|adj_pred| that takes two vertices $u$ and $v$ and returns True or
 False according as they are adjacent or not.
-
+\end{para}
+%
+\begin{para}
 As a trivial example, we construct the path on 9 vertices:
+\end{para}
+%
 \begin{sageblock}
-    P9 = Graph([[0..8], lambda i,j: i-j == 1])
+P9 = Graph([[0..8], lambda i,j: i-j == 1])
 \end{sageblock}
+%
+\begin{para}
 Here \verb|lambda| is a synonym for "function", its inputs precede the colon
 and the subsequent text computes its value. By using \verb|lambda|, we can define
 our predicate in-line. You should experiment to see what happens if you type 
 $=$ in place of $==$, since you will eventually do it by accident, and it is good to
 be able to recognize what's gone wrong.
 We could have defined the predicate first:
+\end{para}
+%
 \begin{verbatim}
     def adj_pred( i,j):
         return i - j == 1
 \end{verbatim}
+%
+\begin{para}
 and then created our graph by
+\end{para}
+%
 \begin{verbatim}
     P9 = Graphs([[0..8], adj_pred])
 \end{verbatim}
+%
+\begin{para}
 This illustrates that python allows us to pass a function as an argument.
-
+\end{para}
+%
+\begin{para}
 \verb|Graph()| accepts a variety of arguments, including:
-\begin{enumerate}[(a)]
-    \item
-    A dictionary of lists.
-    \item
-    An adjacency matrix.
-    \item
-    A graph6 string.
+\begin{enumerate}
+    \begin{listitem}A dictionary of lists.\end{listitem}
+    \begin{listitem}An adjacency matrix.\end{listitem}
+    \begin{listitem}A graph6 string.\end{listitem}
 \end{enumerate}
 (For the full list, try \verb|Graph??|.) We need to comment on one thing in
 this list, and one that's not.
-
+\end{para}
+%
+\begin{para}
 First, what's a graph6 string? All we need to know is that it is a compact
 encoding of a graph as an ascii string.  We can produce that string encoding
 the graph $X$ by
+\end{para}
+%
 \begin{verbatim}
     g6_string = X.graph6_string()
 \end{verbatim}
+%
+\begin{para}
 For example
+\end{para}
+%
 \begin{sageexample}
     sage: P9.graph6_string()
 \end{sageexample}
-(A graph6 string often contains characters (for example\#, \&, \_) that \TeX{} 
+%
+\begin{para}
+(A graph6 string often contains characters (for example \verb|#, _|) that \TeX{} 
 will not handle gracefully, this one happens to cause no problems.)
 There are other programs (e.g., Brendan McKay's geng) that will produce files of
 graphs presented as graph6 strings, and so we can read these into
-sage and convert them to sage graphs. 
-
+Sage and convert them to Sage graphs. 
+\end{para}
+%
+\begin{para}
 [** this is now wrong: \verb|Graph(list_of_edges)| works just fine. **]
-
+\end{para}
+%
+\begin{para}
 Second, one thing apparently missing from the list of arguments to \verb|Graph()| is
 a list of edges. Only apparently:
+\end{para}
+%
 \begin{verbatim}
-    G= Graph()
-    G.add_edges( list_of_edges)
+G= Graph()
+G.add_edges( list_of_edges)
 \end{verbatim}
-
-
-\section{Vertices}
-
-In sage, the vertices of a graph must be hashable. You can test if this holds 
+%
+\end{sect}
+%
+\begin{sect}{Vertices}
+%
+\begin{para}
+In Sage, the vertices of a graph must be hashable. You can test if this holds 
 by applying the function \verb|hash()| to whatever you propose to use as a vertex.
 If it is not hashable you'll get an error message informing you of the fact, if it
 is you'll get an integer.
-
+\end{para}
+%
+\begin{para}
 Occasionally the experimental approach to determining hashability will be 
 unsatisfactory, so I offer some comments.
-
+\end{para}
+%
+\begin{para}
 The output of \verb|vector()| and \verb|matrix()| is hashable, but can
 be made so by using \verb|a.set_immutable()| (where \verb|a|) may be a matrix
 of a vector). The identity matrix is hashable, as you will find out the first 
 time you try to change an entry in it. Subspaces of vector
 spaces over finite fields are hashable.
-
+\end{para}
+%
+\begin{para}
 Sage has two classes of sets: \verb|set()| constructs the python version and
 \verb|Set()| the Sage version. Sage Sets are hashable, python sets are not.
 The available operations differ (go figure).
-
+\end{para}
+%
+\begin{para}
 If \verb|vset| is a list of things you want to use as vertices, and they are not 
 readily converted to something hashable, you can construct a graph as follows:
+\end{para}
+%
 \begin{verbatim}
-    G = Graph( [[1..len(vset)],\
-     lambda i,j: adj_pred( vset[i],vset[j])])
+G = Graph( [[1..len(vset)],\
+    lambda i,j: adj_pred( vset[i],vset[j])])
 \end{verbatim}
+%
+\begin{para}
 Here \verb|adj_pred| takes two elements of \verb|vset| and returns
 \verb|True| or \verb|False| according as its two arguments are adjacent or not.
-
+\end{para}
+%
+\begin{para}
 Note that many graph operations will go faster when the vertices are integers,
 and we can always arrange this after the fact by \verb|G.relabel()|
-
+\end{para}
+%
+\end{sect}
+%
+\end{chap}

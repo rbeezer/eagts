@@ -1,0 +1,50 @@
+%
+% Structured LaTeX
+%
+% Rob Beezer <beezer@ups.edu>
+%
+%%%%
+%
+% Environments
+%
+%%%%
+%
+% Paragraph "para"
+%
+\newenvironment{para}%
+{}%
+{\par}%
+%
+% Chapter "sect" 1=title
+%
+\newenvironment{sect}[1]%
+{\section{#1}}%
+{}%
+%
+% Preface "preface"
+%
+\newenvironment{preface}%
+{\chapter*{Preface}\addcontentsline{toc}{chapter}{Preface}}%
+{}%
+%
+% Chapter "chap" 1=title
+%
+\newenvironment{chap}[1]%
+{\chapter{#1}}%
+{}%
+%
+%%%%
+%
+% Lists
+%
+%%%%
+%
+% List Items "listitem"
+%
+\newenvironment{listitem}%
+{\item}%
+{}%
+
+
+
+  

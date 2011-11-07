@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en" 
+      xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+<info>
+  <title>Sage Practice</title>
+  <author>
+    <firstname>Chris</firstname>
+    <surname>Godsil</surname>
+    <affiliation>
+      <orgname>University of Waterloo</orgname>
+      <orgdiv>Department of Combinatorics and Optimization</orgdiv>
+    </affiliation>
+  </author>
+  <copyright>
+    <year>2010</year>
+    <holder>Chris Godsil</holder>
+  </copyright>
+</info>
+
+
+
+
+
+
+
+<xi:include href="preface.xml" /> 
+<xi:include href="basics.xml" /> 
+<!--
+<xi:include href="projects.xml" /> 
+<xi:include href="cayley.xml" /> 
+<xi:include href="drgs.xml" /> 
+<xi:include href="pseries.xml" /> 
+-->
+
+</book>
