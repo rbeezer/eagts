@@ -29,17 +29,26 @@
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
         TeX: {
             Macros: {
-            rats: '{\\mathbb{Q}}',
-            ints: '{\\mathbb{Z}}',
-            sbs:  '{\\subseteq}',
-            aut:  ['{\\text{Aut}(#1)}',1],
-            diff: '{\\setminus}',
+            rats:  '{\\mathbb{Q}}',
+            ints:  '{\\mathbb{Z}}',
+            sbs:   '{\\subseteq}',
+            aut:  ['{\\mathrm{Aut}(#1)}',1],
+            diff:  '{\\setminus}',
             comp: ['{\\overline{#1}}',1],
             pmat: ['{\\pmatrix{#1}}',1],
+            seq:  ['{#1_{#2},\\ldots,#1_{#3}}',3],
+            sym:  ['{\\DeclareMathOperator{\\Sym}{Sym}\\Sym(#1)}',1],
+            al:    '{\\alpha}',
+            be:    '{\\beta}',
+            de:   ['{\\delta}',0],
+            eps:   '{\\epsilon}',
+            De:    '{\\Delta}',
+            la:    '{\\lambda}',
+            th:    '{\\theta}',
+            cF:    '{\\mathcal{F}}',
 <!--            Re: '{\\mathbb{R}}',
             fld: '{\\mathbb{F}}',
             cok: '{\\mathcal{O}_K}',
-            seq: ['{#1_{#2},\\ldots,#1_{#3}}',3],
             zth: '\\ints[\\theta]',
             sx: '\\mathrm{Sym}(6)',-->
             },
@@ -77,7 +86,7 @@
 
 
 <xsl:template match="lemma">
-Lemma <xsl:apply-templates />
+<strong>Lemma</strong><xsl:apply-templates />
 </xsl:template>
 
 
@@ -86,7 +95,7 @@ Lemma <xsl:apply-templates />
 </xsl:template>
 
 <xsl:template match="proof">
-Proof <xsl:apply-templates /> $\blacksquare$
+<strong>Proof</strong><xsl:apply-templates />$\blacksquare$
 </xsl:template>
 
 

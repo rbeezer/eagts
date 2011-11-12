@@ -1,12 +1,13 @@
-%!TEX root = Practice.tex
-
-\chapter{Matrices}
-
-\section{Continuous Quantum Walks}
-
+\begin{chap}{Matrices}
+%
+\begin{sect}{Continuous Quantum Walks}
+%
+\begin{para}
 One goal of this section is to introduce you to the joys of numerical linear
 algebra with sage.
-
+\end{para}
+%
+\begin{para}
 Suppose $A$ is the adjacency matrix of $X$. We define $H(t)=H_X(t)$ by
 \[
     H =\exp(iAt)
@@ -25,12 +26,16 @@ and consequently
 \[
     H(t) = \sum_\th \exp(i\th t)E_\th
 \]
-
+\end{para}
+%
+\begin{para}
 To use this formula we need an orthogonal basis for each eigenspace.
 The difficulty if that if we work in floating point, then we have
 to decide which eigenvalues are actually equal before we determine
 an eigenspace.
-
+\end{para}
+%
+\begin{para}
 We are going to use scipy and numpy. 
 It seems that numpy is basically an array package, which 
 provides such things as $k$-dimensional arrays. (Computer scientists seem
@@ -40,34 +45,48 @@ There is on-line documentation for scipy and numpy, but it is not very good.
 (For example it illustrates how solve linear equations by inverting the matrix 
 of coefficients.) The syntax for scipy and numpy is not consistent with sage, or 
 with python. 
-
+\end{para}
+%
+\begin{para}
 Anyway, here is the opening incantation:
+\end{para}
+%
 \begin{sageblock}
 import scipy
 from scipy import linalg as lin
 \end{sageblock}
-
+%
+\begin{para}
 We will go through some simple computations, so you can get a feel for things.
+\end{para}
+%
 \begin{verbatim}
     P = graphs.PetersenGraph()
     AP = A.am()
 \end{verbatim}
-
+%
+\begin{para}
 Now with
+\end{para}
+%
 \begin{verbatim}
-	la,v = linalg.eigh(AP)
+    la,v = linalg.eigh(AP)
 \end{verbatim}
+%
+\begin{para}
 we get the eigenvalues of $AP$ (in $\la$) and the eigenvectors (in \(v\)).
 The routine \verb|linalg.eigh| takes a Hermitian matrix and returns real eigenvalues.
 Eigenvectors corresponding to distinct eigenvalues are orthogonal. Note that the
 eigenvectors are returned by
 \verb|linalg.eigh| as numpy arrays, and there is a argument for
 wrapping it in a routine that immediately transforms them into sage vectors.
-
+\end{para}
+%
+\begin{para}
 We intend to make use of the fact that if the vector $\seq z1m$ are an orthogonal basis
 for a subspace then the matrix representing projection onto the subspace is
 \[
-	z_1z_1^T+\cdots+z_mz_m^T
+    z_1z_1^T+\cdots+z_mz_m^T
 \]
 The problem is that our eigenvalues have been computed in floating point, and
 so we need a routine with arguments $\la$ and $\eps$ which divides the
@@ -75,7 +94,13 @@ eigenvalues into equivalence classes, where two eigenvalues are equivalent if th
 difference is less than $\eps$. The output of the routine
 is a dictionary keyed on distinct eigenvalues and the entry with given eigenvalue
 is the set of indices of the eigenvalues equivalent to the key.
-
+\end{para}
+%
+\begin{para}
 Given this it is straightforward to write the code that takes this dictionary and
 returns a list of pairs consisting of an eigenvalue and its associated projection.
-
+\end{para}
+%
+\end{sect}
+%
+\end{chap}

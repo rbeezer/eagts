@@ -1,12 +1,13 @@
-%!TEX root = Practice.tex
-
-\chapter{Distance-Regular Graphs}
-
-\section{Distance Regularity}
-
+\begin{chap}{Distance-Regular Graphs}
+%
+\begin{sect}{Distance Regularity}
+%
+\begin{para}
 First some code to allow us to test if a graph is distance regular.
 The main use of this is to provide a test that some graph we have constructed is
 distance regular.
+\end{para}
+%
 \begin{sageblock}
 def distance_partition( X, vxi):
     xvs = X.vertices()
@@ -15,36 +16,51 @@ def distance_partition( X, vxi):
         dj = X.distance(vxi, vxj)
         E.setdefault(dj,[]).append(vxj)
     return E.values()    
-    \end{sageblock}
+\end{sageblock}
+%    
+\begin{para}
 If $X$ is distance-regular, then the distance partition is equitable
 and the quotient matrix with respect to this partition is the same for all
 vertices. 
-
+\end{para}
+%
+\begin{para}
 We use the Kneser graphs as a test case.
+\end{para}
+%
 \begin{sageblock}
 def kneser( v, k):
     combs = map(set, Combinations([0..v-1],k))
     return Graph( [[0..binomial(v,k)-1],\
      lambda i, j: combs[i].isdisjoint(combs[j])])
 \end{sageblock}
+%
+\begin{para}
 We have used python sets here, because they admit the function \verb|is_disjoint()|.
 Otherwise we would replace \verb|a.isdisjoint(b)| by
+\end{para}
+%
 \begin{verbatim}
     len( a.intersection(b)) == 0
 \end{verbatim}
-
+%
 \begin{sageexample}
 sage: X = kneser(7,3)
 sage: dp = distance_partition( X, X.vertices()[0])
 sage: X.is_equitable( dp, quotient_matrix=True) 
 \end{sageexample}
+%
+\begin{para}
 If the partition is not equitable, the response would be a simple
 \verb|False|.
-
+\end{para}
+%
+\begin{para}
 Many distance-regular graphs are distance-transitive. We can test for this
 by verifying that our graph is vertex transitive and the number of
 orbits of the stabilizer of a vertex is one less than the diameter.
-
+\end{para}
+%
 \begin{sageexample}
 sage: orbs = X.automorphism_group( return_group=0, orbits=1)
 sage: len(orbs) == 1 
@@ -53,42 +69,57 @@ sage: grp = X.automorphism_group( partition=pn)
 sage: X.diameter()
 sage: len( grp.orbits())
 \end{sageexample}
-
+%
+\begin{para}
 The Kneser graph has a perfect 1-code---a set of seven vertices pairwise at distance
 three. If we delete the vertices in a perfect 1-code, the resulting graph
 is the Coxeter graph which is a distance-regular cubic graph.
 It is not too hard to see that a perfect 1-code will be a coclique of size seven
 that is maximal under inclusion. So we can find one and construct the
 Coxeter graph as follows.
-
+\end{para}
+%
 \begin{sageblock}
     colqs = X.complement().cliques_maximal()
     colqs7 = filter( lambda it: len(it)==7, colqs)
     Y = X.copy()
     Y.delete_vertices( colqs7[0])
 \end{sageblock}
-
+%
+\begin{para}
 We confirm that $Y$ has girth seven, you might verify that $Y$ is distance-transitive.
+\end{para}
+%
 \begin{sageexample}
 sage: X.girth()
 sage: Y.girth()
 \end{sageexample}
-
-
-\section{Generalized Quadrangles}
-
+%
+\end{sect}
+%
+\begin{sect}{Generalized Quadrangles}
+%
+\begin{para}
 A \textsl{generalized quadrangle} is an incidence structure of points
 and lines such that
-\begin{enumerate}[(a)]
-    \item 
+\end{para}
+%
+\begin{enumerate}
+    \begin{listitem}
     Any two points lie on at most one line.
-    \item
+    \end{listitem}
+    \begin{listitem}
     If the point $x$ is off the line $\ell$, then there is a unique
     point on $\ell$ collinear with $x$.
+    \end{listitem}
 \end{enumerate}
+%
+\begin{para}
 This axioms are self-dual, and therefore the incidence structure
 dual to a $GQ$ is again a $GQ$.
-
+\end{para}
+%
+\begin{para}
 The smallest interesting example has as points the 15 edges of $K_6$ and
 as lines the 15 1-factors of $K_6$; each edge is incident with the three
 1-factors that contain it. A $GQ$ is \textsl{thick} if each point is on at least 
@@ -96,18 +127,24 @@ three lines and each line contains at least three points. If a $GQ$ is thick the
 it is point and line regular, this means there are integers $s$ and $t$ such that
 each point lies on exactly $t+1$ lines and each line contains exactly $s+1$
 points. Our example above is a $GQ(2,2)$, traditionally denoted by $W(2)$.
-
+\end{para}
+%
+\begin{para}
 Associated to an incidence structure we have a point graph, a line graph
 and an incidence graph.  For $W(2)$ the point and line graphs are isomorphic
 to $L(K_6)$ (which is very easy to check); the incidence graph is
 a bipartite cubic graph on 30 vertices with diameter four and girth eight.
 It is known as \textsl{Tutte's 8-cage}. For a thick $GQ$, both the point
 and line graphs are strongly regular.
-
+\end{para}
+%
+\begin{para}
 We describe how to construct a family of $GQ$'s denoted by $W(q)$, where
 $q$ is a primes power. We will accompany the description with the
 code for $W(3)$.
-
+\end{para}
+%
+\begin{para}
 Let $V$ be the vector space of dimension four over $GF(q)$. Its 1-dimensional
 subspaces will be the points of our generalized quadrangle. To define
 the lines we want a non-degenerate alternating form on $V$; this is
@@ -120,64 +157,99 @@ if
 \]
 for all $u$, $v$ in $U$. All 1-dimensional subspaces of $V$ are isotropic and the
 lines of $W(q)$ will be the 2-dimensional isotropic subspaces.
-
+\end{para}
+%
+\begin{para}
 Time for some actual work. We define our form:
+\end{para}
+%
 \begin{sageblock}
 def beta(u,v):
     return u[0]*v[2]+u[1]*v[3] -u[2]*v[0] -u[3]*v[1]
 \end{sageblock}
+%
+\begin{para}
 and create our points and lines:
+\end{para}
+%
 \begin{sageblock}
     V = VectorSpace( GF(3), 4)
     Points = [u[1] for u in V.subspaces(1)]
     Lines = [sub for sub in V.subspaces(2)\
       if beta(sub.matrix()[0],sub.matrix()[1])==0]
 \end{sageblock}
-
+%
+\begin{para}
 Two points $u$ and $v$ are collinear if $\beta(u,v)=0$. Two lines $L$ and $M$ 
 are incident if
+\end{para}
+%
 \begin{verbatim}
     (L != M) and (L.intersection(M) != V.zero_subspace())
 \end{verbatim}
+%
+\begin{para}
 or if they are not equal and
+\end{para}
+%
 \begin{verbatim}
     det( L.matrix().stack(M.matrix)) == 0
 \end{verbatim}
-
+%
+\begin{para}
 Elements of our vector space $V$ are "mutable", so not hashable, 
 and therefore cannot be used as vertices of a graph. This is easily circumvented:
+\end{para}
+%
 \begin{sageblock}
 W3 = Graph([range(len(Points)),\
    lambda i,j: beta(Points[i],Points[j])==0], loops=False)
 \end{sageblock}
+%
+\begin{para}
 We can check that $W3$ is connected and regular, and that it has exactly three
 eigenvalues:
+\end{para}
+%
 \begin{sageexample}
     sage: W3.am().fcp()
 \end{sageexample}
+%
+\begin{para}
 The lines of the $GQ$ correspond to the cliques of maximal size, which we
 can find by
+\end{para}
+%
 \begin{verbatim}
     cliques = W3.cliques_maximum()
 \end{verbatim}
-
+%
+\begin{para}
 We get the point graph of the dual $GQ$ by
+\end{para}
+%
 \begin{sageblock}
 W3d = Graph( [range(len(Lines)), lambda i,j: i != j\
     and det( Lines[i].matrix().stack(Lines[j].matrix())) == 0])
 \end{sageblock}
+%
+\begin{para}
 As expected this is not isomorphic to $W3$, but it is strongly regular with
 the same parameters.
-
-
-\section{The McLaughlin Graph}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{The McLaughlin Graph}
+%
+\begin{para}
 A partition $(S,\comp{S})$ of $V(G)$ determines a bipartite subgraph of $G$;
 if we replace this subgraph by its bipartite complement, we say that the
 resulting graph is got by \textsl{switching} on $S$ (or on $\comp{S}$).
 If $S$ is the neighborhood of a vertex $u$ in $G$, then after switching
 on $S$ the vertex $u$ is isolated.
-                                                                               
+\end{para}
+%
 \begin{sageblock}
 def switch(G,sub):
     H = G.copy()
@@ -188,7 +260,8 @@ def switch(G,sub):
             else: H.add_edge(u,v)
     return H   
 \end{sageblock}
-
+%
+\begin{para}
 We construct a graph on the blocks of the $4$-$(23,7,1)$ design
 formed by the words of weight seven in the binary Golay code of length 23.
 (This graph is strongly regular.)
@@ -197,7 +270,8 @@ positions of a code word, and join the $i$-th new vertex to the blocks
 that do not contain it. The result graph is not regular but if we switch on
 one of the new vertices and then delete it we get the McLaughlin graph
 on 275 vertices, which is strongly regular.
-
+\end{para}
+%
 \begin{sageblock}
     C = ExtendedBinaryGolayCode()
     D = C.punctured([0])
@@ -210,17 +284,23 @@ on 275 vertices, which is strongly regular.
     McL = switch( MM, MM[0])
     McL.delete_vertex(0)
 \end{sageblock}
-
+%
+\begin{para}
 It's strongly regular, with a big automorphism group:
+\end{para}
+%
 \begin{sageexample}
 sage: McL.is_connected()
 sage: McL.is_regular()
 sage: McL.am().fcp()
 sage: McL.automorphism_group(return_group=0,order=1)
 \end{sageexample}
-
+%
+\begin{para}
 The McLaughlin graph gives rise to a regular two-graph. For details on regular
 two-graphs, see any recent book on algebraic graph theory. 
+\end{para}
+%
 \begin{sageblock}
     G = McL.copy()
     G.relabel()
@@ -233,16 +313,23 @@ two-graphs, see any recent book on algebraic graph theory.
     SMcL = Graph( C)
     grp = SMcL.automorphism_group()
 \end{sageblock}
+%
+\begin{para}
 and now
+\end{para}
+%
 \begin{sageexample}
 sage: grp.order()
 \end{sageexample}
+\begin{para}
 The group is one of Conway's simple groups.
-
-
-
-\section{Drackns: Generating Parameter Sets}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Drackns: Generating Parameter Sets}
+%
+\begin{para}
 We are interested in distance-regular antipodal covers of $K_n$.
 First we explain `cover'. We construct \textsl{cover} of
 index $r$ of a graph $X$ (or an \textsl{$r$-fold cover})
@@ -259,12 +346,16 @@ and $(u,i)\sim (v,j)$ if $j = i^{f(u,v)}$. Less formally, we replace each
 vertex of $V(X)$ by a coclique of size $r$, and cocliques corresponding
 to adjacent vertices are joined by a matching of size $r$. The $r$-cocliques
 are called the \textsl{fibers} of the cover.
-
+\end{para}
+%
+\begin{para}
 A cover $X^f$ is \textsl{antipodal} if its diameter is $d$ and two vertices
 are in the same fiber if and only they are at distance $d$. The 3-cube is an antipodal
 cover of $K_4$ with index two and diameter three. The line graph of the Petersen
 graph is an antipodal cover of $K_5$ with index and diameter three.
-
+\end{para}
+%
+\begin{para}
 Here we are concerned with distance-regular antipodal covers of complete graphs $K_n$.
 Such covers must have diameter three. There are four obvious parameters $(n,r,a_1,c_2)$,
 although these are not independent, in fact counting edges joining neighbors
@@ -281,14 +372,18 @@ The difference $a_1-c_2$ occurs frequently, and we denote it by $\de$.
 It is not too hard to show that an antipodal
 cover of $K_n$ is distance regular if its diameter is three and any two 
 distinct non-adjacent vertices have $c_2$ common neighbors.
-
+\end{para}
+%
+\begin{para}
 Our basic problem is to determine the parameter triples $(n,r,c_2)$
 for which a cover exists. This is an impossible problem, so we settle
 for generating parameter sets for which there is a good chance that a
 cover exists. Here our first design question surfaces: do we want to order
 our parameters by $n$ and then $r$ (lexicographically), or by $nr$ then $r$
 (for example). We arbitrarily select the first approach.
-
+\end{para}
+%
+\begin{para}
 As a first step we aim to generate a list of quadruples $(n,r,a_1,c_2)$.
 Now we know that
 \begin{equation}
@@ -307,7 +402,8 @@ even. We also have
 \label{c2bnd}
     1\le c_2 \le \left\lfloor\frac{n-1}{r-1}\right\rfloor
 \end{equation}
-
+\end{para}
+%
 \begin{sageblock}
     def nrc( n):
         lim = (n-1)/(r-1)
@@ -316,7 +412,8 @@ even. We also have
     def get_a( n, r, c):
         return n, r, n-1-(r-1)*c, c
 \end{sageblock}
-
+%
+\begin{para}
 So we will generate a sequence of 4-tuples, and filter out the ones
 that obviously do not work. The most useful condition rests on the formulas
 for the multiplicities of the eigenvalues. As a distance-regular graph
@@ -339,7 +436,9 @@ and therefore
 \label{eq:mult}
     m_\th = \frac{(r-1)n(-\tau)}{\th -\tau}.
 \end{equation}
-
+\end{para}
+%
+\begin{para}
 Two cases arise. First, if $\th$ and $\tau$ are not integers, then
 \[
     \th=\sqrt{n-1},\quad \tau=-\sqrt{n-1}
@@ -353,7 +452,8 @@ and consequently the discriminant
 must be a perfect square. (Note that $\de=n-1-rc_2$.) If this is a perfect square
 we can determine $\th$ and $\tau$, and then check that our formula for $m_th$
 is an integer.
-
+\end{para}
+%
 \begin{sageblock}
     def mult_chk( n, r, a, c):
         disc = (a-c)^2+4*(n-1)
@@ -368,15 +468,20 @@ is an integer.
             return False
 \end{sageblock}
 
+\begin{para}
 How do we generate 4-tuples? The simplest approach is to use \verb|CartesianProduct|,
 but a more efficient strategy is to use generators.
-
+\end{para}
+%
+\begin{para}
 Now we can generate a selected family of 4-tuples. There are other conditions
 that must hold, we write a predicate for each of these and then write
 a function that takes a 4-tuple and applies each term in a list of
 predicates. Note that, when a parameter set is eliminated we need to know
 at least one of the predicates that it fails.
-
+\end{para}
+%
+\begin{para}
 There is a very strong case to be made that a better parameterization is available.
 The idea is to search on triples
 \[
@@ -389,3 +494,8 @@ $m_\th=m_\tau$, (equivalently $\de=0$) but this makes sense combinatorially.
 If we want the parameters for covers of $K_n$ with index $r$, then we filter
 through the pairs $(-\tau, \theta)$ where $\theta$ runs over the elements
 of \verb|divisors(n-1)| such that the Krein bound holds.
+\end{para}
+%
+\end{sect}
+%
+\end{chap}

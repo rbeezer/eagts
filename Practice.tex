@@ -1,54 +1,55 @@
 \documentclass[twoside, openright, 12pt]{book}
 \usepackage{fourier}
 %\usepackage{tkz-berge}
-\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{amsmath, amsthm, amssymb}
+\usepackage{amsmath, amssymb}
 \usepackage{enumerate, url, verbatim, sagetex}
 \usepackage{hyperref}% wants to be last
 
 \pagestyle{headings}
 
-\newtheoremstyle{plainsl}%
-	{\topsep}
-	{\topsep}
-	{\slshape} % only non-default setting
-	{}
-	{\normalfont\bfseries}
-	{.}
-	{ }
-	{}
-
-% I prefer 1.2 Lemma to Lemma 1.2
-\swapnumbers
-
-\theoremstyle{plainsl}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-
-% I label my lemmas with tags of the form lem:name,
-% and then I cite them as \lref{name}; you might not want to bother
-\newcommand\chref[1]{Chapter~\ref{cha:#1}}
-\newcommand\lref[1]{Lemma~\ref{lem:#1}}
-\newcommand\tref[1]{Theorem~\ref{thm:#1}}
-\newcommand\cref[1]{Corollary~\ref{cor:#1}}
-\newcommand\sref[1]{Section~\ref{sec:#1}}
-
-% I do not like the ams proof environment, because it inserts too much
-% space between the statement of the theorem/lemma/whatever and the proof
-% so I use \proof text.\qed
-% The AMS proof environment will not function properly once \proof
-% and \qed are defined as below.
-% If you want the default AMS theorem style, replace \textsl by \texit on the next line.
-\renewcommand\proof{\noindent\textsl{Proof. }}
-\newcommand\sqr[2]{{\vbox{\hrule height.#2pt
-    \hbox{\vrule width.#2pt height#1pt \kern#1pt
-        \vrule width.#2pt}\hrule height.#2pt}}}
-% Put \qed at the end of each proof, flush against the full stop.
-\renewcommand\qed{%
-	\ifmmode\eqno\sqr53
-	\else\nolinebreak\ \hfill\sqr53\medbreak\fi}
-
-%% end of theorem/proof adjustments %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newtheoremstyle{plainsl}%
+% 	{\topsep}
+% 	{\topsep}
+% 	{\slshape} % only non-default setting
+% 	{}
+% 	{\normalfont\bfseries}
+% 	{.}
+% 	{ }
+% 	{}
+% 
+% % I prefer 1.2 Lemma to Lemma 1.2
+% \swapnumbers
+% 
+% \theoremstyle{plainsl}
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{corollary}[theorem]{Corollary}
+% 
+% % I label my lemmas with tags of the form lem:name,
+% % and then I cite them as \lref{name}; you might not want to bother
+% \newcommand\chref[1]{Chapter~\ref{cha:#1}}
+% \newcommand\lref[1]{Lemma~\ref{lem:#1}}
+% \newcommand\tref[1]{Theorem~\ref{thm:#1}}
+% \newcommand\cref[1]{Corollary~\ref{cor:#1}}
+% \newcommand\sref[1]{Section~\ref{sec:#1}}
+% 
+% % I do not like the ams proof environment, because it inserts too much
+% % space between the statement of the theorem/lemma/whatever and the proof
+% % so I use \proof text.\qed
+% % The AMS proof environment will not function properly once \proof
+% % and \qed are defined as below.
+% % If you want the default AMS theorem style, replace \textsl by \texit on the next line.
+% \renewcommand\proof{\noindent\textsl{Proof. }}
+% \newcommand\sqr[2]{{\vbox{\hrule height.#2pt
+%     \hbox{\vrule width.#2pt height#1pt \kern#1pt
+%         \vrule width.#2pt}\hrule height.#2pt}}}
+% % Put \qed at the end of each proof, flush against the full stop.
+% \renewcommand\qed{%
+% 	\ifmmode\eqno\sqr53
+% 	\else\nolinebreak\ \hfill\sqr53\medbreak\fi}
+% 
+% %% end of theorem/proof adjustments %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% equation numbers in each section start at 1,
 %% references to equation numbers should include the section, of course
@@ -75,7 +76,6 @@ University of Waterloo}
 
 \tableofcontents
 \clearpage\pagenumbering{arabic} % Maybe clear double page
-
 \include{basics}
 \include{projects}
 \include{cayley}

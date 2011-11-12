@@ -44,7 +44,46 @@
 \newenvironment{listitem}%
 {\item}%
 {}%
+%
+%%%%
+%
+% Graphics
+%
+%%%%
+%
+% A complete macro for all possibilities
+%
 
 
+%%%%
+%
+% Theorems/Proofs
+%
+%%%%
+%
+% 
+%
+\newenvironment{lemma}%
+{\textbf{Lemma}\quad}%
+{}%
+\newenvironment{statement}%
+{}%
+{\par}%
+\newenvironment{proof}%
+{\textbf{Proof}\quad}%
+{\quad$\blacksquare$}%
+
+%%%%
+%
+% Definitions and Knowls
+%
+%%%%
+%
+% 
+% A placeholder, just uses a slanted font
+% But for HTM will make a know using filename inn slot 2
+% 
+%
+\newcommand{\define}[2]{\textsl{#1}}
 
   

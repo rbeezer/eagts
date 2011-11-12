@@ -1,13 +1,14 @@
-%!TEX root = Practice.tex
-
-\chapter{Polynomials and Power Series}
-
-\section{Forbidden Words}
-
+\begin{chap}{Polynomials and Power Series}
+%
+\begin{sect}{Forbidden Words}
+%
+\begin{para}
 Let $\al$ denote a binary string, and let $L$ denote
 the set of binary of binary strings that do not contain $\al$ as a substring. 
 How many strings are there in $L$ with length $n$?
-
+\end{para}
+%
+\begin{para}
 Let $M$ denote the binary
 strings that contain exactly one copy of $\al$, as a suffix. 
 If $\eps$ denotes the empty string, then
@@ -30,15 +31,19 @@ then
 \[
     \al\backslash\be = \{11\},\quad \al\backslash\al = \{\eps,0110\}
 \]
-
+%
 \begin{lemma}
     \[
-        L\al = M\al\backslash\al.\qed
+        L\al = M\al\backslash\al.
     \]
 \end{lemma}
-
+\end{para}
+%
+\begin{para}
 Note that $\al\backslash\al$ is a finite language, i.e., a finite set of strings.
-
+\end{para}
+%
+\begin{para}
 If $N$ is a set of binary strings, let $N(t)$ denote its generating series.
 This is what we get when we substitute $t$ for $0$ and $1$, a string of length
 $\ell$ maps to $t^\ell$ and the language maps to its generating series.
@@ -51,34 +56,44 @@ the lemma yields that
 \[
     L(t)t^{|\al|} = M(t) D(t).
 \]
-
+%
 \begin{lemma}
     \[
         L(t) =\left(1-2t+\frac{t^{|\al|}}{D(t)}\right)^{\!-1}.
     \]
 \end{lemma}
-
+\end{para}
+%
+\begin{para}
 Let's use this to compute some numbers. We first set up the ring of formal
 power series over the rationals.
-
+\end{para}
+%
 \begin{sageblock}
     Rt.<t> = QQ[[]]
 \end{sageblock}
-
+%
+\begin{para}
 If $\al=111$, then $D(t)=1+t+t^2$ and 
 \[
     L(t) = \sage{((1-2*t+ t^3/(1+t+t^2))^(-1)).O(9)}
 \]
-
+\end{para}
+%
+\begin{para}
 As an exercise, write a program which takes a binary string $\al$ and
 computes the generating series for $\al\backslash\al$. (The string arrives
 as a python string, there is no reason why your procedure should not work
 for strings over an arbitrary alphabet.)
-
+\end{para}
+%
+\begin{para}
 The square root of the series $L(2t)$ has non-negative integer coefficients.
 (Use \verb|L.subs(t=2*t).sqrt()|, where \verb|L| is the series.)
 Does this hold for other forbidden substrings?
-
+\end{para}
+%
+\begin{para}
 For a second variant, suppose $\cF=\{\seq\al1d\}$ is a set of binary strings. 
 Let $L$ be the set of strings that contain no element of $\cF$ and let $M_i$ 
 denote the set of strings that contain one copy of $\al_i$, as a suffix, bit do not
@@ -91,22 +106,28 @@ equations
 \end{align*}
 Write a program that, given $\al_1$ and $\al_2$, computes the generating
 series for $L$, $M_1$ and $M_2$.
-
-
-\section{Fractions and Series}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Fractions and Series}
+%
+\begin{para}
 Many generating series can be expressed as rational functions, and 
 such expressions provide useful information. We illustrate this.
 First we create a ring of polynomials, and the corresponding field
 of fractions. (We will not need the latter, as it happens.)
-
+\end{para}
+%
 \begin{sageblock}
     Qu.<u> = QQ[]
     F = FractionField( Qu)
 \end{sageblock}
 
+\begin{para}
 Now we can work with our series $L(t)$ from the previous section.
-
+\end{para}
+%
 \begin{sageexample}
 sage: rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
 sage: rf.denominator()
@@ -114,15 +135,19 @@ sage: rf.numerator()
 sage: rf.subs( u=1/2)
 sage: rf.subs( u=t).O(9)
 \end{sageexample}
-
+%
+\begin{para}
 Note that \verb|t| is the generator of \verb|Rt|, which is $\rats[[t]]$.
 So we have used \verb|subs()| to convert a rational function to
 a power series.
-
+\end{para}
+%
+\begin{para}
 We can also compute partial fraction decompositions. For these
 to be useful the zeros of the denominator should belong to the field
 we are working over.
-
+\end{para}
+%
 \begin{sageexample}
 sage: Cs = FractionField( PolynomialRing( CDF, 's'))
 sage: whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
@@ -131,9 +156,12 @@ sage: parts[0]
 sage: parts[1]
 sage: parts[2]  
 \end{sageexample}
-
-\section{Solving Equations}
-
+%
+\end{sect}
+%
+\begin{sect}{Solving Equations}
+%
+\begin{para}
 If $C(t)$ denotes the generating series for the Catalan numbers, then
 \[
     C(t) = 1+tC(t)^2
@@ -143,14 +171,21 @@ From this it follows that
     C(t) = \frac{1}{2t}(1-\sqrt{(1-4t)}).
 \]
 We can implement this as follows:
+\end{para}
+%
 \begin{sageblock}
     Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
 \end{sageblock}
+%
+\begin{para}
 The first coefficients are what we expect:
+\end{para}
+%
 \begin{sageexample}
 sage: Ct.O(9)
 \end{sageexample}
-
+%
+\begin{para}
 If
 \[
     \Phi(u) := 1+tu^2
@@ -174,6 +209,8 @@ verify this holds for larger values of $n$.) One problem
 here is that if we continue in this vein, our expression for $C_k(t)$
 will have $2^k$ terms, of which only the first $k+1$ are sure to be accurate.
 The following code avoids this extra work.
+\end{para}
+%
 \begin{sageblock}
 def iter( Fun, init, acc, n):
     val = init
@@ -181,13 +218,17 @@ def iter( Fun, init, acc, n):
         val = Fun( val).O(acc)
         acc += 1
 \end{sageblock}
-
+%
+\begin{para}
 As an exercise, verify that if the first $k+1$ coefficients of $C_k(t)$
 are correct, then the first $k+2$ coefficients of $C_{k+1}(t)$ are correct.
-
-
-\section{Newton-Raphson}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Newton-Raphson}
+%
+\begin{para}
 We can find a solution to our equation $C(t) =\Phi(C(t))$ more efficiently by
 using Newton-Raphson. Note that $\Phi$ is a power series (actually polynomial in $u$)
 and
@@ -212,19 +253,30 @@ Here
 \[
     \Phi'(C_n(t)) = 2tC_n(t).
 \]
-
+\end{para}
+%
+\begin{para}
 We can run a quick test. With
+\end{para}
+%
 \begin{sageexample}
 sage: phi = lambda u: 1+t*u^2
 sage: nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
 \end{sageexample}
+%
+\begin{para}
 we find that the first 22 terms of \verb|nr(nr(nr(1+t)))| are correct.
-
+\end{para}
+%
+\begin{para}
 Your task is to write an efficient implementation of this method.
-
-
-\section{Counting Trees}
-
+\end{para}
+%
+\end{sect}
+%
+\begin{sect}{Counting Trees}
+%
+\begin{para}
 Our aim is to derive the generating series for the number of trees on
 $n$ vertices (or, more precisely, the number of isomorphism classes of
 tress on $n$ vertices). We use $R(x)$ to denote the generating series
@@ -244,16 +296,28 @@ We see that $R(x)$ is a fixed point of a map of the form
     R = \Phi(R)
 \]
 and we can use this to compute $R$.
-
+\end{para}
+%
+\begin{para}
 We set up our ring of power series:
+\end{para}
+%
 \begin{sageblock}
     QQx.<x> = QQ[[]]
 \end{sageblock}
+%
+\begin{para}
 If \verb|R| is a power series $\sum r_n x^n$, then
+\end{para}
+%
 \begin{verbatim}
     R.V(i)
 \end{verbatim}
+%
+\begin{para}
 denotes the series $\sum r_n x^{ni}$. So our mapping on series is easy.
+\end{para}
+%
 \begin{sageblock}
  Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
  def iter2( init, acc, times):
@@ -263,18 +327,26 @@ denotes the series $\sum r_n x^{ni}$. So our mapping on series is easy.
          val = Phi( val, acc)
      return val
 \end{sageblock}
+%
+\begin{para}
 The result of \verb|iter2( x+x^2,2,7)| is:
 \[
     \sage{latex( iter2( x+x^2,2,7))}
 \]
-
+\end{para}
+%
+\begin{para}
 You should prove that this procedure produces a sequence of
 series that converges to the generating series for rooted trees.
 You will probably find this procedure converges somewhat more
 quickly then your convergence proof implies.
-
+\end{para}
+%
+\begin{para}
 Next we apply the Newton-Raphson procedure.
 Here's the code, without explanation :-(
+\end{para}
+%
 \begin{sageblock}
 def nrtrees(n):
     Qx.<x> =QQ[[]]
@@ -287,18 +359,27 @@ def nrtrees(n):
         rr = Qx(rr.list())
     return rr
 \end{sageblock}
+%
+\begin{para}
 Note that \verb|rr = Qx([0,1,1])| is an up-market version of \verb|rr = x+x^2|.
 The line \verb|rr = Qx(rr.list())| is a hack to force sage to work with the
 required degree of precision. Your exercise is to show that the output of this 
 procedure is correct.
-
+\end{para}
+%
+\begin{para}
 If $T(x)$ is the generating series for trees, then
 \[
     T(x) = R(x) -\frac12(R(x)^2-R(x^2))
 \]
 Hence we can easily get the number of trees from $R(x)$.
-
+\end{para}
+%
 \begin{sageexample}
 sage: rr = nrtrees(3)
 sage: rr - (1/2)*(rr^2-rr.V(2)).O(14)
 \end{sageexample}
+%
+\end{sect}
+%
+\end{chap}

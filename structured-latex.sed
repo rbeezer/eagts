@@ -10,18 +10,29 @@
 #
 ####
 #
-# Throwaway lines, single leading %
+# Throwaway lines, single leading %, nothing else
 #
 s/^%$//g
+#
+# Genuine comment lines, leading (multiple) %
+# Carry into XML file as XML comments
+#
+s/^%[%]*\(.*\)$/<!-- \1 -->/g
 #
 # TeX left/right quotes
 #
 s/``/"/g
 s/''/"/g
 #
-# TeX itself
+# Boldness
+#
+s/\\textbf{\([^}]*\)}/<emphasis role="bold">\1<\/emphasis>/g
+#
+# TeX, LaTeX itself
 #
 s/\\TeX{}/TeX/g
+s/\\LaTeX{}/LaTeX/g
+
 
 ####
 #
@@ -46,8 +57,9 @@ s/\\end{center}/]]><\/input>\n<\/sage>/g
 #
 s/\\verb|\([^|]*\)|/<code>\1<\/code>/g
 s/\\texttt{\([^}]*\)}/<code>\1<\/code>/g
-
-
+#
+#   Strip leading Sage prompts
+s/^[\ ]*sage:\ //g
 
 
 
@@ -105,5 +117,68 @@ s/\\end{listitem}/<\/listitem>/g
 #   so need XLink library as xl namespace in each source file
 s/\\url{\([^}]*\)}/<link xl:href="\1"><\/link>/g
 
+####
+#
+# Images
+#
+####
+#
+# \includegraphics, minimal version
+#   
+s/\\includegraphics{\([^}]*\)}/<mediaobject>\n<imageobject condition="web"><imagedata fileref="\1" format="PNG" scale="80"\/>\n<\/imageobject>\n<caption><\/caption>\n<\/mediaobject>/g
+
+####
+#
+# Definitions, Knowls
+#
+####
+#
+# \textsl assumed as definition
+# (write a proper definition/knowl macro for TeX)
+#  convert to a knowl with generic content
+s/\\textsl{\([^}]*\)}/<knowl src="replaceMe.html">\1<\/knowl>/g
 
 
+
+####
+#
+# Math
+#
+####
+#
+# math displays are surrounded by \[, \] on lines of their own
+# wrap CDATA to protect &, <, >
+# ]]> in a TeX expression must be avoided 
+# by using a space or a &lt; entity
+#
+s/^[\ ]*\\\[$/<displaymath><![CDATA[/g
+s/^[\ ]*\\\]$/]]><\/displaymath>/g
+#
+# Pass through align* and equation environments, 
+# but protect contents with CDATA
+#
+s/\\begin{align\*}/\\begin{align*}<![CDATA[/g
+s/\\end{align\*}/]]>\\end{align*}/g
+s/\\begin{equation}/\\begin{equation}<![CDATA[/g
+s/\\end{equation}/]]>\\end{equation}/g
+
+####
+#
+# Theorems/Proofs
+#
+####
+#
+s/\\begin{lemma}/<lemma>/g
+s/\\end{lemma}/<\/lemma>/g
+s/\\begin{statement}/<statement>/g
+s/\\end{statement}/<\/statement>/g
+s/\\begin{proof}/<proof>/g
+s/\\end{proof}/<\/proof>/g
+
+####
+#
+# Definitions and Knowls
+#
+####
+#
+s/\\define{\([^}]*\)}{\([^}]*\)}/<knowl src="\2.html">\1<\/knowl>/g

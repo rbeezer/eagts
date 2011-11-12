@@ -19,19 +19,12 @@
   </copyright>
 </info>
 
-
-
-
-
-
-
 <xi:include href="preface.xml" /> 
 <xi:include href="basics.xml" /> 
-<!--
 <xi:include href="projects.xml" /> 
 <xi:include href="cayley.xml" /> 
 <xi:include href="drgs.xml" /> 
 <xi:include href="pseries.xml" /> 
--->
+<xi:include href="matrices.xml" /> 
 
 </book>
