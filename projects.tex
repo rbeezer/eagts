@@ -11,20 +11,27 @@ are isomorphic but $u$ and $v$ are not similar, we say that they are
 exist, but we will see that they do.
 \end{para}
 %
-\begin{sageblock}
-    C9 = graphs.CycleGraph(9)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+C9 = graphs.CycleGraph(9); C9
+\end{sageinput}
+\begin{sageoutput}
+Cycle graph: Graph on 9 vertices
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The vertex set of $C9$ is $\{0,\ldots,8\}$. We want to add three new vertices
 to $C9$, adjacent to $1$, $4$ and $7$ in turn and delete the vertex $0$.
 \end{para}
 %
-\begin{sageblock}
-    D = C9.copy()
-    D.add_edges([(1,9), (4,10), (7,11)])
-    D.delete_vertex(0)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+D = C9.copy()
+D.add_edges([(1,9), (4,10), (7,11)])
+D.delete_vertex(0)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Here's $D$:
@@ -40,26 +47,54 @@ Here's $D$:
 The automorphism group of $D$ has order 2:
 \end{para}
 %
-\begin{sageexample}
-    sage: D.automorphism_group().order()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+D.automorphism_group().order()
+\end{sageinput}
+\begin{sageoutput}
+2
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 and we can determine its orbits:
 \end{para}
 %
-\begin{sageexample}
-    sage: D.automorphism_group( return_group=False, orbits=True)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+D.automorphism_group(return_group=False, orbits=True)
+\end{sageinput}
+\begin{sageoutput}
+[[1], [2], [3], [4], [5], [6], [7], [8, 11], [9], [10]]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-As an alternative to the last we could try the following, but its
-output is wrong!
+As an alternative to the last command we could try the following, but its
+output is misleading!
 \end{para}
 %
-\begin{sageexample}
-    sage: D.automorphism_group().orbits()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+D.automorphism_group().orbits()
+\end{sageinput}
+\begin{sageoutput}
+[[1], [2], [3], [4], [5], [6], [7, 10], [8], [9], [11]]
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
+This is because automorphism groups of graphs do not always exactly match the integer symbols for the permutation group to the names of the vertices.  Here is the translation between vertex names to permutation group symbols, as a Python dictionary.
+\end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+D.automorphism_group(return_group=False, translation=True)
+\end{sageinput}
+\begin{sageoutput}
+{1: 11, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9, 11: 10}
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 I claim $D$ has a pair of pseudosimilar vertices. In this case we could find them
@@ -68,22 +103,33 @@ The idea is to find a canonical label for each of the 11 vertex-deleted subgraph
 of $D$. The sage command
 \end{para}
 %
-\begin{verbatim}
-    E = D.canonical_label()
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+E = D.canonical_label()
+E.edges(labels=False)
+\end{sageinput}
+\begin{sageoutput}
+[(0, 10), (1, 10), (2, 8), (3, 9), (4, 6), 
+(4, 10), (5, 7), (5, 8), (6, 9), (7, 9)]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 returns a canonized form of $D$. So graphs $G$ and $H$ are isomorphic if and only
 their canonized forms are equal. For example
 \end{para}
 %
-\begin{sageexample}
-    sage: P = graphs.PetersenGraph()
-    sage: Q = graphs.CompleteGraph(5).line_graph().complement()
-    sage: Pc = P.canonical_label(); Qc = Q.canonical_label()
-    sage: P == Q
-    sage: Pc == Qc
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+P = graphs.PetersenGraph()
+Q = graphs.CompleteGraph(5).line_graph().complement()
+Pc = P.canonical_label(); Qc = Q.canonical_label()
+P == Q, Pc == Qc
+\end{sageinput}
+\begin{sageoutput}
+(False, True)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The only problem left is that the return value of \verb|canonical_label()|
@@ -95,12 +141,14 @@ The following procedure constructs a hashable canonical label for
 $G\diff i$, given $G$ and $i$.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def vdi(G, i):
     H = G.copy()
     H.delete_vertex(i)
     return (H.canonical_label().graph6_string(), i)
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 There is a \TeX{}nical difficulty though---\TeX{} does not like graph6 strings
@@ -108,11 +156,20 @@ since they contain characters such as \verb|%| and \verb|_| and therefore we wil
 any here. We can now construct our list of pairs (string, vertex):
 \end{para}
 %
-\begin{sageblock}
-    orbs = D.automorphism_group( return_group=False, orbits=True)
-    orb_reps = [it[0] for it in orbs]
-    labels = [vdi(D,i) for i in orb_reps]
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+orbs = D.automorphism_group( return_group=False, orbits=True)
+orb_reps = [it[0] for it in orbs]
+labels = [vdi(D,i) for i in orb_reps]
+labels
+\end{sageinput}
+\begin{sageoutput}
+[('I??G?DaDO', 1), ('I_???CpB_', 2), ('I??X??BoO', 3), 
+('I???GOPW_', 4), ('I??G_GBw?', 5), ('I??X??BoO', 6), 
+('I???Gg_Ag', 7), ('I??OQaGH_', 8), ('I???oH`b?', 9), 
+('I?COOIAWO', 10)]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 and on inspecting the output, we see that $D\diff 3\cong D\diff 6$.
@@ -132,7 +189,8 @@ with the same first term. (The keys for a dictionary must be hashable, so this
 is why we needed the graph6 strings.)
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def ls_dict( tuples):
     dc = {} 
     for pair in tuples:
@@ -141,29 +199,37 @@ def ls_dict( tuples):
         else:
             dc[ pair[0]] = [pair[1]]
     return dc
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
-Now if dc is a dictionary whose values are lists, we compute a list consisting
+Now if \verb|dc| is a dictionary whose values are lists, we compute a list consisting
 of those values whose length is at least $k$:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def get_families( dc, k):
     families = []
     for str, vxs in dc.iteritems():
         if len(vxs) >= k:
             families.append( vxs)
     return families
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We apply this to our list \texttt{labels}:
 \end{para}
 %
-\begin{sageexample}
-    sage: get_families( ls_dict( labels), 2)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+get_families( ls_dict( labels), 2)
+\end{sageinput}
+\begin{sageoutput}
+[[3, 6]]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 We see again that 3 and 6 form a pseudosimilar pair of vertices.
@@ -172,7 +238,7 @@ We see again that 3 and 6 form a pseudosimilar pair of vertices.
 \begin{para}
 For further reading on pseudosimilar vertices, you will have to dig out papers
 on the topic.  I suspect that few of these are on the web, since they
-predate \LaTeX{}.  Fortunately we still have libraries. Note that pseudosimilar
+predate \LaTeX{}.  Fortunately we still have libraries.  Note that pseudosimilar
 sets of size greater than two are possible.
 \end{para}
 %
@@ -218,45 +284,56 @@ perfect matching in $K_{2n}$, and thus by a set of $n$ edges.
 We need to decide if two edges of the matching cross:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def cross(e1,e2):
     if e1[1]<e1[0]: e1[0],e1[1] = e1[1],e1[0]
     if e2[1]<e2[0]: e2[0],e2[1] = e2[1],e2[0]
     return (e1[0]<e2[0] and e2[0]<e1[1]<e2[1])\
       or (e2[0]<e1[0]<e2[1] and e2[1]<e1[1])
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 With this in hand we can easily construct the circle graph corresponding
 to a given matching:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def circle_grf(pm):
-    return Graph([range( len( pm)),\
-      lambda i,j: cross(pm[i],pm[j])])
-\end{sageblock}
+    return Graph([range( len( pm)), lambda i,j: cross(pm[i],pm[j])])
+\end{sageinput}
+\end{sagecode}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def chord_dgrm(pm):
     """Create chord diagram from perfect matching."""
     return graphs.CycleGraph( 2*len(pm)).add_edges( pm)
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We can get the perfect matchings in the complement of $C_{10}$ as follows.
 (It's not pretty, but it works.)
 \end{para}
 %
-\begin{sageblock}
-    C = graphs.CycleGraph(10)
-    CC = C.complement().line_graph().complement()
-    cliques = CC.cliques_maximum()
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+C = graphs.CycleGraph(10)
+CC = C.complement().line_graph().complement()
+cliques = CC.cliques_maximum()
+len(cliques)
+\end{sageinput}
+\begin{sageoutput}
+293
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-There are 293 perfect matchings in the complement of $C_{10}$. It is easy
-to create the graphs and form a dictionary from pairs
+So there are 293 perfect matchings in the complement of $C_{10}$. It is easy
+to create the graphs and form a dictionary from pairs  [* THIS LOOKS INCOMPLETE *]
 \end{para}
 %
 \begin{verbatim}
@@ -367,7 +444,8 @@ We can now use the following:
 This leads us to an easy construction of the adjacency matrix of the cover.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def lgcvr( X):
     D = X.incidence_matrix()
     IDM = identity_matrix( X.num_edges())
@@ -376,7 +454,8 @@ def lgcvr( X):
     A = (1/2)*(M+MM)
     B = (1/2)*(M-MM)
     return block_matrix( [A,B,B,A])
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Now we turn to our line graphs. The cover can be constructed as follows.
@@ -390,15 +469,16 @@ arcs then we use $(u,v)$ to denote $((u,v),0)$ and $(v,u)$ for $((u,v),1)$.
 The following procedure implements this.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def dbl_lng( X):
     V = X.vertices()
     E = X.edges( labels=False)
-    arcs = [(i,j) for i in V for j in V if ((i,j)\
-     in E or (j,i) in E)]
-    return  Graph( [arcs, lambda a,b: a != b\
-     and (a[0]==b[0] or a[1]==b[1])])
-\end{sageblock}
+    arcs = [(i,j) for i in V for j in V\
+        if ((i,j) in E or (j,i) in E)]
+    return  Graph( [arcs, lambda a,b: a != b and (a[0]==b[0] or a[1]==b[1])])
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We test that our two constructions agree on the Petersen graph, and see
@@ -407,15 +487,28 @@ the Petersen graph with $K_2$. (This product is itself a cover of the Petersen
 graph.)
 \end{para}
 %
-\begin{sageexample}
-sage: P = graphs.PetersenGraph()
-sage: Q1 = Graph( lgcvr( P))
-sage: Q2 = dbl_lng( P)
-sage: Q1.is_isomorphic( Q2)
-sage: K2 = graphs.CompleteGraph(2)
-sage: LP2 = (P.tensor_product(K2)).line_graph()
-sage: LP2.is_isomorphic( Q1)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+P = graphs.PetersenGraph()
+Q1 = Graph( lgcvr( P))
+Q2 = dbl_lng( P)
+Q1.is_isomorphic( Q2)
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+K2 = graphs.CompleteGraph(2)
+LP2 = (P.tensor_product(K2)).line_graph()
+LP2.is_isomorphic( Q1)
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %

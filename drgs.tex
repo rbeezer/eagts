@@ -8,7 +8,8 @@ The main use of this is to provide a test that some graph we have constructed is
 distance regular.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def distance_partition( X, vxi):
     xvs = X.vertices()
     E = dict()
@@ -16,7 +17,8 @@ def distance_partition( X, vxi):
         dj = X.distance(vxi, vxj)
         E.setdefault(dj,[]).append(vxj)
     return E.values()    
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %    
 \begin{para}
 If $X$ is distance-regular, then the distance partition is equitable
@@ -28,27 +30,39 @@ vertices.
 We use the Kneser graphs as a test case.
 \end{para}
 %
-\begin{sageblock}
+% Kneser graphs in Sage could be used here, perhaps?
+%
+\begin{sagecode}
+\begin{sageinput}
 def kneser( v, k):
     combs = map(set, Combinations([0..v-1],k))
-    return Graph( [[0..binomial(v,k)-1],\
-     lambda i, j: combs[i].isdisjoint(combs[j])])
-\end{sageblock}
+    return Graph( [[0..binomial(v,k)-1], lambda i, j: combs[i].isdisjoint(combs[j])])
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
-We have used python sets here, because they admit the function \verb|is_disjoint()|.
+We have used Python sets here, because they admit the function \verb|is_disjoint()|.
 Otherwise we would replace \verb|a.isdisjoint(b)| by
 \end{para}
 %
-\begin{verbatim}
-    len( a.intersection(b)) == 0
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+len( a.intersection(b)) == 0 # not tested
+\end{sageinput}
+\end{sagecode}
 %
-\begin{sageexample}
-sage: X = kneser(7,3)
-sage: dp = distance_partition( X, X.vertices()[0])
-sage: X.is_equitable( dp, quotient_matrix=True) 
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+X = kneser(7,3)
+dp = distance_partition( X, X.vertices()[0])
+X.is_equitable( dp, quotient_matrix=True) 
+\end{sageinput}
+\begin{sageoutput}
+[0 4 0 0]                                                                                                             
+[1 0 3 0]                                                                                                             
+[0 1 0 3]                                                                                                             
+[0 0 2 2]                                                                                                             \end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 If the partition is not equitable, the response would be a simple
@@ -58,17 +72,21 @@ If the partition is not equitable, the response would be a simple
 \begin{para}
 Many distance-regular graphs are distance-transitive. We can test for this
 by verifying that our graph is vertex transitive and the number of
-orbits of the stabilizer of a vertex is one less than the diameter.
+orbits of the stabilizer of a vertex is the diameter plus one.
 \end{para}
 %
-\begin{sageexample}
-sage: orbs = X.automorphism_group( return_group=0, orbits=1)
-sage: len(orbs) == 1 
-sage: pn = [ [X.vertices()[0]], X.vertices()[1:]]
-sage: grp = X.automorphism_group( partition=pn)
-sage: X.diameter()
-sage: len( grp.orbits())
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+orbs = X.automorphism_group( return_group=0, orbits=1)
+len(orbs) == 1 
+pn = [ [X.vertices()[0]], X.vertices()[1:]]
+grp = X.automorphism_group( partition=pn)
+len( grp.orbits()) == X.diameter() + 1
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The Kneser graph has a perfect 1-code---a set of seven vertices pairwise at distance
@@ -79,21 +97,27 @@ that is maximal under inclusion. So we can find one and construct the
 Coxeter graph as follows.
 \end{para}
 %
-\begin{sageblock}
-    colqs = X.complement().cliques_maximal()
-    colqs7 = filter( lambda it: len(it)==7, colqs)
-    Y = X.copy()
-    Y.delete_vertices( colqs7[0])
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+colqs = X.complement().cliques_maximal()
+colqs7 = filter( lambda it: len(it)==7, colqs)
+Y = X.copy()
+Y.delete_vertices( colqs7[0])
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We confirm that $Y$ has girth seven, you might verify that $Y$ is distance-transitive.
 \end{para}
 %
-\begin{sageexample}
-sage: X.girth()
-sage: Y.girth()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+X.girth(), Y.girth()
+\end{sageinput}
+\begin{sageoutput}
+(6, 7)
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %
@@ -115,7 +139,7 @@ and lines such that
 \end{enumerate}
 %
 \begin{para}
-This axioms are self-dual, and therefore the incidence structure
+These axioms are self-dual, and therefore the incidence structure
 dual to a $GQ$ is again a $GQ$.
 \end{para}
 %
@@ -163,80 +187,132 @@ lines of $W(q)$ will be the 2-dimensional isotropic subspaces.
 Time for some actual work. We define our form:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def beta(u,v):
     return u[0]*v[2]+u[1]*v[3] -u[2]*v[0] -u[3]*v[1]
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 and create our points and lines:
 \end{para}
 %
-\begin{sageblock}
-    V = VectorSpace( GF(3), 4)
-    Points = [u[1] for u in V.subspaces(1)]
-    Lines = [sub for sub in V.subspaces(2)\
-      if beta(sub.matrix()[0],sub.matrix()[1])==0]
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+V = VectorSpace( GF(3), 4)
+Points = [u[1] for u in V.subspaces(1)]
+Lines = [sub for sub in V.subspaces(2)\
+    if beta(sub.matrix()[0],sub.matrix()[1])==0]
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Two points $u$ and $v$ are collinear if $\beta(u,v)=0$. Two lines $L$ and $M$ 
 are incident if
 \end{para}
 %
-\begin{verbatim}
-    (L != M) and (L.intersection(M) != V.zero_subspace())
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+(L != M) and (L.intersection(M) != V.zero_subspace()) # not tested
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 or if they are not equal and
 \end{para}
 %
-\begin{verbatim}
-    det( L.matrix().stack(M.matrix)) == 0
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+det( L.matrix().stack(M.matrix)) == 0 # not tested
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Elements of our vector space $V$ are "mutable", so not hashable, 
 and therefore cannot be used as vertices of a graph. This is easily circumvented:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 W3 = Graph([range(len(Points)),\
    lambda i,j: beta(Points[i],Points[j])==0], loops=False)
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We can check that $W3$ is connected and regular, and that it has exactly three
-eigenvalues:
+eigenvalues (obvious in the factored characteristic polynomial):
 \end{para}
 %
-\begin{sageexample}
-    sage: W3.am().fcp()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+W3.is_connected(), W3.is_regular(), W3.am().fcp()
+\end{sageinput}
+\begin{sageoutput}
+(True, True, (x - 12) * (x + 4)^15 * (x - 2)^24)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The lines of the $GQ$ correspond to the cliques of maximal size, which we
 can find by
 \end{para}
 %
-\begin{verbatim}
-    cliques = W3.cliques_maximum()
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+cliques = W3.cliques_maximum()
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We get the point graph of the dual $GQ$ by
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 W3d = Graph( [range(len(Lines)), lambda i,j: i != j\
     and det( Lines[i].matrix().stack(Lines[j].matrix())) == 0])
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
-As expected this is not isomorphic to $W3$, but it is strongly regular with
+As expected $W3d$ is not isomorphic to $W3$, but it is strongly regular with
 the same parameters.
 \end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+W3.is_isomorphic(W3d)
+\end{sageinput}
+\begin{sageoutput}
+False
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+dp = distance_partition( W3, W3.vertices()[0])
+W3.is_equitable( dp, quotient_matrix=True) 
+\end{sageinput}
+\begin{sageoutput}
+[ 0 12  0]
+[ 1  2  9]
+[ 0  4  8]
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+dp = distance_partition( W3d, W3d.vertices()[0])
+W3d.is_equitable( dp, quotient_matrix=True) 
+\end{sageinput}
+\begin{sageoutput}
+[ 0 12  0]
+[ 1  2  9]
+[ 0  4  8]
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %
@@ -250,7 +326,8 @@ If $S$ is the neighborhood of a vertex $u$ in $G$, then after switching
 on $S$ the vertex $u$ is isolated.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def switch(G,sub):
     H = G.copy()
     rest = Set(H.vertices()).difference(Set(sub))
@@ -259,7 +336,8 @@ def switch(G,sub):
             if H.has_edge(u,v): H.delete_edge(u,v)
             else: H.add_edge(u,v)
     return H   
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We construct a graph on the blocks of the $4$-$(23,7,1)$ design
@@ -272,57 +350,74 @@ one of the new vertices and then delete it we get the McLaughlin graph
 on 275 vertices, which is strongly regular.
 \end{para}
 %
-\begin{sageblock}
-    C = ExtendedBinaryGolayCode()
-    D = C.punctured([0])
-    words = [ Set(it.support()) for it in D if hamming_weight(it)==7]
-    MG = Graph( [words, lambda a,b: len(a.intersection(b))==1])
-    MM = MG.copy()
-    MM.add_vertices([0..22])
-    edges = [ (i,a) for i in [0..22] for a in words if i not in a]
-    MM.add_edges( edges)
-    McL = switch( MM, MM[0])
-    McL.delete_vertex(0)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+C = ExtendedBinaryGolayCode()
+D = C.punctured([0])
+words = [ tuple(it.support()) for it in D if hamming_weight(it)==7]
+MG = Graph( [words, lambda a,b: len(Set(a).intersection(Set(b)))==1])
+MM = MG.copy()
+MM.add_vertices([0..22])
+edges = [ (i,a) for i in [0..22] for a in words if i not in a]
+MM.add_edges( edges)
+McL = switch( MM, MM[0])
+McL.delete_vertex(0)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 It's strongly regular, with a big automorphism group:
 \end{para}
 %
-\begin{sageexample}
-sage: McL.is_connected()
-sage: McL.is_regular()
-sage: McL.am().fcp()
-sage: McL.automorphism_group(return_group=0,order=1)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+grp_order = McL.automorphism_group(return_group=0,order=1)
+McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
+\end{sageinput}
+\begin{sageoutput}
+(True, True, (x - 112) * (x + 28)^22 * (x - 2)^252, 1796256000)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The McLaughlin graph gives rise to a regular two-graph. For details on regular
 two-graphs, see any recent book on algebraic graph theory. 
 \end{para}
 %
-\begin{sageblock}
-    G = McL.copy()
-    G.relabel()
-    G.add_vertex()
-    A = G.am()
-    n = G.num_verts()
-    J = Matrix(n,n,n^2*[1])
-    B = J -1 -A
-    C = block_matrix( [A,B,B,A])
-    SMcL = Graph( C)
-    grp = SMcL.automorphism_group()
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+G = McL.copy()
+G.relabel()
+G.add_vertex()
+A = G.am()
+n = G.num_verts()
+J = Matrix(n,n,n^2*[1])
+B = J -1 -A
+C = block_matrix( 2, 2, [A,B,B,A])
+SMcL = Graph( C)
+grp = SMcL.automorphism_group()
+grp.order(), SMcL.am().fcp()
+\end{sageinput}
+\begin{sageoutput}
+(991533312000, (x - 275) * (x + 55)^23 * (x - 5)^253 * (x + 1)^275)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 and now
 \end{para}
 %
-\begin{sageexample}
-sage: grp.order()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+grp.composition_series()[1].is_simple()
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
+%
 \begin{para}
-The group is one of Conway's simple groups.
+The group is one of Conway's simple groups.  [* Too big by a factor of two!  Does the graph need adjustment or does the simple group just come as an index 2 subgroup of the automorphism group? *]
 \end{para}
 %
 \end{sect}
@@ -404,14 +499,16 @@ even. We also have
 \end{equation}
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
     def nrc( n):
         lim = (n-1)/(r-1)
         return [(n,r,c) for r in [2..n-1]\ 
          for c in [1..lim] and n*(r-1)*c % 2 == 0]
     def get_a( n, r, c):
         return n, r, n-1-(r-1)*c, c
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 So we will generate a sequence of 4-tuples, and filter out the ones
@@ -454,20 +551,22 @@ we can determine $\th$ and $\tau$, and then check that our formula for $m_th$
 is an integer.
 \end{para}
 %
-\begin{sageblock}
-    def mult_chk( n, r, a, c):
-        disc = (a-c)^2+4*(n-1)
-        if is_square(disc):
-            sqroot = sqrt( disc)
-            theta = (a-c+sqroot)/2
-            tau = (a-c-sqroot)/2
-            mth = n*(r-1)*theta/sqroot
-            mtau = n*(r-1)-mth
-            return (theta, tau, mth, mtau)
-        else:
-            return False
-\end{sageblock}
-
+\begin{sagecode}
+\begin{sageinput}
+def mult_chk( n, r, a, c):
+    disc = (a-c)^2+4*(n-1)
+    if is_square(disc):
+        sqroot = sqrt( disc)
+        theta = (a-c+sqroot)/2
+        tau = (a-c-sqroot)/2
+        mth = n*(r-1)*theta/sqroot
+        mtau = n*(r-1)-mth
+        return (theta, tau, mth, mtau)
+    else:
+        return False
+\end{sageinput}
+\end{sagecode}
+%
 \begin{para}
 How do we generate 4-tuples? The simplest approach is to use \verb|CartesianProduct|,
 but a more efficient strategy is to use generators.

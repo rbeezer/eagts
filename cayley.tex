@@ -6,18 +6,28 @@ If $G$ is a group and $C\sbs G$ (i.e., a list of some elements of $G$), then the
 command produces the Cayley graph $X(G,C)$:
 \end{para}
 %
-\begin{verbatim}
-    G.cayley_graph( generators = C)
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+G = DihedralGroup(5)
+C = [G.gen(0), G.gen(1)]
+CG = G.cayley_graph( generators = C)
+CG.show()  # not tested
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 The output is a directed graph, even if $C$ is inverse-closed; in the latter
 case we can convert $G$ to a graph by
 \end{para}
 %
-\begin{verbatim}
-    H = G.to_undirected()
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+CGU = CG.to_undirected()
+CGU.show()  # not tested
+\end{sageinput}
+\begin{sageoutput}
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Note that $C$ is not required to generate $G$. There are a number of keywords
@@ -31,27 +41,39 @@ graphs ourselves. For example, a \define{cubelike graph}{cubelike} is a Cayley
 graph for $GF(2)^d$. We can construct them using \texttt{Graph()}.
 \end{para}
 %
-\begin{verbatim}
+\begin{sagecode}
+\begin{sageinput}
 def cubelike(d, vector_list):
     VS = VectorSpace(GF(2),d)
-    vxs = range{2^d}
+    vxs = range(2^d)
     return Graph([vxs, lambda i,j: VS[i]-VS[j] in vector_list])
-\end{verbatim}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Here \verb|vector_list| is a list of 01-vectors of length $d$
-For a general group, we can use the following.
+For a general group, we can use the following to create an undirected Cayley graph.
 \end{para}
 %
-\begin{verbatim}
-    CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+G = DihedralGroup(5)
+C = [G.gen(0), G.gen(0)^-1, G.gen(1), G.gen(1)^-1]
+CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
+CG.show()  # not tested
+\end{sageinput}
+\begin{sageoutput}
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
 This will produce an incorrect result if $C$ is not inverse-closed.
+\end{para}
 %
 \begin{para}
 Sage provides access to GAP, and hence access to any group that is
 in GAP or can be constructed in GAP.  Be warned that the documentation
-for GAP probably outweighs that for sage.
+for GAP probably outweighs that for Sage.
 \end{para}
 %
 \end{sect}
@@ -70,10 +92,15 @@ They provide constructions for a number of srg's on 100 vertices.
 First we form a permutation group.
 \end{para}
 %
-\begin{sageblock}
-    H1 = PermutationGroup([[(1,2,3,4,5)],[(6,7,8,9,10)],\
-      [(2,3,5,4)]])
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+H1 = PermutationGroup([[(1,2,3,4,5)], [(6,7,8,9,10)], [(2,3,5,4)]])
+H1
+\end{sageinput}
+\begin{sageoutput}
+Permutation Group with generators [(6,7,8,9,10), (2,3,5,4), (1,2,3,4,5)]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The argument to \texttt{PermutationGroup()} is a list where each item in the
@@ -89,55 +116,89 @@ Obviously, to get the Higman-Sims graph we need a special connection set.
 For this we make use of the following set of 22 triples:
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),\
   (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),\
   (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),\
   (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 We set
 \end{para}
 %
-\begin{sageblock}
-    y,z,x = H1.gens()
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+y,z,x = H1.gens()
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 and then create a connection set
 \end{para}
 %
-\begin{sageblock}
-    C = [ x^it[0]*y^it[1]*z^it[2] for it in ds]
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+C = [ x^it[0]*y^it[1]*z^it[2] for it in ds]
+C
+\end{sageinput}
+\begin{sageoutput}
+[(1,2,3,4,5), (1,5,4,3,2), (2,3,5,4)(6,7,8,9,10), 
+(2,3,5,4)(6,10,9,8,7), (1,5,3,4), (1,4,5,2)(6,8,10,7,9), 
+(1,4,5,2)(6,9,7,10,8), (2,5)(3,4)(6,7,8,9,10), 
+(2,5)(3,4)(6,10,9,8,7), (1,5)(2,4)(6,8,10,7,9), 
+(1,5)(2,4)(6,9,7,10,8), (1,4)(2,3), (1,3)(4,5)(6,7,8,9,10), 
+(1,3)(4,5)(6,8,10,7,9), (1,3)(4,5)(6,9,7,10,8), 
+(1,3)(4,5)(6,10,9,8,7), (1,2)(3,5), (2,4,5,3)(6,7,8,9,10), 
+(2,4,5,3)(6,10,9,8,7), (1,4,3,5), (1,2,5,4)(6,8,10,7,9), 
+(1,2,5,4)(6,9,7,10,8)]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Here $x$, $y$ and $z$ are our original generators and $C$ is a subset
 of $G$ consisting of elements of the form $x^iy^jz^k$. So they are
 specified by triples $(i,j,k)$ and \verb|ds| is indeed a set of triples.
-We could perform a partial check on our work by testing if $C$ is inverse-closed.
+We perform a partial check on our work by testing if $C$ is inverse-closed.
+\end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+all( [x^-1 in C for x in C] )
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
 The graph we want is
 \end{para}
 %
-\begin{sageblock}
-    G = H1.cayley_graph( generators=C)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+G = H1.cayley_graph( generators=C)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 How can we confirm that this is the Higman-Sims graph?  Well, it is connected,
-regular, and has exactly three eigenvalues:
+regular, and has exactly three eigenvalues (as we see in the factored characteristic polynomial):
 \end{para}
 %
-\begin{sageexample}
-    sage: G.is_connected()
-    sage: G.is_regular()
-    sage: G.am().fcp()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+G.is_connected(), G.is_regular(), G.am().fcp()
+\end{sageinput}
+\begin{sageoutput}
+(True, True, (x - 22) * (x + 8)^22 * (x - 2)^77)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Since the Higman-Sims graph is determined by its eigenvalues, we have it.
-We could use \verb|G.girth()| to see that $G$ is triangle-free.
 We used \verb|G.am().fcp()| to get the factored characteristic polynomial
 of $G$, because it's shorter than \verb|G.characteristic_polynomial().factor()|
 even with tab completion. Also, for a graph on any significant number of vertices
@@ -146,30 +207,50 @@ characteristic polynomial---they are far too large!
 \end{para}
 %
 \begin{para}
-We can see that $G$ is vertex transitive by invoking \verb|G.is_transitive()|.
+We can use \verb|G.girth()| to see that $G$ is triangle-free and we can see that $G$ is vertex transitive.
+\end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+G.girth(), G.is_vertex_transitive()
+\end{sageinput}
+\begin{sageoutput}
+(4, True)
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
 To verify that $G$ is arc-transitive, we prove more by showing
 that the stabilizer of a vertex has exactly three orbits on vertices.
 We set things up with
 \end{para}
 %
-\begin{sageblock}
-    G.relabel()
-    part = [[0], [1..99]]
-    orbs = G.automorphism_group( return_group=False,\
-      partition=part, orbits=True)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+G.relabel()
+part = [[0], [1..99]]
+orbs = G.automorphism_group( return_group=False,\
+    partition=part, orbits=True)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 Some explanations are in order. As created the vertices of $G$ are permutations,
 after \verb|G.relabel()| they are the integers in $[0..99]$. Now
-\verb|dist_part| is the distance partition of $G$ relative to the vertex $0$
-and \verb|orbs| is the list of orbits of the subgroup of automorphisms of $G$
-that fix each cell of the partition \texttt{part}. From
+\verb|part| is a simple partition of $G$, isolating the vertex $0$.  Then 
+\verb|orbs| is the list of orbits of the subgroup of automorphisms of $G$
+that fix each cell of the partition \texttt{part}, effectively the 
+stabiliser of the vertex $0$. From
 \end{para}
 %
-\begin{sageexample}
-    sage: len(orbs)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+len(orbs)
+\end{sageinput}
+\begin{sageoutput}
+3
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 we infer that the vertex stabiliser has three orbits, which must be 0,
@@ -177,12 +258,17 @@ the neighbors of 0 and the vertices at distance two from 0. We conclude
 that $\aut G$ is a rank-three permutation group. Its order?
 \end{para}
 %
-\begin{sageexample}
-    sage: G.automorphism_group(return_group=False,order=True)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+G.automorphism_group(return_group=False,order=True)
+\end{sageinput}
+\begin{sageoutput}
+88704000
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-The Higman-Sims graphs contains many triangle-free srg's as subgraphs.
+The Higman-Sims graph contains many triangle-free srg's as subgraphs.
 For example, the subgraphs obtained by deleting a vertex and its neighbors
 or by deleting two adjacent vertices and its neighbors. Its vertices
 can be partitioned into two copies of the Hoffman-Singleton graph,
@@ -225,96 +311,114 @@ its rows. The game is to do this without using a for-loop.
 We set up our background
 \end{para}
 %
-\begin{sageblock}
-    x = QQ['x'].0
-    K.<f> = NumberField(x^2-x-1)
-    RR4 = VectorSpace(K,4) 
-    H.<i,j,k> = QuaternionAlgebra(K,-1,-1)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+x = QQ['x'].0
+K.<f> = NumberField(x^2-x-1)
+RR4 = VectorSpace(K,4) 
+H.<i,j,k> = QuaternionAlgebra(K,-1,-1)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 So we work with quaternions over $\rats(f)$, where $f$ is a zero of $f^2-f-1$.
-Due t an unfortunate feature of python, we must remember now \textbf{never}
-to use $i$ or $j$ or $k$ as an index in a list comprehension---after
-executing
-\end{para}
-%
-\begin{verbatim}
-    [i^2 for i in [1..5]]
-\end{verbatim}
-%
-\begin{para}
-the value of $i$ is now 5.
+Due to an unfortunate feature of Python, we must remember now \textbf{never}
+to use $i$ or $j$ or $k$ as an index in a list comprehension.  If we evaluate 
+\verb|[i^2 for i in [1..5]]| the value of $i$ becomes $5$ once complete.
 \end{para}
 %
 \begin{para}
 Now we create $U$. 
 \end{para}
 %
-\begin{sageblock}    
-    CP3 = CartesianProduct([-1,1],[-1,1],[-1,1],[0])
-    CP4 = CartesianProduct([-1,1],[-1,1],[-1,1],[-1,1])
-    fv1 = RR4([1/2,f/2,(f-1)/2,0])
-    fv2 = RR4([(f-1)/2,1/2,f/2,0])
-    fv3 = RR4([f/2,(f-1)/2,1/2,0])
-    xx= [fv1.pairwise_product(RR4(sign_v))\
-      for sign_v in CP3]\
-     +[fv2.pairwise_product(RR4(sign_v))\
-      for sign_v in CP3]\
-     +[fv3.pairwise_product(RR4(sign_v))\
-      for sign_v in CP3]
-    mm = Matrix(xx)
-    mma = mm.matrix_from_columns([1,0,3,2])
-    mmb = mm.matrix_from_columns([2,3,0,1])
-    mmc = mm.matrix_from_columns([3,2,1,0])
-    MM = block_matrix([mm,mma,mmb,mmc], nrows=4)
-    ww = RR4([1/2,1/2,1/2,1/2])
-    xxd =\ 
-      [ww.pairwise_product(RR4(sign_v))\
-      for sign_v in CP4]+[RR4([1,0,0,0]),\  
-      RR4([-1,0,0,0]),RR4([0,1,0,0]),RR4([0,-1,0,0]),\ 
-      RR4([0,0,1,0]), RR4([0,0,-1,0]),RR4([0,0,0,1]),\
-      RR4([0,0,0,-1])]
-    U = MM.stack(Matrix(xxd))
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+CP3 = CartesianProduct([-1,1],[-1,1],[-1,1],[0])
+CP4 = CartesianProduct([-1,1],[-1,1],[-1,1],[-1,1])
+fv1 = RR4([1/2,f/2,(f-1)/2,0])
+fv2 = RR4([(f-1)/2,1/2,f/2,0])
+fv3 = RR4([f/2,(f-1)/2,1/2,0])
+xx= [fv1.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]\
+    +[fv2.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]\
+    +[fv3.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]
+mm = Matrix(xx)
+mma = mm.matrix_from_columns([1,0,3,2])
+mmb = mm.matrix_from_columns([2,3,0,1])
+mmc = mm.matrix_from_columns([3,2,1,0])
+MM = block_matrix([mm,mma,mmb,mmc], nrows=4)
+ww = RR4([1/2,1/2,1/2,1/2])
+xxd =\ 
+    [ww.pairwise_product(RR4(sign_v))\
+    for sign_v in CP4]+[RR4([1,0,0,0]),\  
+    RR4([-1,0,0,0]),RR4([0,1,0,0]),RR4([0,-1,0,0]),\ 
+    RR4([0,0,1,0]), RR4([0,0,-1,0]),RR4([0,0,0,1]),\
+    RR4([0,0,0,-1])]
+U = MM.stack(Matrix(xxd))
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 The best we can say for the above code is that it works. Interestingly
-enough, the columns of $U$ are orthogonal $U^TU =30I$.
+enough, the columns of $U$ are orthogonal since $U^TU =30I$.
 \end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+U.transpose()*U
+\end{sageinput}
+\begin{sageoutput}
+[30  0  0  0]
+[ 0 30  0  0]
+[ 0  0 30  0]
+[ 0  0  0 30]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Two vectors are adjacent in the 1-skeleton if their inner product is $1/f$.
 \end{para}
 %
-\begin{sageblock}
-    DC = Graph([[1..120],\
-     lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+DC = Graph([[1..120], lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
+\end{sageinput}
+\end{sagecode}
 %
-\begin{sageexample}
-sage: DC.is_regular()
-sage: DC.is_vertex_transitive()
-sage: DC.degree()[0]
-sage: DC.diameter()
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
+\end{sageinput}
+\begin{sageoutput}
+(True, True, 12, 5)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 We compute the orbits of the vertex stabilizer of $\aut{DC}$.
 \end{para}
 %
-\begin{sageexample}
-sage: DCgrp = DC.automorphism_group( partition = [[1],[2..120]])
-sage: map( len, DCgrp.orbits())
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+DCgrp = DC.automorphism_group( partition = [[1],[2..120]])
+map( len, DCgrp.orbits())
+\end{sageinput}
+\begin{sageoutput}
+[12, 12, 20, 20, 12, 12, 1, 30, 1]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 We convert the rows of $U$ to quaternions.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 qu = [uu[0]+uu[1]*i+uu[2]*j +uu[3]*k for uu in U.rows()]
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 The reduced trace of a quaternion $q$ is $q+q^*$, in other words it is
@@ -322,32 +426,54 @@ twice its real part. The multiplicative order of a quaternion is determined
 by its real trace. We compute the partition of $qu$ by reduced trace
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+def ls_dict( tuples):
+    dc = {} 
+    for pair in tuples:
+        if dc.has_key( pair[0]):
+            dc[ pair[0]].append(pair[1])
+        else:
+            dc[ pair[0]] = [pair[1]]
+    return dc
+\end{sageinput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
 tuples = [(qq.reduced_trace(),qq) for qq in qu]
 dc = ls_dict( tuples)
-\end{sageblock}
-%
-\begin{sageexample}
-sage: [(kit, len(dc[kit])) for kit in dc.keys()]
-\end{sageexample}
+[(kit, len(dc[kit])) for kit in dc.keys()]
+\end{sageinput}
+\begin{sageoutput}
+[(0, 30), (1, 20), (2, 1), (-f, 12), (-f + 1, 12), 
+(f - 1, 12), (f, 12), (-2, 1), (-1, 20)]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Comparing the number of quaternions with given reduced trace with the
 sizes of the orbits of the vertex stabilizer, suggests that the two partitions
 are equal. You should verify this. You should also verify that the
-multiplicative order of an element of \verb|qu|. (Use \verb|qq.order()|.)
-is determined by its reduced trace. In particular the quaternions
+multiplicative order of an element of \verb|qu| is determined by its 
+reduced trace. (Use \verb|qq.order()|.) In particular the quaternions
 with reduced trace $f$ or$1-f$ have order 10. The quaternions in
 \verb|qu| form a multiplicative group isomorphic to $SL(2,5)$.
-You can access this group in sage by
+You can access this group in Sage by
 \end{para}
 %
-\begin{verbatim}
-    T = SL(2,5).
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+T = SL(2,5)
+T
+\end{sageinput}
+\begin{sageoutput}
+Special Linear Group of degree 2 over Finite Field of size 5
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-The 600-cell is a Cayley graph for this group with connection
+The 600-cell is a Cayley graph for this group with a connection
 set consisting of a conjugacy class of elements of order 10.
 There are two such conjugacy classes, one formed by the elements
 with reduced trace $f$ and the other consisting of the elements of reduced
@@ -355,19 +481,26 @@ trace $1-f$. We show now that the Cayley graph with respect to the first of thes
 conjugacy classes is isomorphic to $DC$, you should verify that the second is.
 \end{para}
 %
-\begin{sageblock}
-    rtf = [it for it in qu if it.reduced_trace() == f]
-    conn = Set([ it^(-1)*rtf[0]*it for it in qu]).list()
-    CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+rtf = [it for it in qu if it.reduced_trace() == f]
+conn = Set([ it^(-1)*rtf[0]*it for it in qu]).list()
+CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 and now
 \end{para}
 %
-\begin{sageexample}
-sage: CG.is_isomorphic( DC)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+CG.is_isomorphic( DC)
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 The quaternion
@@ -375,14 +508,19 @@ The quaternion
     th = (-1/2) + 1/2*i + 1/2*j + 1/2*k
 \]
 has order three and its orbits on $DC$ are cocliques. The quotient
-over its orbits is graph on 40 vertices which, like \verb|DC|, is locally
+over its orbits is a graph on 40 vertices which, like \verb|DC|, is locally
 an icosahedron. We confirm the first claim:
 \end{para}
 %
-\begin{sageexample}
-sage: nbhd = DC.subgraph( vertices=DC[1])
-sage: nbhd.is_isomorphic( graphs.IcosahedralGraph())
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+nbhd = DC.subgraph( vertices=DC[1])
+nbhd.is_isomorphic( graphs.IcosahedralGraph())
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %
@@ -391,52 +529,60 @@ sage: nbhd.is_isomorphic( graphs.IcosahedralGraph())
 \begin{para}
 A cubelike graph is a Cayley graph for $\ints_2^d$. The connection
 set of such a graph can be encoded by a $d\times m$ matrix with distinct
-columns. If $M$ is such a matrix then we can get a list of its columns by
+columns. If $M$ is such a matrix then we can get a list of its columns with \verb|cols = M.columns()| and we can recover $M$ by \verb|M = Matrix(cols).transpose()|.
 \end{para}
-%
-\begin{verbatim}
-    cols = M.columns()
-\end{verbatim}
-%
-\begin{para}
-and we can recover $M$ by
-\end{para}
-%
-\begin{verbatim}
-    M = Matrix(cols).transpose()
-\end{verbatim}
 %
 \begin{para}
 The natural choice for the vertices of a cubelike graph are the elements of
 \end{para}
 %
-\begin{verbatim}
-    V = VectorSpace( GF(2)), d)
-\end{verbatim}
-\begin{para}
+\begin{sagecode}
+\begin{sageinput}
+V = VectorSpace( GF(2)), d)  # not tested
+\end{sageinput}
+\end{sagecode}
 %
+\begin{para}
 but these are not hashable. We can make a vector \verb|v| hashable by
 \end{para}
 %
-\begin{verbatim}
-    v.set_immutable()
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+v.set_immutable() # not tested
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 and use vectors as vertices, or work as follows.
 \end{para}
 %
-\begin{verbatim}
-    G = Graph( [[0..len(vls)-1],\
-     lambda i,j: vls[i]-vls[j] in V.list()])
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+G = Graph( [[0..len(vls)-1],\
+    lambda i,j: vls[i]-vls[j] in V.list()]) # not tested
+\end{sageinput}
+\end{sagecode}
 %
-\begin{verbatim}
-    P = graphs.PetersenGraph()
-    D = P.incidence_matrix()
-    B = D.change_ring( GF(2)) # convert to a matrix over GF(2)
-    B0 = B.submatrix( nrows=B.nrows()-1) # delete last row
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+P = graphs.PetersenGraph()
+D = P.incidence_matrix()
+B = D.change_ring( GF(2))  # convert to a matrix over GF(2)
+B0 = B.submatrix( nrows=B.nrows()-1)  # delete last row
+B0
+\end{sageinput}
+\begin{sageoutput}
+[1 1 1 0 0 0 0 0 0 0 0 0 0 0 0]
+[0 0 1 1 1 0 0 0 0 0 0 0 0 0 0]
+[0 0 0 0 1 1 1 0 0 0 0 0 0 0 0]
+[0 0 0 0 0 0 1 1 1 0 0 0 0 0 0]
+[0 1 0 0 0 0 0 0 1 1 0 0 0 0 0]
+[1 0 0 0 0 0 0 0 0 0 1 1 0 0 0]
+[0 0 0 1 0 0 0 0 0 0 0 0 1 1 0]
+[0 0 0 0 0 1 0 0 0 0 0 1 0 0 1]
+[0 0 0 0 0 0 0 1 0 0 1 0 0 1 0]
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 For humans it can be convenient to encode binary vectors of length $d$ as 
@@ -444,13 +590,15 @@ integers between 0 and $2^{d-1}$. With $G$ as just defined, its connection
 set will be the correct set of integers.
 \end{para}
 %
-\begin{verbatim}
+\begin{sagecode}
+\begin{sageinput}
 def cubelike(vecls):
     d = len(vecls[0])
     VS = VectorSpace(GF(2),d)
     return Graph([[0..(2^d-1)],\
      lambda i,j: VS[i]-VS[j] in vecls])
-\end{verbatim}
+\end{sageinput}
+\end{sagecode}
 %
 \end{sect}
 %

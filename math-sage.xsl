@@ -107,7 +107,7 @@
 
 
 
-<xsl:template match="sage">
+<xsl:template match="sage|sagecode">
 <xsl:apply-templates />
 </xsl:template>
 
@@ -116,7 +116,9 @@
 where it was used for "programlisting"
 Will convert CDATA-wrapped Sage code to stuff with entitites-->
 
-<xsl:template match="input">
+<!--input in match can go away once reworked totally-->
+
+<xsl:template match="input|sageinput|sageoutput">
   <xsl:param name="suppress-numbers" select="'0'"/>
   <xsl:variable name="id">
     <xsl:call-template name="object.id"/>

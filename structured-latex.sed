@@ -58,8 +58,23 @@ s/\\end{center}/]]><\/input>\n<\/sage>/g
 s/\\verb|\([^|]*\)|/<code>\1<\/code>/g
 s/\\texttt{\([^}]*\)}/<code>\1<\/code>/g
 #
-#   Strip leading Sage prompts
+#   Strip leading Sage prompts, remove after edits
 s/^[\ ]*sage:\ //g
+#
+# Structured version
+#
+s/\\begin{sagecode}/<sagecode>/g
+s/\\end{sagecode}/<\/sagecode>/g
+/\\begin{sageinput}/ {
+    N
+    s/\\begin{sageinput}\n/<sageinput><![CDATA[/
+}
+/\\begin{sageoutput}/ {
+    N
+    s/\\begin{sageoutput}\n/<sageoutput><![CDATA[/
+}
+s/\\end{sageinput}/]]><\/sageinput>/g
+s/\\end{sageoutput}/]]><\/sageoutput>/g
 
 
 
@@ -73,6 +88,19 @@ s/^[\ ]*sage:\ //g
 #
 s/\\begin{para}/<para>/g
 s/\\end{para}/<\/para>/g
+#
+#
+# Boxed Facts "boxedfact"
+# (consider caution, note, tip, warning)
+#
+s/\\begin{boxedfact}{\([^}]*\)}/<blockquote>\n<title>\1<\/title>/g
+s/\\end{boxedfact}/<\/important>/g
+#
+# Examples "example"
+# (consider caution, note, tip, warning)
+#
+s/\\begin{example}/<example>/g
+s/\\end{example}/<\/example>/g
 #
 # Section "sect" 1=title
 #
@@ -106,6 +134,7 @@ s/\\end{itemize}/<\/itemizedlist>/g
 s/\\begin{listitem}/<listitem>/g
 s/\\end{listitem}/<\/listitem>/g
 
+
 ####
 #
 # Cross-References, Links
@@ -123,7 +152,7 @@ s/\\url{\([^}]*\)}/<link xl:href="\1"><\/link>/g
 #
 ####
 #
-# \includegraphics, minimal version
+# \includegraphics, minimal version, ignores optional arguments
 #   
 s/\\includegraphics{\([^}]*\)}/<mediaobject>\n<imageobject condition="web"><imagedata fileref="\1" format="PNG" scale="80"\/>\n<\/imageobject>\n<caption><\/caption>\n<\/mediaobject>/g
 
@@ -156,11 +185,14 @@ s/^[\ ]*\\\]$/]]><\/displaymath>/g
 #
 # Pass through align* and equation environments, 
 # but protect contents with CDATA
+# Also arrays, but allow variable column specifications
 #
 s/\\begin{align\*}/\\begin{align*}<![CDATA[/g
 s/\\end{align\*}/]]>\\end{align*}/g
 s/\\begin{equation}/\\begin{equation}<![CDATA[/g
 s/\\end{equation}/]]>\\end{equation}/g
+s/\\begin{array}{\([^}]*\)}/\\begin{array}{\1}<![CDATA[/g
+s/\\end{array}/]]>\\end{array}/g
 
 ####
 #

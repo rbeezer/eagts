@@ -69,27 +69,49 @@ Let's use this to compute some numbers. We first set up the ring of formal
 power series over the rationals.
 \end{para}
 %
-\begin{sageblock}
-    Rt.<t> = QQ[[]]
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+Rt.<t> = QQ[[]]; Rt
+\end{sageinput}
+\begin{sageoutput}
+Power Series Ring in t over Rational Field
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-If $\al=111$, then $D(t)=1+t+t^2$ and 
-\[
-    L(t) = \sage{((1-2*t+ t^3/(1+t+t^2))^(-1)).O(9)}
-\]
+If $\al=111$, then $D(t)=1+t+t^2$ and $L(t)$ is
 \end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+L = ((1-2*t+ t^3/(1+t+t^2))^(-1)).O(9); L
+\end{sageinput}
+\begin{sageoutput}
+1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 As an exercise, write a program which takes a binary string $\al$ and
 computes the generating series for $\al\backslash\al$. (The string arrives
-as a python string, there is no reason why your procedure should not work
+as a Python string, there is no reason why your procedure should not work
 for strings over an arbitrary alphabet.)
 \end{para}
 %
 \begin{para}
 The square root of the series $L(2t)$ has non-negative integer coefficients.
-(Use \verb|L.subs(t=2*t).sqrt()|, where \verb|L| is the series.)
+\end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+L.subs(t=2*t).sqrt()
+\end{sageinput}
+\begin{sageoutput}
+1 + 2*t + 6*t^2 + 16*t^3 + 54*t^4 + 180*t^5 + 596*t^6 + 2048*t^7 + 7062*t^8 + O(t^9)
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
 Does this hold for other forbidden substrings?
 \end{para}
 %
@@ -119,22 +141,48 @@ First we create a ring of polynomials, and the corresponding field
 of fractions. (We will not need the latter, as it happens.)
 \end{para}
 %
-\begin{sageblock}
-    Qu.<u> = QQ[]
-    F = FractionField( Qu)
-\end{sageblock}
-
+\begin{sagecode}
+\begin{sageinput}
+Qu.<u> = QQ[]
+F = FractionField( Qu)
+Qu
+\end{sageinput}
+\begin{sageoutput}
+Univariate Polynomial Ring in u over Rational Field
+\end{sageoutput}
+\end{sagecode}
+%
 \begin{para}
 Now we can work with our series $L(t)$ from the previous section.
 \end{para}
 %
-\begin{sageexample}
-sage: rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
-sage: rf.denominator()
-sage: rf.numerator()
-sage: rf.subs( u=1/2)
-sage: rf.subs( u=t).O(9)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
+rf.numerator(), rf.denominator()
+\end{sageinput}
+\begin{sageoutput}
+(u^2 + u + 1, -u^3 - u^2 - u + 1)
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+rf.subs( u=1/2)
+\end{sageinput}
+\begin{sageoutput}
+14
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+rf.subs( u=t).O(9)
+\end{sageinput}
+\begin{sageoutput}
+1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Note that \verb|t| is the generator of \verb|Rt|, which is $\rats[[t]]$.
@@ -148,14 +196,19 @@ to be useful the zeros of the denominator should belong to the field
 we are working over.
 \end{para}
 %
-\begin{sageexample}
-sage: Cs = FractionField( PolynomialRing( CDF, 's'))
-sage: whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
-sage: len( parts)
-sage: parts[0]
-sage: parts[1]
-sage: parts[2]  
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+Cs = FractionField( PolynomialRing( CDF, 's'))
+whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
+for p in parts:
+    print p
+\end{sageinput}
+\begin{sageoutput}
+(-0.618419922319 - 4.81868832957e-17*I)/(s - 0.543689012692)
+(-0.19079003884 + 0.0187005831117*I)/(s + 0.771844506346 + 1.11514250804*I)
+(-0.19079003884 - 0.0187005831117*I)/(s + 0.771844506346 - 1.11514250804*I)
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %
@@ -173,17 +226,25 @@ From this it follows that
 We can implement this as follows:
 \end{para}
 %
-\begin{sageblock}
-    Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+Rt.<t> = QQ[[]]
+Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 The first coefficients are what we expect:
 \end{para}
 %
-\begin{sageexample}
-sage: Ct.O(9)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+Ct.O(9)
+\end{sageinput}
+\begin{sageoutput}
+1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 429*t^7 + 1430*t^8 + O(t^9)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 If
@@ -198,11 +259,13 @@ hence $C(t)$ is defined as a fixed point of a map on $\rats[[t]]$.
 We can solve this directly. Recursively define a sequence of series $C_i(t)$ 
 by $C_0(t)=1$ and $C_{n+1}(t) =\Phi(C_n(t))$.
 We then find that
+%
 \begin{align*}
     C_1(t) &= 1 + t\\
     C_2(t) &= 1 + t + 2t^2 + t^3\\
     C_3(t) &= 1 + t + 2t^{2} + 5t^{3} + 6t^{4} + 6t^{5} + 4t^{6} + t^{7}.
 \end{align*}
+%
 and we see that the coefficients of $C_n(t)$ are accurate up to 
 (and including) degree $n$. (At least for $n\le3$, but it's easy to 
 verify this holds for larger values of $n$.) One problem
@@ -211,13 +274,15 @@ will have $2^k$ terms, of which only the first $k+1$ are sure to be accurate.
 The following code avoids this extra work.
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def iter( Fun, init, acc, n):
     val = init
     for i in [1..n]:
         val = Fun( val).O(acc)
         acc += 1
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 As an exercise, verify that if the first $k+1$ coefficients of $C_k(t)$
@@ -259,14 +324,40 @@ Here
 We can run a quick test. With
 \end{para}
 %
-\begin{sageexample}
-sage: phi = lambda u: 1+t*u^2
-sage: nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+phi = lambda u: 1+t*u^2
+nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
+\end{sageinput}
+\end{sagecode}
 %
 \begin{para}
 we find that the first 22 terms of \verb|nr(nr(nr(1+t)))| are correct.
 \end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+nr(nr(nr(1+t)))
+\end{sageinput}
+\begin{sageoutput}
+1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 
+429*t^7 + 1430*t^8 + 4862*t^9 + 16796*t^10 + 58786*t^11 + 
+208012*t^12 + 742900*t^13 + 2674440*t^14 + 9694845*t^15 + 
+35357670*t^16 + 129644790*t^17 + 477638700*t^18 + 
+1767263190*t^19 + 6564120420*t^20 + 24466267020*t^21 + O(t^22)
+\end{sageoutput}
+\end{sagecode}
+%
+% How to make Ct have O(22)?
+%
+\begin{sagecode}
+\begin{sageinput}
+nr(nr(nr(1+t))).O(19) - Ct.O(19)
+\end{sageinput}
+\begin{sageoutput}
+O(t^19)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Your task is to write an efficient implementation of this method.
@@ -290,7 +381,9 @@ $R(x)$, just an equation:
     R(x) = x\exp\left(\sum_{k\ge1}\frac{1}{k}R(x^k)\right).
 \]
 We use the technology from the previous sections to solve this.
-
+\end{para}
+%
+\begin{para}
 We see that $R(x)$ is a fixed point of a map of the form
 \[
     R = \Phi(R)
@@ -302,38 +395,54 @@ and we can use this to compute $R$.
 We set up our ring of power series:
 \end{para}
 %
-\begin{sageblock}
-    QQx.<x> = QQ[[]]
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+QQx.<x> = QQ[[]]; QQx
+\end{sageinput}
+\begin{sageoutput}
+Power Series Ring in x over Rational Field
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-If \verb|R| is a power series $\sum r_n x^n$, then
+If \verb|R| is a power series $\sum r_n x^n$, then \verb|R.V(i)| denotes the series $\sum r_n x^{ni}$.  For example,
 \end{para}
 %
-\begin{verbatim}
-    R.V(i)
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+R = 5 + 4*x -3*x^3
+R.V(4)
+\end{sageinput}
+\begin{sageoutput}
+5 + 4*x^4 - 3*x^12
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-denotes the series $\sum r_n x^{ni}$. So our mapping on series is easy.
+So our mapping on series is easy.
 \end{para}
 %
-\begin{sageblock}
- Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
- def iter2( init, acc, times):
-     val = Phi( init, acc)
-     for i in [1..times]:
-         acc += 1
-         val = Phi( val, acc)
-     return val
-\end{sageblock}
+\begin{sagecode}
+\begin{sageinput}
+Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
+def iter2( init, acc, times):
+    val = Phi( init, acc)
+    for i in [1..times]:
+        acc += 1
+        val = Phi( val, acc)
+    return val
+\end{sageinput}
+\end{sagecode}
 %
-\begin{para}
-The result of \verb|iter2( x+x^2,2,7)| is:
-\[
-    \sage{latex( iter2( x+x^2,2,7))}
-\]
-\end{para}
+\begin{sagecode}
+\begin{sageinput}
+iter2( x+x^2,2,7)
+\end{sageinput}
+\begin{sageoutput}
+x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 48*x^7 + 
+115*x^8 + 286*x^9 + 719*x^10 + O(x^11)
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 You should prove that this procedure produces a sequence of
@@ -347,7 +456,8 @@ Next we apply the Newton-Raphson procedure.
 Here's the code, without explanation :-(
 \end{para}
 %
-\begin{sageblock}
+\begin{sagecode}
+\begin{sageinput}
 def nrtrees(n):
     Qx.<x> =QQ[[]]
     rr = Qx([0,1,1])
@@ -358,7 +468,18 @@ def nrtrees(n):
         rr = rr +(ss-rr)/(1-ss)
         rr = Qx(rr.list())
     return rr
-\end{sageblock}
+\end{sageinput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+nrtrees(2)
+\end{sageinput}
+\begin{sageoutput}
+x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 
+48*x^7 + 115*x^8 + 286*x^9 + 719*x^10 + 1842*x^11
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
 Note that \verb|rr = Qx([0,1,1])| is an up-market version of \verb|rr = x+x^2|.
@@ -375,10 +496,17 @@ If $T(x)$ is the generating series for trees, then
 Hence we can easily get the number of trees from $R(x)$.
 \end{para}
 %
-\begin{sageexample}
-sage: rr = nrtrees(3)
-sage: rr - (1/2)*(rr^2-rr.V(2)).O(14)
-\end{sageexample}
+\begin{sagecode}
+\begin{sageinput}
+rr = nrtrees(3)
+rr - (1/2)*(rr^2-rr.V(2)).O(14)
+\end{sageinput}
+\begin{sageoutput}
+x + x^2 + x^3 + 2*x^4 + 3*x^5 + 6*x^6 + 
+11*x^7 + 23*x^8 + 47*x^9 + 106*x^10 + 
+235*x^11 + 551*x^12 + 1301*x^13 + O(x^14)
+\end{sageoutput}
+\end{sagecode}
 %
 \end{sect}
 %
