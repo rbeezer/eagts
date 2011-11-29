@@ -6,14 +6,6 @@
 <info>
   <title>Sage Practice</title>
   <author>
-    <firstname>Rob</firstname>
-    <surname>Beezer</surname>
-    <affiliation>
-      <orgname>University of Puget Sound</orgname>
-      <orgdiv>Department of Mathematics and Computer Science</orgdiv>
-    </affiliation>
-  </author>
-  <author>
     <firstname>Chris</firstname>
     <surname>Godsil</surname>
     <affiliation>
@@ -21,9 +13,17 @@
       <orgdiv>Department of Combinatorics and Optimization</orgdiv>
     </affiliation>
   </author>
+  <author>
+    <firstname>Rob</firstname>
+    <surname>Beezer</surname>
+    <affiliation>
+      <orgname>University of Puget Sound</orgname>
+      <orgdiv>Department of Mathematics and Computer Science</orgdiv>
+    </affiliation>
+  </author>
   <copyright>
     <year>2010</year>
-    <holder>Rob Beezer, Chris Godsil</holder>
+    <holder>Chris Godsil, Rob Beezer</holder>
   </copyright>
 </info>
 

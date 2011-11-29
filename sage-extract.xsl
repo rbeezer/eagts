@@ -1,95 +1,83 @@
 <?xml version="1.0"?>
 
-<stylesheet version="1.0" xmlns="http://www.w3.org/1999/XSL/Transform">
-
-<output method="text"/>
-
-<template match="/">
-<text>r"""
-</text>
-<apply-templates select="/chapter/sect1/sagecode" />
-<text>"""
-</text>
-</template>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:db="http://docbook.org/ns/docbook" db:version="5.0" xml:lang="en"
+xmlns="">
 
 
-
-<!--<template name="gonzo">
-<text>blatzo</text>
-</template>-->
-
-<!--<template match="chapter">
-OMG
-<text>chappo</text>
-</template>-->
-
-<!--<template match="sagecode">
-<text>blatzo</text>
-</template>-->
+<xsl:output method="text"/>
 
 
-<template match="sagecode">
-<text>
+<xsl:template match="/">
+<xsl:text>r"""
+</xsl:text>
+<xsl:apply-templates select="/db:chapter/db:sect1/sagecode" />
+<xsl:text>"""
+</xsl:text>
+</xsl:template>
+
+
+<xsl:template match="sagecode">
+<xsl:text>
 ::
 
-</text>
-<apply-templates select="./sageinput" />
-<apply-templates select="./sageoutput" />
-<text>
-</text>
-</template>
-
-<template match="sageinput">
-<call-template name="prependPrompt" />
-</template>
-
-<template match="sageoutput">
-<call-template name="prependTab" />
-</template>
+</xsl:text>
+<xsl:apply-templates select="./sageinput" />
+<xsl:apply-templates select="./sageoutput" />
+<xsl:text>
+</xsl:text>
+</xsl:template>
 
 
-<template name="prependPrompt">
-  <param name="pText" select="."/>
+<xsl:template match="sageinput">
+<xsl:call-template name="prependPrompt" />
+</xsl:template>
 
-  <if test="string-length($pText)">
-   <choose>
-     <when test="substring($pText,1,1)=' '">
-     <text>    ...   </text>
-     </when>
-     <otherwise>
-     <text>    sage: </text>
-     </otherwise>
-   </choose>
-  
-  
+
+<xsl:template match="sageoutput">
+<xsl:call-template name="prependTab" />
+</xsl:template>
+
+
+<xsl:template name="prependPrompt">
+  <xsl:param name="pText" select="."/>
+
+  <xsl:if test="string-length($pText)">
+   <xsl:choose>
+     <xsl:when test="substring($pText,1,1)=' '">
+     <xsl:text>    ...   </xsl:text>
+     </xsl:when>
+     <xsl:otherwise>
+     <xsl:text>    sage: </xsl:text>
+     </xsl:otherwise>
+   </xsl:choose> 
 <!--   <if test="substring($pText,1,1)=' '">
      <text>    sage: </text>
    </if>-->
-   <value-of select="substring-before($pText, '&#xA;')"/>
-   <text>&#xA;</text>
+   <xsl:value-of select="substring-before($pText, '&#xA;')"/>
+   <xsl:text>&#xA;</xsl:text>
 
-   <call-template name="prependPrompt">
-    <with-param name="pText"
+   <xsl:call-template name="prependPrompt">
+    <xsl:with-param name="pText"
       select="substring-after($pText, '&#xA;')"/>
-   </call-template>
-  </if>
-</template>
+   </xsl:call-template>
+  </xsl:if>
+</xsl:template>
 
-<template name="prependTab">
-  <param name="pText" select="."/>
+<xsl:template name="prependTab">
+  <xsl:param name="pText" select="."/>
 
-  <if test="string-length($pText)">
-   <text>    </text>
-   <value-of select="substring-before($pText, '&#xA;')"/>
-   <text>&#xA;</text>
+  <xsl:if test="string-length($pText)">
+   <xsl:text>    </xsl:text>
+   <xsl:value-of select="substring-before($pText, '&#xA;')"/>
+   <xsl:text>&#xA;</xsl:text>
 
-   <call-template name="prependTab">
-    <with-param name="pText"
+   <xsl:call-template name="prependTab">
+    <xsl:with-param name="pText"
       select="substring-after($pText, '&#xA;')"/>
-   </call-template>
-  </if>
-</template>
+   </xsl:call-template>
+  </xsl:if>
+</xsl:template>
 
 
-
-</stylesheet>
+</xsl:stylesheet>

@@ -26,7 +26,7 @@ s/''/"/g
 #
 # Boldness
 #
-s/\\textbf{\([^}]*\)}/<emphasis role="bold">\1<\/emphasis>/g
+s/\\textbf{\([^}]*\)}/<db:emphasis role="bold">\1<\/db:emphasis>/g
 #
 # TeX, LaTeX itself
 #
@@ -55,8 +55,8 @@ s/\\end{center}/]]><\/input>\n<\/sage>/g
 #
 #   inline code snippets, CDATA not allowed here?
 #
-s/\\verb|\([^|]*\)|/<code>\1<\/code>/g
-s/\\texttt{\([^}]*\)}/<code>\1<\/code>/g
+s/\\verb|\([^|]*\)|/<db:code>\1<\/db:code>/g
+s/\\texttt{\([^}]*\)}/<db:code>\1<\/db:code>/g
 #
 #   Strip leading Sage prompts, remove after edits
 s/^[\ ]*sage:\ //g
@@ -86,36 +86,37 @@ s/\\end{sageoutput}/]]><\/sageoutput>/g
 #
 # Paragraph "para"
 #
-s/\\begin{para}/<para>/g
-s/\\end{para}/<\/para>/g
+s/\\begin{para}/<db:para>/g
+s/\\end{para}/<\/db:para>/g
 #
 #
 # Boxed Facts "boxedfact"
 # (consider caution, note, tip, warning)
 #
-s/\\begin{boxedfact}{\([^}]*\)}/<blockquote>\n<title>\1<\/title>/g
-s/\\end{boxedfact}/<\/important>/g
+s/\\begin{boxedfact}{\([^}]*\)}/<db:blockquote>\n<db:title>\1<\/db:title>/g
+s/\\end{boxedfact}/<\/db:important>/g
 #
 # Examples "example"
 # (consider caution, note, tip, warning)
 #
-s/\\begin{example}/<example>/g
-s/\\end{example}/<\/example>/g
+s/\\begin{example}/<db:example>/g
+s/\\end{example}/<\/db:example>/g
 #
 # Section "sect" 1=title
 #
-s/\\begin{sect}{\([^}]*\)}/<sect1>\n<title>\1<\/title>/g
-s/\\end{sect}/<\/sect1>/g
+s/\\begin{sect}{\([^}]*\)}/<db:sect1>\n<db:title>\1<\/db:title>/g
+s/\\end{sect}/<\/db:sect1>/g
 #
 # Preface "preface"
 #
-s/\\begin{preface}/<preface xmlns="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en" xmlns:xl="http:\/\/www.w3.org\/1999\/xlink"><title>Preface<\/title>/g
+s/\\begin{preface}/<preface xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en" xmlns:xl="http:\/\/www.w3.org\/1999\/xlink"><title>Preface<\/title>/g
 s/\\end{preface}/<\/preface>/g
 #
 # Chapter "chap" 1=title
 #
-s/\\begin{chap}{\([^}]*\)}/<chapter xmlns="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en" xmlns:xl="http:\/\/www.w3.org\/1999\/xlink">\n<title>\1<\/title>/g
-s/\\end{chap}/<\/chapter>/g
+s/\\begin{chap}{\([^}]*\)}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<db:chapter xmlns=""\n xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en"\nxmlns:xl="http:\/\/www.w3.org\/1999\/xlink">\n<db:title>\1<\/db:title>/g
+s/\\end{chap}/<\/db:chapter>/g
+
 
 
 
@@ -127,12 +128,12 @@ s/\\end{chap}/<\/chapter>/g
 #
 # List Items "listitem"
 #
-s/\\begin{enumerate}/<orderedlist>/g
-s/\\end{enumerate}/<\/orderedlist>/g
-s/\\begin{itemize}/<itemizedlist>/g
-s/\\end{itemize}/<\/itemizedlist>/g
-s/\\begin{listitem}/<listitem>/g
-s/\\end{listitem}/<\/listitem>/g
+s/\\begin{enumerate}/<db:orderedlist>/g
+s/\\end{enumerate}/<\/db:orderedlist>/g
+s/\\begin{itemize}/<db:itemizedlist>/g
+s/\\end{itemize}/<\/db:itemizedlist>/g
+s/\\begin{listitem}/<db:listitem>/g
+s/\\end{listitem}/<\/db:listitem>/g
 
 
 ####
@@ -154,7 +155,7 @@ s/\\url{\([^}]*\)}/<link xl:href="\1"><\/link>/g
 #
 # \includegraphics, minimal version, ignores optional arguments
 #   
-s/\\includegraphics{\([^}]*\)}/<mediaobject>\n<imageobject condition="web"><imagedata fileref="\1" format="PNG" scale="80"\/>\n<\/imageobject>\n<caption><\/caption>\n<\/mediaobject>/g
+s/\\includegraphics{\([^}]*\)}/<db:mediaobject>\n<db:imageobject condition="web"><db:imagedata fileref="\1" format="PNG" scale="80"\/>\n<\/db:imageobject>\n<db:caption><\/db:caption>\n<\/db:mediaobject>/g
 
 ####
 #
@@ -180,8 +181,8 @@ s/\\textsl{\([^}]*\)}/<knowl src="replaceMe.html">\1<\/knowl>/g
 # ]]> in a TeX expression must be avoided 
 # by using a space or a &lt; entity
 #
-s/^[\ ]*\\\[$/<displaymath><![CDATA[/g
-s/^[\ ]*\\\]$/]]><\/displaymath>/g
+s/^[\ ]*\\\[$/<db:displaymath><![CDATA[/g
+s/^[\ ]*\\\]$/]]><\/db:displaymath>/g
 #
 # Pass through align* and equation environments, 
 # but protect contents with CDATA

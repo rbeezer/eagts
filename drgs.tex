@@ -27,41 +27,22 @@ vertices.
 \end{para}
 %
 \begin{para}
-We use the Kneser graphs as a test case.
-\end{para}
-%
-% Kneser graphs in Sage could be used here, perhaps?
-%
-\begin{sagecode}
-\begin{sageinput}
-def kneser( v, k):
-    combs = map(set, Combinations([0..v-1],k))
-    return Graph( [[0..binomial(v,k)-1], lambda i, j: combs[i].isdisjoint(combs[j])])
-\end{sageinput}
-\end{sagecode}
-%
-\begin{para}
-We have used Python sets here, because they admit the function \verb|is_disjoint()|.
-Otherwise we would replace \verb|a.isdisjoint(b)| by
+We use the Kneser graphs as a test case, though we must relabel the vertices to convert them from sets to integers.
 \end{para}
 %
 \begin{sagecode}
 \begin{sageinput}
-len( a.intersection(b)) == 0 # not tested
-\end{sageinput}
-\end{sagecode}
-%
-\begin{sagecode}
-\begin{sageinput}
-X = kneser(7,3)
+X = graphs.KneserGraph(7, 3)
+X.relabel()
 dp = distance_partition( X, X.vertices()[0])
 X.is_equitable( dp, quotient_matrix=True) 
 \end{sageinput}
 \begin{sageoutput}
-[0 4 0 0]                                                                                                             
-[1 0 3 0]                                                                                                             
-[0 1 0 3]                                                                                                             
-[0 0 2 2]                                                                                                             \end{sageoutput}
+[0 4 0 0]                               
+[1 0 3 0]                               
+[0 1 0 3]                               
+[0 0 2 2]
+\end{sageoutput}
 \end{sagecode}
 %
 \begin{para}
@@ -79,6 +60,14 @@ orbits of the stabilizer of a vertex is the diameter plus one.
 \begin{sageinput}
 orbs = X.automorphism_group( return_group=0, orbits=1)
 len(orbs) == 1 
+\end{sageinput}
+\begin{sageoutput}
+True
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
 pn = [ [X.vertices()[0]], X.vertices()[1:]]
 grp = X.automorphism_group( partition=pn)
 len( grp.orbits()) == X.diameter() + 1
@@ -107,7 +96,7 @@ Y.delete_vertices( colqs7[0])
 \end{sagecode}
 %
 \begin{para}
-We confirm that $Y$ has girth seven, you might verify that $Y$ is distance-transitive.
+We confirm that $Y$ has girth seven, an increase of one from the girth of $X$.  You might verify that $Y$ is distance-transitive.
 \end{para}
 %
 \begin{sagecode}
@@ -201,8 +190,8 @@ and create our points and lines:
 \begin{sagecode}
 \begin{sageinput}
 V = VectorSpace( GF(3), 4)
-Points = [u[1] for u in V.subspaces(1)]
-Lines = [sub for sub in V.subspaces(2)\
+pnts = [u[1] for u in V.subspaces(1)]
+lines = [sub for sub in V.subspaces(2)\
     if beta(sub.matrix()[0],sub.matrix()[1])==0]
 \end{sageinput}
 \end{sagecode}
@@ -235,8 +224,8 @@ and therefore cannot be used as vertices of a graph. This is easily circumvented
 %
 \begin{sagecode}
 \begin{sageinput}
-W3 = Graph([range(len(Points)),\
-   lambda i,j: beta(Points[i],Points[j])==0], loops=False)
+adj = lambda i,j: beta(pnts[i],pnts[j])==0
+W3 = Graph([range(len(pnts)),adj], loops=False)
 \end{sageinput}
 \end{sagecode}
 %
@@ -271,8 +260,8 @@ We get the point graph of the dual $GQ$ by
 %
 \begin{sagecode}
 \begin{sageinput}
-W3d = Graph( [range(len(Lines)), lambda i,j: i != j\
-    and det( Lines[i].matrix().stack(Lines[j].matrix())) == 0])
+adj = lambda i,j: i != j and det( lines[i].matrix().stack(lines[j].matrix())) == 0
+W3d = Graph( [range(len(lines)), adj])
 \end{sageinput}
 \end{sagecode}
 %
@@ -345,7 +334,7 @@ formed by the words of weight seven in the binary Golay code of length 23.
 (This graph is strongly regular.)
 We then add 23 vertices $\{0,\ldots,23\}$ corresponding to the 23 coordinate 
 positions of a code word, and join the $i$-th new vertex to the blocks
-that do not contain it. The result graph is not regular but if we switch on
+that do not contain it. The resulting graph is not regular but if we switch on
 one of the new vertices and then delete it we get the McLaughlin graph
 on 275 vertices, which is strongly regular.
 \end{para}
@@ -426,7 +415,7 @@ The group is one of Conway's simple groups.  [* Too big by a factor of two!  Doe
 %
 \begin{para}
 We are interested in distance-regular antipodal covers of $K_n$.
-First we explain `cover'. We construct \textsl{cover} of
+First we explain `cover'. We construct a \textsl{cover} of
 index $r$ of a graph $X$ (or an \textsl{$r$-fold cover})
 as follows. Choose a function $f$ from the arcs (ordered pairs of adjacent
 vertices of $X$) to the symmetric group $\sym r$, such that

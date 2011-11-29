@@ -115,7 +115,7 @@ E.edges(labels=False)
 \end{sagecode}
 %
 \begin{para}
-returns a canonized form of $D$. So graphs $G$ and $H$ are isomorphic if and only
+returns a canonized form of $D$. So graphs $G$ and $H$ are isomorphic if and only if
 their canonized forms are equal. For example
 \end{para}
 %
@@ -151,9 +151,7 @@ def vdi(G, i):
 \end{sagecode}
 %
 \begin{para}
-There is a \TeX{}nical difficulty though---\TeX{} does not like graph6 strings
-since they contain characters such as \verb|%| and \verb|_| and therefore we will not display 
-any here. We can now construct our list of pairs (string, vertex):
+We can now construct our list of pairs of the form (string, vertex):
 \end{para}
 %
 \begin{sagecode}
@@ -289,8 +287,7 @@ We need to decide if two edges of the matching cross:
 def cross(e1,e2):
     if e1[1]<e1[0]: e1[0],e1[1] = e1[1],e1[0]
     if e2[1]<e2[0]: e2[0],e2[1] = e2[1],e2[0]
-    return (e1[0]<e2[0] and e2[0]<e1[1]<e2[1])\
-      or (e2[0]<e1[0]<e2[1] and e2[1]<e1[1])
+    return (e1[0]<e2[0] and e2[0]<e1[1]<e2[1]) or (e2[0]<e1[0]<e2[1] and e2[1]<e1[1])
 \end{sageinput}
 \end{sagecode}
 %
@@ -309,9 +306,20 @@ def circle_grf(pm):
 \begin{sagecode}
 \begin{sageinput}
 def chord_dgrm(pm):
-    """Create chord diagram from perfect matching."""
-    return graphs.CycleGraph( 2*len(pm)).add_edges( pm)
+    dgrm = graphs.CycleGraph( 2*len(pm))
+    dgrm.add_edges( pm)
+    return dgrm
 \end{sageinput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+pm = [(0, 8), (1, 4), (2, 9), (3, 6), (5, 7)]
+CD = chord_dgrm( pm)
+show(CD)  # not tested
+\end{sageinput}
+\begin{sageoutput}
+\end{sageoutput}
 \end{sagecode}
 %
 \begin{para}
@@ -333,16 +341,25 @@ len(cliques)
 %
 \begin{para}
 So there are 293 perfect matchings in the complement of $C_{10}$. It is easy
-to create the graphs and form a dictionary from pairs  [* THIS LOOKS INCOMPLETE *]
+to create the corresponding circle graphs and then find the number of different possibilities by examining canonical labelings.
 \end{para}
 %
-\begin{verbatim}
-    (grf.canonical_label().graph6_string(), grf)
-\end{verbatim}
+\begin{sagecode}
+\begin{sageinput}
+grfs = [circle_grf( pm).canonical_label().graph6_string() for pm in cliques]
+uniq = Set(grfs)
+uniq
+\end{sageinput}
+\begin{sageoutput}
+{'DBk', 'D]{', 'D`K', 'DK[', 'DBg', 'DB{', 
+'D@s', 'D^{', 'D@{', 'D?{', 'Dbk', 'DF{', 
+'DIk', 'D@O', 'DJ{', 'DLo', 'DK{', 'D~{', 
+'D_K', 'DNw', 'DL{', 'DJk', 'DFw', 'DN{'}
+\end{sageoutput}
+\end{sagecode}
 %
 \begin{para}
-The resulting dictionary has only 24 distinct keys---this is not an efficient
-way to generate circle graphs.
+With just 24 different circle graphs resulting from the 293 matchings, we see this is not a particularly efficient way to generate circle graphs.
 \end{para}
 %
 \begin{para}
@@ -453,7 +470,7 @@ def lgcvr( X):
     MM = M.elementwise_product(M)
     A = (1/2)*(M+MM)
     B = (1/2)*(M-MM)
-    return block_matrix( [A,B,B,A])
+    return block_matrix(2, 2, [A,B,B,A])
 \end{sageinput}
 \end{sagecode}
 %

@@ -2,8 +2,7 @@
 %
 \begin{sect}{Cayley Graphs}
 \begin{para}
-If $G$ is a group and $C\sbs G$ (i.e., a list of some elements of $G$), then the 
-command produces the Cayley graph $X(G,C)$:
+If $G$ is a group and $C\sbs G$ (i.e., a list of some elements of $G$), then we can produce the Cayley graph $X(G,C)$:
 \end{para}
 %
 \begin{sagecode}
@@ -25,8 +24,6 @@ case we can convert $G$ to a graph by
 CGU = CG.to_undirected()
 CGU.show()  # not tested
 \end{sageinput}
-\begin{sageoutput}
-\end{sageoutput}
 \end{sagecode}
 %
 \begin{para}
@@ -51,8 +48,22 @@ def cubelike(d, vector_list):
 \end{sagecode}
 %
 \begin{para}
-Here \verb|vector_list| is a list of 01-vectors of length $d$
-For a general group, we can use the following to create an undirected Cayley graph.
+Here \verb|vector_list| is a list of 01-vectors of length $d$.
+\end{para}
+%
+\begin{sagecode}
+\begin{sageinput}
+V = GF(2)^5
+vl = [V([0,1,1,0,0]), V([1,1,0,1,1]), V([1,0,0,0,1])]         
+T = cubelike(5, vl)                                   
+show(T, layout='circular')  # not tested                      
+\end{sageinput}
+\begin{sageoutput}
+\end{sageoutput}
+\end{sagecode}
+%
+\begin{para}
+For a general group, we can use the following construction to create an undirected Cayley graph.
 \end{para}
 %
 \begin{sagecode}
@@ -118,10 +129,10 @@ For this we make use of the following set of 22 triples:
 %
 \begin{sagecode}
 \begin{sageinput}
-ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),\
-  (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),\
-  (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),\
-  (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
+ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),
+      (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),
+      (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),
+      (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
 \end{sageinput}
 \end{sagecode}
 %
@@ -269,7 +280,7 @@ G.automorphism_group(return_group=False,order=True)
 %
 \begin{para}
 The Higman-Sims graph contains many triangle-free srg's as subgraphs.
-For example, the subgraphs obtained by deleting a vertex and its neighbors
+For example, the subgraphs obtained by deleting a vertex and its neighbors,
 or by deleting two adjacent vertices and its neighbors. Its vertices
 can be partitioned into two copies of the Hoffman-Singleton graph,
 but that's another story.
@@ -291,7 +302,7 @@ can be given as follows:
     \]
     \end{listitem}
     \begin{listitem}
-    8 vertices obtained all permutations of the coordinates of
+    8 vertices obtained from all permutations of the coordinates of
     \[
         (\pm1,0,0,0)
     \]
@@ -308,7 +319,7 @@ can be given as follows:
 \begin{para}
 The first step is produce a $120\times4$ matrix $U$ with these vectors
 its rows. The game is to do this without using a for-loop.
-We set up our background
+We set up our background,
 \end{para}
 %
 \begin{sagecode}
@@ -384,11 +395,6 @@ Two vectors are adjacent in the 1-skeleton if their inner product is $1/f$.
 \begin{sagecode}
 \begin{sageinput}
 DC = Graph([[1..120], lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
-\end{sageinput}
-\end{sagecode}
-%
-\begin{sagecode}
-\begin{sageinput}
 DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
 \end{sageinput}
 \begin{sageoutput}
@@ -457,7 +463,7 @@ sizes of the orbits of the vertex stabilizer, suggests that the two partitions
 are equal. You should verify this. You should also verify that the
 multiplicative order of an element of \verb|qu| is determined by its 
 reduced trace. (Use \verb|qq.order()|.) In particular the quaternions
-with reduced trace $f$ or$1-f$ have order 10. The quaternions in
+with reduced trace $f$ or $1-f$ have order 10. The quaternions in
 \verb|qu| form a multiplicative group isomorphic to $SL(2,5)$.
 You can access this group in Sage by
 \end{para}
@@ -529,7 +535,7 @@ True
 \begin{para}
 A cubelike graph is a Cayley graph for $\ints_2^d$. The connection
 set of such a graph can be encoded by a $d\times m$ matrix with distinct
-columns. If $M$ is such a matrix then we can get a list of its columns with \verb|cols = M.columns()| and we can recover $M$ by \verb|M = Matrix(cols).transpose()|.
+columns. If $M$ is such a matrix then we can get a list of its columns with \verb|cols = M.columns()| and we can recover $M$ with \verb|M = Matrix(cols).transpose()|.
 \end{para}
 %
 \begin{para}
@@ -543,17 +549,7 @@ V = VectorSpace( GF(2)), d)  # not tested
 \end{sagecode}
 %
 \begin{para}
-but these are not hashable. We can make a vector \verb|v| hashable by
-\end{para}
-%
-\begin{sagecode}
-\begin{sageinput}
-v.set_immutable() # not tested
-\end{sageinput}
-\end{sagecode}
-%
-\begin{para}
-and use vectors as vertices, or work as follows.
+but these are not hashable. We can make a vector \verb|v| hashable with \verb|v.set_immutable()| and use vectors as vertices, or work as follows.  Suppose that \verb|vls| is a list of vectors from a vector space \verb|V|.
 \end{para}
 %
 \begin{sagecode}
@@ -595,9 +591,20 @@ set will be the correct set of integers.
 def cubelike(vecls):
     d = len(vecls[0])
     VS = VectorSpace(GF(2),d)
-    return Graph([[0..(2^d-1)],\
-     lambda i,j: VS[i]-VS[j] in vecls])
+    return Graph([[0..(2^d-1)], lambda i,j: VS[i]-VS[j] in vecls])
 \end{sageinput}
+\end{sagecode}
+%
+\begin{sagecode}
+\begin{sageinput}
+PP = cubelike(B0.columns())
+PP.am().fcp()
+\end{sageinput}
+\begin{sageoutput}
+(x - 15) * (x + 9)^5 * (x - 9)^10 * (x - 7)^15 * 
+(x + 7)^30 * (x - 5)^36 * (x + 3)^60 * (x + 5)^60 * 
+(x + 1)^75 * (x - 3)^100 * (x - 1)^120
+\end{sageoutput}
 \end{sagecode}
 %
 \end{sect}
