@@ -18,5 +18,6 @@ cp -a ../src/cayley.tex .
 cp -a ../src/drgs.tex .
 cp -a ../src/pseries.tex .
 cp -a ../src/matrices.tex .
+cp -a ../src/fdl-1.3.tex .
 
 pdflatex Practice.tex
