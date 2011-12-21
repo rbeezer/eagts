@@ -22,5 +22,5 @@ cp -a ../src/practice.xml .
 cp -a ../src/fdl-1.3.xml .
 cp -a ../src/knowls/cubelike.html .
 cp -a ../styles/docbook-free-bsd-sage.css .
-xsltproc --xinclude --stringparam html.stylesheet "docbook-free-bsd-sage.css" --stringparam use.id.as.filename 1 ../xsl/math-sage.xsl practice.xml
+xsltproc --xinclude --stringparam html.stylesheet "docbook-free-bsd-sage.css" --stringparam use.id.as.filename 1 --stringparam chunker.output.encoding UTF-8 ../xsl/math-sage.xsl practice.xml
 
