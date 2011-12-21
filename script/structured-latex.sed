@@ -109,12 +109,12 @@ s/\\end{sect}/<\/db:sect1>/g
 #
 # Preface "preface"
 #
-s/\\begin{preface}/<preface xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en" xmlns:xl="http:\/\/www.w3.org\/1999\/xlink"><title>Preface<\/title>/g
+s/\\begin{preface}/<preface xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en" xmlns:xl="http:\/\/www.w3.org\/1999\/xlink"\nid="preface"><title>Preface<\/title>/g
 s/\\end{preface}/<\/preface>/g
 #
-# Chapter "chap" 1=title
+# Chapter "chap" 1=title, 2=basename-for-html
 #
-s/\\begin{chap}{\([^}]*\)}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<db:chapter xmlns=""\n xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en"\nxmlns:xl="http:\/\/www.w3.org\/1999\/xlink">\n<db:title>\1<\/db:title>/g
+s/\\begin{chap}{\([^}]*\)}{\([^}]*\)}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<db:chapter xmlns=""\n xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en"\nxmlns:xl="http:\/\/www.w3.org\/1999\/xlink"\n id ="\2">\n<db:title>\1<\/db:title>/g
 s/\\end{chap}/<\/db:chapter>/g
 
 
