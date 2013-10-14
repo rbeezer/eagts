@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- USE XINCLUDE SWITCH ON XSLTPROC -->
+<mathbook xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <xi:include href="./bookinfo.xml" />
+
+    <book filebase="eagts">
+        <title>Explorations in Algebraic Graph Theory with Sage</title>
+
+            <xi:include href="preface.xml" />
+<!--
+            <xi:include href="basics.xml" />
+            <xi:include href="projects.xml" />
+            <xi:include href="cayley.xml" />
+            <xi:include href="drgs.xml" />
+            <xi:include href="pseries.xml" />
+            <xi:include href="matrices.xml" />
+            <xi:include href="one-factors.xml" />
+-->
+
+    </book>
+
+</mathbook>
