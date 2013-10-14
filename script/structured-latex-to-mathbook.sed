@@ -1,9 +1,22 @@
 #
-# A sed script to convert Structured LaTeX into Docbook XML
+# A sed script to convert Structured LaTeX into MathBook XML
 #
 # Rob Beezer <beezer@ups.edu>
 #
+# 2013/09/27  Updates for MathBook changes
 #
+####
+#
+# Miscellaneous Sage-isms
+#
+####
+
+# Sage syntax for generators, K.<x>, is invalid XML
+# so replace with entity for left angle bracket
+# Do this early, so it doesn't hit .< byaccident
+#
+s/\.</\.\&lt;/g
+
 ####
 #
 # Miscellaneous TeX-isms
@@ -14,6 +27,12 @@
 #
 s/^%$//g
 #
+# TeX dashes
+# Convert ndash, before writing comments
+#
+s/--/<ndash \/>/g
+s/---/<mdash \/>/g
+#
 # Genuine comment lines, leading (multiple) %
 # Carry into XML file as XML comments
 #
@@ -21,17 +40,25 @@ s/^%[%]*\(.*\)$/<!-- \1 -->/g
 #
 # TeX left/right quotes
 #
-s/``/"/g
-s/''/"/g
+s/``/<q>/g
+s/''/<\/q>/g
+#
 #
 # Boldness
 #
-s/\\textbf{\([^}]*\)}/<db:emphasis role="bold">\1<\/db:emphasis>/g
+s/\\textbf{\([^}]*\)}/<em>\1<\/em>/g
 #
 # TeX, LaTeX itself
 #
-s/\\TeX{}/TeX/g
-s/\\LaTeX{}/LaTeX/g
+s/\\TeX{}/<TeX \/>/g
+s/\\LaTeX{}/<LaTeX \/>/g
+
+#
+# Alignment in equation displays uses &= typically
+# so replace with entity for ampersand
+#
+s/\&=/\&amp;=/g
+
 
 
 ####
@@ -42,39 +69,41 @@ s/\\LaTeX{}/LaTeX/g
 #
 # Environments
 #
-#   Wrapped in CDATA for protection
+#   No CDATA protection, hand-edit matrices w/ <![CDATA[  ]]>
 #
-s/\\begin{verbatim}/<sage>\n<input><![CDATA[/g
-s/\\end{verbatim}/]]><\/input>\n<\/sage>/g
-s/\\begin{sageblock}/<sage>\n<input><![CDATA[/g
-s/\\end{sageblock}/]]><\/input>\n<\/sage>/g
-s/\\begin{sageexample}/<sage>\n<input><![CDATA[/g
-s/\\end{sageexample}/]]><\/input>\n<\/sage>/g
-s/\\begin{center}/<sage>\n<input><![CDATA[/g
-s/\\end{center}/]]><\/input>\n<\/sage>/g
+s/\\begin{verbatim}/<sage>\n<input>/g
+s/\\end{verbatim}/<\/input>\n<\/sage>/g
+s/\\begin{sageblock}/<sage>\n<input>/g
+s/\\end{sageblock}/<\/input>\n<\/sage>/g
+s/\\begin{sageexample}/<sage>\n<input>/g
+s/\\end{sageexample}/<\/input>\n<\/sage>/g
+s/\\begin{center}/<sage>\n<input>/g
+s/\\end{center}/<\/input>\n<\/sage>/g
 #
-#   inline code snippets, CDATA not allowed here?
+#   inline code snippets
 #
-s/\\verb|\([^|]*\)|/<db:code>\1<\/db:code>/g
-s/\\texttt{\([^}]*\)}/<db:code>\1<\/db:code>/g
+s/\\verb|\([^|]*\)|/<c>\1<\/c>/g
+s/\\texttt{\([^}]*\)}/<c>\1<\/c>/g
 #
 #   Strip leading Sage prompts, remove after edits
 s/^[\ ]*sage:\ //g
 #
 # Structured version
 #
-s/\\begin{sagecode}/<sagecode>/g
-s/\\end{sagecode}/<\/sagecode>/g
-/\\begin{sageinput}/ {
-    N
-    s/\\begin{sageinput}\n/<sageinput><![CDATA[/
-}
-/\\begin{sageoutput}/ {
-    N
-    s/\\begin{sageoutput}\n/<sageoutput><![CDATA[/
-}
-s/\\end{sageinput}/]]><\/sageinput>/g
-s/\\end{sageoutput}/]]><\/sageoutput>/g
+s/\\begin{sagecode}/<sage>/g
+s/\\end{sagecode}/<\/sage>/g
+# /\\begin{sageinput}/ {
+#     N
+#     s/\\begin{sageinput}\n/<input>/
+# }
+# /\\begin{sageoutput}/ {
+#     N
+#     s/\\begin{sageoutput}\n/<output>/
+# }
+s/\\begin{sageinput}/<input>/g
+s/\\end{sageinput}/<\/input>/g
+s/\\begin{sageoutput}/<output>/g
+s/\\end{sageoutput}/<\/output>/g
 
 
 
@@ -86,36 +115,36 @@ s/\\end{sageoutput}/]]><\/sageoutput>/g
 #
 # Paragraph "para"
 #
-s/\\begin{para}/<db:para>/g
-s/\\end{para}/<\/db:para>/g
+s/\\begin{para}/<p>/g
+s/\\end{para}/<\/p>/g
 #
 #
 # Boxed Facts "boxedfact"
 # (consider caution, note, tip, warning)
 #
-s/\\begin{boxedfact}{\([^}]*\)}/<db:blockquote>\n<db:title>\1<\/db:title>/g
-s/\\end{boxedfact}/<\/db:important>/g
+s/\\begin{boxedfact}{\([^}]*\)}/<blockquote>\n<title>\1<\/title>/g
+s/\\end{boxedfact}/<\/blockquote>/g
 #
 # Examples "example"
 # (consider caution, note, tip, warning)
 #
-s/\\begin{example}/<db:example>/g
-s/\\end{example}/<\/db:example>/g
+s/\\begin{example}/<example>/g
+s/\\end{example}/<\/example>/g
 #
 # Section "sect" 1=title
 #
-s/\\begin{sect}{\([^}]*\)}/<db:sect1>\n<db:title>\1<\/db:title>/g
-s/\\end{sect}/<\/db:sect1>/g
+s/\\begin{sect}{\([^}]*\)}/<section>\n<title>\1<\/title>/g
+s/\\end{sect}/<\/section>/g
 #
 # Preface "preface"
 #
-s/\\begin{preface}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<db:preface xmlns=""\nxmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en"\nxmlns:xl="http:\/\/www.w3.org\/1999\/xlink"\nid="preface"><db:title>Preface<\/db:title>/g
-s/\\end{preface}/<\/db:preface>/g
+s/\\begin{preface}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<preface id="preface" filebase="preface">/g
+s/\\end{preface}/<\/preface>/g
 #
-# Chapter "chap" 1=title, 2=basename-for-html
+# Chapter "chap" 1=title, 2=basename-for-html-files
 #
-s/\\begin{chap}{\([^}]*\)}{\([^}]*\)}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<db:chapter xmlns=""\n xmlns:db="http:\/\/docbook.org\/ns\/docbook" version="5.0" xml:lang="en"\nxmlns:xl="http:\/\/www.w3.org\/1999\/xlink"\n id ="\2">\n<db:title>\1<\/db:title>/g
-s/\\end{chap}/<\/db:chapter>/g
+s/\\begin{chap}{\([^}]*\)}{\([^}]*\)}/<?xml version="1.0" encoding="UTF-8" ?>\n\n<chapter id="\2" filebase="\2">\n<title>\1<\/title>/g
+s/\\end{chap}/<\/chapter>/g
 
 
 
@@ -128,12 +157,12 @@ s/\\end{chap}/<\/db:chapter>/g
 #
 # List Items "listitem"
 #
-s/\\begin{enumerate}/<db:orderedlist>/g
-s/\\end{enumerate}/<\/db:orderedlist>/g
-s/\\begin{itemize}/<db:itemizedlist>/g
-s/\\end{itemize}/<\/db:itemizedlist>/g
-s/\\begin{listitem}/<db:listitem>/g
-s/\\end{listitem}/<\/db:listitem>/g
+s/\\begin{enumerate}/<ol>/g
+s/\\end{enumerate}/<\/ol>/g
+s/\\begin{itemize}/<ul>/g
+s/\\end{itemize}/<\/ul>/g
+s/\\begin{listitem}/<li>/g
+s/\\end{listitem}/<\/li>/g
 
 
 ####
@@ -143,9 +172,8 @@ s/\\end{listitem}/<\/db:listitem>/g
 ####
 #
 # Raw URL's
-#   uses XML XLink specification
-#   so need XLink library as xl namespace in each source file
-s/\\url{\([^}]*\)}/<link xl:href="\1"><\/link>/g
+#   convert to URL tag for raw external URLs
+s/\\url{\([^}]*\)}/<url href="\1" \/>/g
 
 ####
 #
@@ -164,9 +192,9 @@ s/\\includegraphics{\([^}]*\)}/<db:mediaobject>\n<db:imageobject condition="web"
 ####
 #
 # \textsl assumed as definition
-# (write a proper definition/knowl macro for TeX)
-#  convert to a knowl with generic content
-s/\\textsl{\([^}]*\)}/<knowl src="replaceMe.html">\1<\/knowl>/g
+#  convert to term tag, could be a knowl
+s/\\textsl{\([^}]*\)}/<term>\1<\/term>/g
+s/\\define{\([^}]*\)}{\([^}]*\)}/<term>\1<\/term>/g
 
 
 
@@ -176,24 +204,29 @@ s/\\textsl{\([^}]*\)}/<knowl src="replaceMe.html">\1<\/knowl>/g
 #
 ####
 #
+# Inline math is in paired $'s
+# Convert to paired \(, \)
+#
+s/\$\([^$]*\)\$/\\(\1\\)/g
+#
 # math displays are surrounded by \[, \] on lines of their own
 # wrap CDATA to protect &, <, >
 # ]]> in a TeX expression must be avoided 
 # by using a space or a &lt; entity
 #
-s/^[\ ]*\\\[$/<db:displaymath><![CDATA[/g
-s/^[\ ]*\\\]$/]]><\/db:displaymath>/g
+s/^[\ ]*\\\[$/<me>/g
+s/^[\ ]*\\\]$/<\/me>/g
 #
 # Pass through align* and equation environments, 
 # but protect contents with CDATA
 # Also arrays, but allow variable column specifications
 #
-s/\\begin{align\*}/\\begin{align*}<![CDATA[/g
-s/\\end{align\*}/]]>\\end{align*}/g
-s/\\begin{equation}/\\begin{equation}<![CDATA[/g
-s/\\end{equation}/]]>\\end{equation}/g
-s/\\begin{array}{\([^}]*\)}/\\begin{array}{\1}<![CDATA[/g
-s/\\end{array}/]]>\\end{array}/g
+s/\\begin{align\*}/<md>/g
+s/\\end{align\*}/<\/md>/g
+s/\\begin{equation}/<me>/g
+s/\\end{equation}/<\/me>/g
+s/\\begin{array}{\([^}]*\)}/<md>\1/g
+s/\\end{array}/<\/md>/g
 
 ####
 #
@@ -208,10 +241,4 @@ s/\\end{statement}/<\/statement>/g
 s/\\begin{proof}/<proof>/g
 s/\\end{proof}/<\/proof>/g
 
-####
-#
-# Definitions and Knowls
-#
-####
-#
-s/\\define{\([^}]*\)}{\([^}]*\)}/<knowl src="\2.html">\1<\/knowl>/g
+
