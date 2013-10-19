@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="projects" filebase="projects">
+  <title>First Projects</title>
+  <section>
+    <title>Pseudosimilar Vertices</title>
+    <p>
+Vertices \(u\) and \(v\) in a graph \(X\) are <term>similar</term> if there is an automorphism
+of \(X\) that maps \(u\) to \(v\). If \(u\) and \(v\) are similar, then the vertex-deleted
+subgraphs \(X\diff u\) and \(X\diff v\) are isomorphic. If \(X\diff u\) and \(X\diff v\) 
+are isomorphic but \(u\) and \(v\) are not similar, we say that they are
+<term>pseudosimilar</term>. It is not obvious that pairs of pseudosimilar vertices
+exist, but we will see that they do.
+</p>
+    <sage>
+      <input>
+C9 = graphs.CycleGraph(9); C9
+</input>
+      <output>
+Cycle graph: Graph on 9 vertices
+</output>
+    </sage>
+    <p>
+The vertex set of \(C9\) is \(\{0,\ldots,8\}\). We want to add three new vertices
+to \(C9\), adjacent to \(1\), \(4\) and \(7\) in turn and delete the vertex \(0\).
+</p>
+    <sage>
+      <input>
+D = C9.copy()
+D.add_edges([(1,9), (4,10), (7,11)])
+D.delete_vertex(0)
+</input>
+    </sage>
+    <p>
+Here's \(D\):
+</p>
+    <p>
+      <!--  D.plot( layout='spring') -->
+      <!--  No longer centered, lost 80% scaling -->
+      <db:mediaobject>
+        <db:imageobject condition="web">
+          <db:imagedata fileref="graphplot.png" format="PNG" scale="80"/>
+        </db:imageobject>
+        <db:caption/>
+      </db:mediaobject>
+    </p>
+    <p>
+The automorphism group of \(D\) has order 2:
+</p>
+    <sage>
+      <input>
+D.automorphism_group().order()
+</input>
+      <output>
+2
+</output>
+    </sage>
+    <p>
+and we can determine its orbits:
+</p>
+    <sage>
+      <input>
+D.automorphism_group(return_group=False, orbits=True)
+</input>
+      <output>
+[[1], [2], [3], [4], [5], [6], [7], [8, 11], [9], [10]]
+</output>
+    </sage>
+    <p>
+As an alternative to the last command we could try the following, but its
+output is misleading!
+</p>
+    <sage>
+      <input>
+D.automorphism_group().orbits()
+</input>
+      <output>
+[[1], [2], [3], [4], [5], [6], [7, 10], [8], [9], [11]]
+</output>
+    </sage>
+    <p>
+This is because automorphism groups of graphs do not always exactly match the integer symbols for the permutation group to the names of the vertices.  Here is the translation between vertex names to permutation group symbols, as a Python dictionary.
+</p>
+    <sage>
+      <input>
+D.automorphism_group(return_group=False, translation=True)
+</input>
+      <output>
+{1: 11, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9, 11: 10}
+</output>
+    </sage>
+    <p>
+I claim \(D\) has a pair of pseudosimilar vertices. In this case we could find them
+by inspecting our drawing of \(D\), but we work through a general approach.
+The idea is to find a canonical label for each of the 11 vertex-deleted subgraphs
+of \(D\). The sage command
+</p>
+    <sage>
+      <input>
+E = D.canonical_label()
+E.edges(labels=False)
+</input>
+      <output>
+[(0, 10), (1, 10), (2, 8), (3, 9), (4, 6), 
+(4, 10), (5, 7), (5, 8), (6, 9), (7, 9)]
+</output>
+    </sage>
+    <p>
+returns a canonized form of \(D\). So graphs \(G\) and \(H\) are isomorphic if and only if
+their canonized forms are equal. For example
+</p>
+    <sage>
+      <input>
+P = graphs.PetersenGraph()
+Q = graphs.CompleteGraph(5).line_graph().complement()
+Pc = P.canonical_label(); Qc = Q.canonical_label()
+P == Q, Pc == Qc
+</input>
+      <output>
+(False, True)
+</output>
+    </sage>
+    <p>
+The only problem left is that the return value of <c>canonical_label()</c>
+is not hashable. We can circumvent this as follows.
+</p>
+    <p>
+The following procedure constructs a hashable canonical label for 
+\(G\diff i\), given \(G\) and \(i\).
+</p>
+    <sage>
+      <input>
+def vdi(G, i):
+    H = G.copy()
+    H.delete_vertex(i)
+    return (H.canonical_label().graph6_string(), i)
+</input>
+    </sage>
+    <p>
+We can now construct our list of pairs of the form (string, vertex):
+</p>
+    <sage>
+      <input>
+orbs = D.automorphism_group( return_group=False, orbits=True)
+orb_reps = [it[0] for it in orbs]
+labels = [vdi(D,i) for i in orb_reps]
+labels
+</input>
+      <output>
+[('I??G?DaDO', 1), ('I_???CpB_', 2), ('I??X??BoO', 3), 
+('I???GOPW_', 4), ('I??G_GBw?', 5), ('I??X??BoO', 6), 
+('I???Gg_Ag', 7), ('I??OQaGH_', 8), ('I???oH`b?', 9), 
+('I?COOIAWO', 10)]
+</output>
+    </sage>
+    <p>
+and on inspecting the output, we see that \(D\diff 3\cong D\diff 6\).
+</p>
+    <p>
+As an exercise, construct a graph on 8 vertices with a pair of pseudosimilar
+vertices.
+</p>
+    <p>
+Now we describe how to get a list of the sets of vertices such that all
+vertices in the same set have the same vertex-deleted subgraphs.
+First we need to convert our list of pairs to a dictionary keyed on the 
+first term of the pair; the value of a key will be all second terms 
+with the same first term. (The keys for a dictionary must be hashable, so this
+is why we needed the graph6 strings.)
+</p>
+    <sage>
+      <input>
+def ls_dict( tuples):
+    dc = {} 
+    for pair in tuples:
+        if dc.has_key( pair[0]):
+            dc[ pair[0]].append(pair[1])
+        else:
+            dc[ pair[0]] = [pair[1]]
+    return dc
+</input>
+    </sage>
+    <p>
+Now if <c>dc</c> is a dictionary whose values are lists, we compute a list consisting
+of those values whose length is at least \(k\):
+</p>
+    <sage>
+      <input>
+def get_families( dc, k):
+    families = []
+    for str, vxs in dc.iteritems():
+        if len(vxs) &gt;= k:
+            families.append( vxs)
+    return families
+</input>
+    </sage>
+    <p>
+We apply this to our list <c>labels</c>:
+</p>
+    <sage>
+      <input>
+get_families( ls_dict( labels), 2)
+</input>
+      <output>
+[[3, 6]]
+</output>
+    </sage>
+    <p>
+We see again that 3 and 6 form a pseudosimilar pair of vertices.
+</p>
+    <p>
+For further reading on pseudosimilar vertices, you will have to dig out papers
+on the topic.  I suspect that few of these are on the web, since they
+predate <LaTeX/>.  Fortunately we still have libraries.  Note that pseudosimilar
+sets of size greater than two are possible.
+</p>
+  </section>
+  <section>
+    <title>Circle Graphs</title>
+    <p>
+To construct a <term>circle graph</term> we first choose \(n\) pairs of points on a 
+circle in the real plane and then join each pair of points by a straight line,
+a <term>chord</term>. These chords are the vertices of the circle graph and they
+are adjacent if and only if they cross.
+</p>
+    <p>
+In fact we can view our \(2n\) points as the vertices on the cycle of length
+\(2n\), and represent the chords by a perfect matching in the complete graph
+on the vertices of the cycle. We call this structure a <term>chord diagram</term>.
+This can be viewed as a cubic graph, with a parallel edge wherever the matching
+edge is also an edge in the cycle.
+Since a matching edge which is parallel to a cycle edge does not cross
+another matching edge, it forms an isolated vertex in the circle
+graph. For most purposes we can therefore assume that the matching has
+no edge in the cycle<ndash/>-it's a subgraph of \(\comp{C_{2n}}\).
+</p>
+    <p>
+Chord diagrams arise in knot theory. Suppose we have a knot drawn in the
+plane; assume that there are \(n\) crossings labelled 1 through \(n\). The knot is 
+an embedding of a circle and, on walking around this circle we see a sequence
+of \(2n\) integers. The terms of the sequence are elements of \(\{1,\ldots,n\}\),
+and each element occurs twice. Such a sequence is known as a 
+<term>double occurrence word</term>. We could even encode the actual knot by
+assigning \(i^+\) to the overpass and \(i^-\) to the underpass, but we digress.
+Each double occurrence word determines a chord diagram with \(n\) chords<ndash/>-
+simply write the word on the vertices of \(C_{2n}\) in the natural way, and then
+join vertices with the same label by an edge.
+</p>
+    <p>
+For the moment at least, we specify a circle graph on \(n\) vertices by a 
+perfect matching in \(K_{2n}\), and thus by a set of \(n\) edges.
+We need to decide if two edges of the matching cross:
+</p>
+    <sage>
+      <input>
+def cross(e1,e2):
+    if e1[1]&lt;e1[0]: e1[0],e1[1] = e1[1],e1[0]
+    if e2[1]&lt;e2[0]: e2[0],e2[1] = e2[1],e2[0]
+    return (e1[0]&lt;e2[0] and e2[0]&lt;e1[1]&lt;e2[1]) or (e2[0]&lt;e1[0]&lt;e2[1] and e2[1]&lt;e1[1])
+</input>
+    </sage>
+    <p>
+With this in hand we can easily construct the circle graph corresponding
+to a given matching:
+</p>
+    <sage>
+      <input>
+def circle_grf(pm):
+    return Graph([range( len( pm)), lambda i,j: cross(pm[i],pm[j])])
+</input>
+    </sage>
+    <sage>
+      <input>
+def chord_dgrm(pm):
+    dgrm = graphs.CycleGraph( 2*len(pm))
+    dgrm.add_edges( pm)
+    return dgrm
+</input>
+    </sage>
+    <sage>
+      <input>
+pm = [(0, 8), (1, 4), (2, 9), (3, 6), (5, 7)]
+CD = chord_dgrm( pm)
+show(CD)  # not tested
+</input>
+      <output>
+</output>
+    </sage>
+    <p>
+We can get the perfect matchings in the complement of \(C_{10}\) as follows.
+(It's not pretty, but it works.)
+</p>
+    <sage>
+      <input>
+C = graphs.CycleGraph(10)
+CC = C.complement().line_graph().complement()
+cliques = CC.cliques_maximum()
+len(cliques)
+</input>
+      <output>
+293
+</output>
+    </sage>
+    <p>
+So there are 293 perfect matchings in the complement of \(C_{10}\). It is easy
+to create the corresponding circle graphs and then find the number of different possibilities by examining canonical labelings.
+</p>
+    <sage>
+      <input>
+grfs = [circle_grf( pm).canonical_label().graph6_string() for pm in cliques]
+uniq = Set(grfs)
+uniq
+</input>
+      <output>
+{'DBk', 'D]{', 'D`K', 'DK[', 'DBg', 'DB{', 
+'D@s', 'D^{', 'D@{', 'D?{', 'Dbk', 'DF{', 
+'DIk', 'D@O', 'DJ{', 'DLo', 'DK{', 'D~{', 
+'D_K', 'DNw', 'DL{', 'DJk', 'DFw', 'DN{'}
+</output>
+    </sage>
+    <p>
+With just 24 different circle graphs resulting from the 293 matchings, we see this is not a particularly efficient way to generate circle graphs.
+</p>
+    <p>
+We can make use of procedures to convert between perfect matchings and double
+occurrence words.
+</p>
+  </section>
+  <section>
+    <title>Line Graphs and Covers</title>
+    <p>
+Let \(D\) be the incidence matrix of an orientation of the graph \(X\). Then
+<me>
+    DD^T = \De -A,\quad D^TD = 2I +S
+</me>
+where \(\De\) is the diagonal matrix of valencies of \(X\) and \(S\) is a symmetric
+matrix with zero diaogonal and off-diagonal entries from \(\{0,1,-1\}\).
+In other words, \(S\) is a <term>signed adjacency matrix</term>. The entries of
+\(S\) are indexed by \(E(X)\), and the \(ab\)-entry is non-zero if and only if
+the edges \(a\) and \(b\) are adjacent in the line graph \(L(X)\) of \(X\),
+so we have a signed adjacency matrix for \(L(X)\).
+</p>
+    <p>
+A signed ajacency matrix \(T\) of a graph \(Y\) determines a <term>two-fold cover</term> \(Z\)
+of \(Y\), as follows. The vertex set of the cover is
+<me>
+    V(Y) \times \{0,1\}
+</me>
+and \((u,i)\) and \((v,j)\) are adjacent if and only if \(u\sim v\) and either
+<me>
+    i=j,\quad T_{u,v}=1
+</me>
+or
+<me>
+    i\ne j,\quad T_{u,v}=-1.
+</me>
+It is easy to check that the map that sends \((u,i)\) to \((u,1-i)\) is an automorphism
+of \(Z\). In matrix terms, we get the adjacency matrix of \(Z\) by applying
+the following substitutions to the entries of \(A(Y)\):
+<me>
+    0\to\pmat{0&amp;0\\0&amp;0},\qquad 1\to\pmat{1&amp;0\\0&amp;1}
+        \qquad -1\to\pmat{0&amp;1\\1&amp;0}.
+</me>
+</p>
+    <p>
+The pairs 
+<me>
+    \{(u,0),(u,1)\}
+</me>
+are called the fibres of the cover, you might verify that these form an equitable
+partition of the cover, and that the quotient over the fibres is \(Y\). Thus
+we see that the characteristic polynomial of the cover is divisible
+by the characteristic polynomial of the graph.
+</p>
+    <p>
+      <lemma>
+        <statement>
+          <me>
+        \phi(Z,t) =\phi(T,t)\phi(Y,t).
+</me>
+        </statement>
+        <proof>
+(Outline.) Let \(H\) be the matrix
+<me>
+    \frac{1}{\sqrt{2}} \pmat{1&amp;1\\1&amp;-1}
+</me>
+and let \(K\) be the block-diagonal matrix formed using \(|V(Y)|\) copies of \(H\).
+If \(M\) is a complex matrix, let \(|M\) denote the matrix we get by replacing each entry
+of \(M\) by its absolute value.
+Then \(K\) is orthogonal and symmetric and \(KA(Z)K\) is permutation equivalent to 
+<me>
+    \pmat{S&amp;0\\0&amp;|S|}.
+</me>
+</proof>
+      </lemma>
+    </p>
+    <p>
+Here \(|S|=A(Y)\). We offer another view of this result.
+If \(A\) and \(B\) are symmetric \(01\)-matrices such that \(A\circ B=0\),
+then \(A-B\) is a signed adjacency matrix and
+<me>
+    \pmat{A&amp;B\\B&amp;A}
+</me>
+is the adjacency matrix of the corresponding cover.
+We can now use the following:
+<me>
+    \frac12\pmat{I&amp;I\\I&amp;-I}\pmat{A&amp;B\\B&amp;A}\pmat{I&amp;I\\I&amp;-I}
+        =\pmat{A+B&amp;0\\0&amp;A-B}.
+</me>
+</p>
+    <p>
+This leads us to an easy construction of the adjacency matrix of the cover.
+</p>
+    <sage>
+      <input>
+def lgcvr( X):
+    D = X.incidence_matrix()
+    IDM = identity_matrix( X.num_edges())
+    M = D.transpose()*D -2*IDM
+    MM = M.elementwise_product(M)
+    A = (1/2)*(M+MM)
+    B = (1/2)*(M-MM)
+    return block_matrix(2, 2, [A,B,B,A])
+</input>
+    </sage>
+    <p>
+Now we turn to our line graphs. The cover can be constructed as follows.
+Choose one arc \((u,v)\) for each edge \(\{u,v\}\) of \(X\). (This defines an orientation
+of the graph.) Our matrix \(S\) is a signing of \(A(L(X))\)<ndash/>-its rows and columns
+are indexed by our chosen arcs, and the entry corresponding to a pair
+of distinct overlapping arcs is 1 if they have the same head or tail,
+and \(-1\) otherwise. Rather than represent the vertices of the cover by
+pairs \(((u,v),i)\), we proceed thus: if \((u,v)\) is one of our chosen
+arcs then we use \((u,v)\) to denote \(((u,v),0)\) and \((v,u)\) for \(((u,v),1)\).
+The following procedure implements this.
+</p>
+    <sage>
+      <input>
+def dbl_lng( X):
+    V = X.vertices()
+    E = X.edges( labels=False)
+    arcs = [(i,j) for i in V for j in V\
+        if ((i,j) in E or (j,i) in E)]
+    return  Graph( [arcs, lambda a,b: a != b and (a[0]==b[0] or a[1]==b[1])])
+</input>
+    </sage>
+    <p>
+We test that our two constructions agree on the Petersen graph, and see
+that cover is isomorphic to the line graph of the direct product of
+the Petersen graph with \(K_2\). (This product is itself a cover of the Petersen
+graph.)
+</p>
+    <sage>
+      <input>
+P = graphs.PetersenGraph()
+Q1 = Graph( lgcvr( P))
+Q2 = dbl_lng( P)
+Q1.is_isomorphic( Q2)
+</input>
+      <output>
+True
+</output>
+    </sage>
+    <sage>
+      <input>
+K2 = graphs.CompleteGraph(2)
+LP2 = (P.tensor_product(K2)).line_graph()
+LP2.is_isomorphic( Q1)
+</input>
+      <output>
+True
+</output>
+    </sage>
+  </section>
+</chapter>
