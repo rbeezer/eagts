@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="basics" filebase="basics">
+    <title>Getting Started</title>
+    <section>
+        <title>Getting Information</title>
+        <p>
+The Sage tutorial at <url href="http://www.sagemath.org/doc/tutorial/index.html"/>
+is the best starting point, and is very easy to read.  The "constructions" manual 
+is of very little use for graphs. The Sage reference manual at
+<url href="http://www.sagemath.org/doc/reference/index.html"/> is vast. You will eventually 
+need to read the sections on graphs, matrices, vector spaces, finite fields,
+power series and commutative rings.
+</p>
+        <p>
+If you are not up to speed with python, the first four or five chapters of 
+"Dive into Python"  (<url href="http://diveintopython.org/"/>)
+could be useful and are available on line.  (I do not think
+you will get much out the later chapters dealing with XML and HTML.)
+I also recommend the Python Tutorial (<url href="http://docs.python.org/tutorial/"/>).  
+You need to become comfortable with lists, dictionaries and list comprehensions.
+You can get quite a ways in Sage without knowing anything much about objects 
+and classes, but you will need some familiarity with Python.
+</p>
+        <p>
+There are two basic ways of running Sage.  One is to start Sage in a
+terminal window and then type <c>notebook()</c>.  This starts up a 
+web browser and you work from there.
+</p>
+        <p>
+The alternative, which I use, is to start Sage in a terminal window and then 
+open up an editor. Set the working directory in Sage to the directory where your 
+files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><ndash/>-so don't use
+<c>ls</c> as the name of a list!) Write your code in the editor, save it as
+<c>stuff.sage</c> (say), then type  <c> load stuff.sage</c> in your terminal window. 
+Now you can run your code in Sage. You can load as many files as you like, and if 
+you edit a file, load it again.
+</p>
+        <p>
+You can load a file with the command <c>attach stuff.sage</c> and then
+Sage will automatically reload your file each time
+you save it.  A disadvantage of this approach is that certain syntax errors 
+in your file can confuse Sage considerably.  In this case you may have to 
+hit control-C (and perhaps wait a bit) to unlock things.  I have found it more
+convenient just to use the load command, as above.
+</p>
+        <p>
+You can save data to a file:
+</p>
+        <sage>
+            <input>
+some_list = ['A', 356, x^2]
+save( some_list, 'smlst')
+</input>
+        </sage>
+        <p>
+and reload it with: 
+</p>
+        <sage>
+            <input>
+renamed_list = load('smlst')
+renamed_list
+</input>
+            <output>
+['A', 356, x^2]
+</output>
+        </sage>
+        <p>
+(The output to save is not human readable.)             
+When you're working in Sage, on-line help can be obtained using <c>help()</c> 
+and the <c>tab</c> key. Thus typing <c>tab</c> after <c>graphs?</c> or <c>graphs??</c> gives 
+information about the command <c>graphs()</c>.  You will find situations where this
+does not work.  Tab completion can sometimes save you typing in the full name for
+some command, but you will also find there are many contexts where it does not.
+</p>
+        <p>
+Do not forget that the command you are trying to understand may be a Python
+command; reasonably enough these are not explained in the Sage docs.
+</p>
+    </section>
+    <section>
+        <title>Basics</title>
+        <p>
+(I'm assuming that you can get Sage running and evaluate the sum 1+1, say.)
+Sage comes with many graphs preinstalled.  Thus the command
+</p>
+        <sage>
+            <input>
+K = graphs.CompleteGraph(5); K
+</input>
+            <output>
+Complete graph: Graph on 5 vertices
+</output>
+        </sage>
+        <p>
+sets \(K\) equal to the complete graph on 5 vertices.  
+Now <c>K.show()</c> produces a drawing of the graph in a separate window. 
+</p>
+        <sage>
+            <input>
+K.show()   # not tested
+</input>
+        </sage>
+        <p>
+The command
+</p>
+        <sage>
+            <input>
+K.vertices()
+</input>
+            <output>
+[0, 1, 2, 3, 4]
+</output>
+        </sage>
+        <p>
+displays the vertices of our graph and
+</p>
+        <sage>
+            <input>
+K.edges()
+</input>
+            <output>
+[(0, 1, None), (0, 2, None), (0, 3, None), (0, 4, None), 
+(1, 2, None), (1, 3, None), (1, 4, None), 
+(2, 3, None), (2, 4, None), (3, 4, None)]
+</output>
+        </sage>
+        <p>
+displays the edges. To avoid the empty labels, try
+</p>
+        <sage>
+            <input>
+K.edges(labels=False)
+</input>
+            <output>
+[(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), 
+(1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
+</output>
+        </sage>
+        <p>
+The command <c>K.degree()</c> produces a list of the vertex degrees,
+while <c>K.deg(u)</c> gives the degree of the vertex \(u\). Further 
+<c>K[i]</c> returns the neighbors of \(i\) in \(K\). If your graph is
+regular (<c>K.is_regular()</c> returns <c>True</c>) then its valency
+is given by
+</p>
+        <sage>
+            <input>
+K.degree()[0]
+</input>
+            <output>
+4
+</output>
+        </sage>
+        <p>
+There are many built-in graphs in Sage. Thus:
+</p>
+        <sage>
+            <input>
+C = graphs.CycleGraph(8); C
+</input>
+            <output>
+Cycle graph: Graph on 8 vertices
+</output>
+        </sage>
+        <p>
+gives us the cycle on 8 vertices. To get the list of possible graphs,
+type <c>graphs.</c> at the prompt, followed by a tab. (That's 8 keypresses<ndash/>-6 letters,
+a period and a tab.)
+</p>
+        <p>
+There are many graph operations we can use. We can get the complement of
+our cycle by
+</p>
+        <sage>
+            <input>
+CC = C.complement(); CC
+</input>
+            <output>
+complement(Cycle graph): Graph on 8 vertices
+</output>
+        </sage>
+        <p>
+and its line graph by
+</p>
+        <sage>
+            <input>
+LC = C.line_graph(); LC
+</input>
+            <output>
+Graph on 8 vertices
+</output>
+        </sage>
+        <p>
+Of course a cycle is isomorphic to its line graph, which we can verify:
+</p>
+        <sage>
+            <input>
+C.is_isomorphic(LC)
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+Another way to verify that \(LC\) is the cycle \(C_8\) is to verify that it
+is connected
+</p>
+        <sage>
+            <input>
+LC.is_connected()
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+and that it is regular of degree two
+</p>
+        <sage>
+            <input>
+LC.degree()
+</input>
+            <output>
+[2, 2, 2, 2, 2, 2, 2, 2]
+</output>
+        </sage>
+        <p>
+Sage supplies the Petersen graph
+</p>
+        <sage>
+            <input>
+P = graphs.PetersenGraph(); P
+</input>
+            <output>
+Petersen graph: Graph on 10 vertices
+</output>
+        </sage>
+        <p>
+and we can verify this is correct by computing is diameter, girth
+and the number of vertices since these three properties characterize the graph.
+</p>
+        <sage>
+            <input>
+P.diameter(), P.girth(), P.num_verts()
+</input>
+            <output>
+(2, 5, 10)   
+</output>
+        </sage>
+        <p>
+In practice it is very important to check that any graph you construct is
+the one you wanted.  It may be hard to prove that your graph is correct,
+but simple checks can still be useful. One common source of error is an incomplete
+understanding of the commands you use.  For example
+</p>
+        <sage>
+            <input>
+K2 = graphs.CompleteGraph(2)
+K3 = graphs.CompleteGraph(3)
+M = K2.union(K3)
+M
+</input>
+            <output>
+Graph on 3 vertices
+</output>
+        </sage>
+        <p>
+produces a graph on three vertices!
+</p>
+        <p>
+I should have used <c>K2.disjoint_union(K3)</c>.
+</p>
+        <sage>
+            <input>
+K2.disjoint_union(K3)
+</input>
+            <output>
+Complete graph disjoint_union Complete graph: Graph on 5 vertices
+</output>
+        </sage>
+    </section>
+    <section>
+        <title>Fiddling with Vertices and Edges</title>
+        <p>
+Although we can get a lot done with the graphs already in Sage, most of the time
+we will need to construct our own. The simplest approach is to modify one of 
+the prebuilt graphs.
+</p>
+        <p>
+For an examples, we start with the circulant graph \(G\) on 9 vertices
+with connection set \(C=\{1,2,7,8\}\). So \(V(G)=\mathbb{Z}_9\) and
+vertices \(i\) and \(j\) are adjacent if their difference is in \(C\).
+</p>
+        <sage>
+            <input>
+G = graphs.CirculantGraph( 9, [1,2]); G
+</input>
+            <output>
+Circulant graph ([1, 2]): Graph on 9 vertices
+</output>
+        </sage>
+        <p>
+For later use we also make a copy of \(G\):
+</p>
+        <sage>
+            <input>
+H = G.copy()
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+You can use <c>G.show()</c> to get a view of your graph, this can provide
+a useful check.
+</p>
+        <sage>
+            <input>
+G.show()
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+We find the neighbors of 0:
+</p>
+        <sage>
+            <input>
+G[0]
+</input>
+            <output>
+[8, 1, 2, 7]
+</output>
+        </sage>
+        <p>    
+and attempt to confirm that \((0,1)\) is an edge by
+</p>
+        <sage>
+            <input>
+(0,1) in G.edges()
+</input>
+            <output>
+False
+</output>
+        </sage>
+        <p>
+and then realize that we should have tried
+</p>
+        <sage>
+            <input>
+(0,1) in G.edges(labels=False)
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+or
+</p>
+        <sage>
+            <input>
+G.has_edge(0,1)
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+The last alternative is recommended.
+We can delete this edge:
+</p>
+        <sage>
+            <input>
+G.delete_edge(0,1)
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+and confirm the effect by
+</p>
+        <sage>
+            <input>
+G.degree()
+</input>
+            <output>
+[3, 3, 4, 4, 4, 4, 4, 4, 4]
+</output>
+        </sage>
+        <p>
+Note that <c>G.delete_edge()</c> alters \(G\) in place, which is why I
+prepared a copy of it. The copy is unaltered:
+</p>
+        <sage>
+            <input>
+H.degree()
+</input>
+            <output>
+[4, 4, 4, 4, 4, 4, 4, 4, 4]
+</output>
+        </sage>
+        <p>
+Deleting an edge that is not present has no effect. We can delete
+the members of a list of edges with 
+</p>
+        <sage>
+            <input>
+an_edge_list = [(0, 7), (2, 4)]
+G.delete_edges( an_edge_list)
+G.edges(labels=False)
+</input>
+            <output>
+[(0, 2), (0, 8), (1, 2), (1, 3), 
+(1, 8), (2, 3), (3, 4), (3, 5), 
+(4, 5), (4, 6), (5, 6), (5, 7), 
+(6, 7), (6, 8), (7, 8)]
+</output>
+        </sage>
+        <p>
+Similarly we can add an edge or list of edges<ndash/>-type <c>G.add</c>
+followed by tab to see the things we can add and <c>G.delete</c>
+followed by tab for the things we can delete (which of course include
+vertices and list of vertices).
+</p>
+        <p>
+Adding a vertex increases the vertex set but, naturally enough, does
+not add any edges.
+If \(S\) is a list of vertices of \(G\), we can add a new vertex adjacent to 
+each vertex in \(S\) as follows.
+</p>
+        <sage>
+            <input>
+G.add_edges( [(10,s) for s in [1,2,3]] )
+G.edges(labels=False)
+</input>
+            <output>
+[(0, 2), (0, 8), (1, 2), (1, 3), 
+(1, 8), (1, 10), (2, 3), (2, 10), 
+(3, 4), (3, 5), (3, 10), (4, 5), 
+(4, 6), (5, 6), (5, 7), (6, 7), 
+(6, 8), (7, 8)]
+</output>
+        </sage>
+        <p>
+Here the argument <c>[ (10,s) for s in S ]</c> to <c>G.add_edges()</c> 
+is a simple example of a list comprehension.  
+We will find these are very useful.
+</p>
+        <p>
+Edge contraction is one basic operation in graph theory that is not built 
+into Sage.  The following procedure identifies two vertices in a graph.
+</p>
+        <!--  indent with spaces, not tabs -->
+        <sage>
+            <input>
+def contract(H, e):
+    G = H.copy() 
+    u, v = e[0], e[1]
+    vedges = [(v,x) for x in G[u]]  
+    G.delete_vertex(u)
+    G.add_edges( vedges)
+    return G
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+A useful generalization would be a procedure that took a graph \(G\)
+and a partition of its vertex set as its input, and returned
+a graph with the cells of the partition as vertices and where
+two cells are adjacent if there is an edge that joins a vertex
+in the first cell to a vertex in the second.
+</p>
+    </section>
+    <section>
+        <title>Graph()</title>
+        <p>
+The command <c>Graph()</c> provides a very useful way to construct graphs.
+To begin, we will invoke it in the form <c>X = Graph( [vertices, adj_pred] )</c>.
+There is just one argument, a list consisting of the
+the vertices is the vertex set of X (itself a list), and a predicate (or function)
+<c>adj_pred</c> that takes two vertices \(u\) and \(v\) and returns <c>True</c> or
+<c>False</c> according as they are adjacent or not.
+</p>
+        <p>
+As a trivial example, we construct the path on 9 vertices:
+</p>
+        <sage>
+            <input>
+P9 = Graph([[0..8], lambda i,j: i-j == 1])
+P9.edges(labels=False)
+</input>
+            <output>
+[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8)]
+</output>
+        </sage>
+        <p>
+Here <c>lambda</c> is a synonym for <q>function</q>, its inputs precede the colon
+and the subsequent text computes its value. By using <c>lambda</c>, we can define
+our predicate inline. You should experiment to see what happens if you type 
+<c>=</c> in place of <c>==</c>, since you will eventually do it by accident, 
+and it is good to be able to recognize what's gone wrong.
+We could have defined the predicate first:
+</p>
+        <sage>
+            <input>
+def adj_pred( i,j):
+    return i - j == 1
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+and then created our graph with
+</p>
+        <sage>
+            <input>
+P9_2 = Graph([[0..8], adj_pred])
+P9_2.is_isomorphic(P9)
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+This illustrates that Python allows us to pass a function as an argument.
+</p>
+        <p><c>Graph()</c> accepts a variety of arguments, including:
+<ol><li>A list of edges.</li><li>A dictionary of lists.</li><li>An adjacency matrix.</li><li>A graph6 string.</li></ol>
+(For the full list, try <c>Graph??</c>.)
+</p>
+        <p>
+What's a graph6 string? All we need to know is that it is a compact
+encoding of a graph as an ASCII string.  We can produce that string encoding
+the graph as follows
+</p>
+        <sage>
+            <input>
+P9.graph6_string()
+</input>
+            <output>
+'HhCGGC@'
+</output>
+        </sage>
+        <p>
+There are other programs (e.g., Brendan McKay's <c>geng</c>) that will produce files of
+graphs presented as graph6 strings, and so we can read these into
+Sage and convert them to Sage graphs. 
+</p>
+        <p>
+Here is a very natural way to create a graph, by supplying a list of edges.
+</p>
+        <sage>
+            <input>
+an_edge_list = [(0,1), (1,2), (2, 3), (3, 0), (1,3)]
+G = Graph(an_edge_list)
+G.degree()
+</input>
+            <output>
+[2, 3, 2, 3]
+</output>
+        </sage>
+    </section>
+    <section>
+        <title>Vertices</title>
+        <p>
+In Sage, the vertices of a graph must be hashable. You can test if this holds 
+by applying the function <c>hash()</c> to whatever you propose to use as a vertex.
+If it is not hashable you'll get an error message informing you of the fact, if it
+is hashable you'll get back an integer.
+</p>
+        <p>
+Occasionally the experimental approach to determining hashability will be 
+unsatisfactory, so I offer some comments.
+</p>
+        <p>
+The output of <c>vector()</c> and <c>matrix()</c> is not hashable, but can
+be made so by using <c>a.set_immutable()</c> (where <c>a</c> may be a matrix
+or a vector). The identity matrix is hashable, as you will find out the first 
+time you try to change an entry in it. Subspaces of vector
+spaces over finite fields are hashable.
+</p>
+        <p>
+Sage has two classes of sets: <c>set()</c> constructs the Python version and
+<c>Set()</c> the Sage version. Sage <c>Set</c>s are hashable, Python <c>set</c>s are not.
+The available operations differ (go figure).
+</p>
+        <p>
+If <c>vset</c> is a list of things you want to use as vertices, and they are not 
+readily converted to something hashable, you can construct a graph as follows:
+</p>
+        <p>
+            <c>G = Graph( [[1..len(vset)], lambda i,j: adj_pred( vset[i],vset[j])])</c>
+        </p>
+        <p>
+Here <c>adj_pred</c> takes two elements of <c>vset</c> and returns
+<c>True</c> or <c>False</c> according as its two arguments are adjacent or not.
+</p>
+        <p>
+Note that many graph operations will go faster when the vertices are integers,
+and we can always arrange this after the fact by using <c>G.relabel()</c>.
+</p>
+    </section>
+</chapter>
