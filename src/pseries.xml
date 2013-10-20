@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="pseries" filebase="pseries">
+    <title>Polynomials and Power Series</title>
+    <section>
+        <title>Forbidden Words</title>
+        <p>
+Let \(\al\) denote a binary string, and let \(L\) denote
+the set of binary of binary strings that do not contain \(\al\) as a substring. 
+How many strings are there in \(L\) with length \(n\)?
+</p>
+        <p>
+Let \(M\) denote the binary
+strings that contain exactly one copy of \(\al\), as a suffix. 
+If \(\eps\) denotes the empty string, then
+<me>
+    \label{eq:eL01}
+    \eps+L(0+1) = L+M.
+</me>
+Also \(L\al\) clearly contains \(M\) as a subset, but for example if \(\al=111\),
+then
+<me>
+    L\al =M+M1+M11.
+</me>
+We develop a precise description of \(L\al\). Let \(\al\backslash\be\) denote the 
+set of suffixes \(\be_1\) such that
+\(\be_0\be_1=\be\) and \(\be_0\) is a suffix of \(\al\). For example if
+<me>
+    \al =100110,\quad \be=1011,
+</me>
+then
+<me>
+    \al\backslash\be = \{11\},\quad \al\backslash\al = \{\eps,0110\}
+</me>
+
+<lemma><me>
+        L\al = M\al\backslash\al.
+</me></lemma>
+</p>
+        <p>
+Note that \(\al\backslash\al\) is a finite language, i.e., a finite set of strings.
+</p>
+        <p>
+If \(N\) is a set of binary strings, let \(N(t)\) denote its generating series.
+This is what we get when we substitute \(t\) for \(0\) and \(1\), a string of length
+\(\ell\) maps to \(t^\ell\) and the language maps to its generating series.
+Now \eqref{eq:eL01} yields
+<me>
+    1+2t L(t) = L(t)+M(t)
+</me>
+and, if \(D=\al\backslash\al\) and \(|\al|\) denotes the length of \(\al\), 
+the lemma yields that
+<me>
+    L(t)t^{|\al|} = M(t) D(t).
+</me>
+
+<lemma><me>
+        L(t) =\left(1-2t+\frac{t^{|\al|}}{D(t)}\right)^{\!-1}.
+</me></lemma>
+</p>
+        <p>
+Let's use this to compute some numbers. We first set up the ring of formal
+power series over the rationals.
+</p>
+        <sage>
+            <input>
+Rt.&lt;t&gt; = QQ[[]]; Rt
+</input>
+            <output>
+Power Series Ring in t over Rational Field
+</output>
+        </sage>
+        <p>
+If \(\al=111\), then \(D(t)=1+t+t^2\) and \(L(t)\) is
+</p>
+        <sage>
+            <input>
+L = ((1-2*t+ t^3/(1+t+t^2))^(-1)).O(9); L
+</input>
+            <output>
+1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)
+</output>
+        </sage>
+        <p>
+As an exercise, write a program which takes a binary string \(\al\) and
+computes the generating series for \(\al\backslash\al\). (The string arrives
+as a Python string, there is no reason why your procedure should not work
+for strings over an arbitrary alphabet.)
+</p>
+        <p>
+The square root of the series \(L(2t)\) has non-negative integer coefficients.
+</p>
+        <sage>
+            <input>
+L.subs(t=2*t).sqrt()
+</input>
+            <output>
+1 + 2*t + 6*t^2 + 16*t^3 + 54*t^4 + 180*t^5 + 596*t^6 + 2048*t^7 + 7062*t^8 + O(t^9)
+</output>
+        </sage>
+        <p>
+Does this hold for other forbidden substrings?
+</p>
+        <p>
+For a second variant, suppose \(\cF=\{\seq\al1d\}\) is a set of binary strings. 
+Let \(L\) be the set of strings that contain no element of \(\cF\) and let \(M_i\) 
+denote the set of strings that contain one copy of \(\al_i\), as a suffix, bit do not
+contain any other copies of strings in \(\cF\). If \(|\cF|=2\), we have
+equations
+<md>
+    \eps+L(0+1) &amp;= L +M_1 +M_2\\
+    L\al_1 &amp;= M_1(\al_1\backslash\al_1) +M_2(\al_1\backslash\al_2)\\
+    L\al_2 &amp;= M_1(\al_2\backslash\al_1) +M_2(\al_2\backslash\al_2).
+</md>
+Write a program that, given \(\al_1\) and \(\al_2\), computes the generating
+series for \(L\), \(M_1\) and \(M_2\).
+</p>
+    </section>
+    <section>
+        <title>Fractions and Series</title>
+        <p>
+Many generating series can be expressed as rational functions, and 
+such expressions provide useful information. We illustrate this.
+First we create a ring of polynomials, and the corresponding field
+of fractions. (We will not need the latter, as it happens.)
+</p>
+        <sage>
+            <input>
+Qu.&lt;u&gt; = QQ[]
+F = FractionField( Qu)
+Qu
+</input>
+            <output>
+Univariate Polynomial Ring in u over Rational Field
+</output>
+        </sage>
+        <p>
+Now we can work with our series \(L(t)\) from the previous section.
+</p>
+        <sage>
+            <input>
+rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
+rf.numerator(), rf.denominator()
+</input>
+            <output>
+(u^2 + u + 1, -u^3 - u^2 - u + 1)
+</output>
+        </sage>
+        <sage>
+            <input>
+rf.subs( u=1/2)
+</input>
+            <output>
+14
+</output>
+        </sage>
+        <sage>
+            <input>
+rf.subs( u=t).O(9)
+</input>
+            <output>
+1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)
+</output>
+        </sage>
+        <p>
+Note that <c>t</c> is the generator of <c>Rt</c>, which is \(\rats[[t]]\).
+So we have used <c>subs()</c> to convert a rational function to
+a power series.
+</p>
+        <p>
+We can also compute partial fraction decompositions. For these
+to be useful the zeros of the denominator should belong to the field
+we are working over.
+</p>
+        <sage>
+            <input>
+Cs = FractionField( PolynomialRing( CDF, 's'))
+whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
+for p in parts:
+    print p
+</input>
+            <output>
+(-0.618419922319 - 4.81868832957e-17*I)/(s - 0.543689012692)
+(-0.19079003884 + 0.0187005831117*I)/(s + 0.771844506346 + 1.11514250804*I)
+(-0.19079003884 - 0.0187005831117*I)/(s + 0.771844506346 - 1.11514250804*I)
+</output>
+        </sage>
+    </section>
+    <section>
+        <title>Solving Equations</title>
+        <p>
+If \(C(t)\) denotes the generating series for the Catalan numbers, then
+<me>
+    C(t) = 1+tC(t)^2
+</me>
+From this it follows that
+<me>
+    C(t) = \frac{1}{2t}(1-\sqrt{(1-4t)}).
+</me>
+We can implement this as follows:
+</p>
+        <sage>
+            <input>
+Rt.&lt;t&gt; = QQ[[]]
+Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
+</input>
+        </sage>
+        <p>
+The first coefficients are what we expect:
+</p>
+        <sage>
+            <input>
+Ct.O(9)
+</input>
+            <output>
+1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 429*t^7 + 1430*t^8 + O(t^9)
+</output>
+        </sage>
+        <p>
+If
+<me>
+    \Phi(u) := 1+tu^2
+</me>
+then our equation for \(C(x)\) about may be written as
+<me>
+    C(t) = \Phi(C(t));
+</me>
+hence \(C(t)\) is defined as a fixed point of a map on \(\rats[[t]]\).
+We can solve this directly. Recursively define a sequence of series \(C_i(t)\) 
+by \(C_0(t)=1\) and \(C_{n+1}(t) =\Phi(C_n(t))\).
+We then find that
+
+<md>
+    C_1(t) &amp;= 1 + t\\
+    C_2(t) &amp;= 1 + t + 2t^2 + t^3\\
+    C_3(t) &amp;= 1 + t + 2t^{2} + 5t^{3} + 6t^{4} + 6t^{5} + 4t^{6} + t^{7}.
+</md>
+
+and we see that the coefficients of \(C_n(t)\) are accurate up to 
+(and including) degree \(n\). (At least for \(n\le3\), but it's easy to 
+verify this holds for larger values of \(n\).) One problem
+here is that if we continue in this vein, our expression for \(C_k(t)\)
+will have \(2^k\) terms, of which only the first \(k+1\) are sure to be accurate.
+The following code avoids this extra work.
+</p>
+        <sage>
+            <input>
+def iter( Fun, init, acc, n):
+    val = init
+    for i in [1..n]:
+        val = Fun( val).O(acc)
+        acc += 1
+</input>
+        </sage>
+        <p>
+As an exercise, verify that if the first \(k+1\) coefficients of \(C_k(t)\)
+are correct, then the first \(k+2\) coefficients of \(C_{k+1}(t)\) are correct.
+</p>
+    </section>
+    <section>
+        <title>Newton-Raphson</title>
+        <p>
+We can find a solution to our equation \(C(t) =\Phi(C(t))\) more efficiently by
+using Newton-Raphson. Note that \(\Phi\) is a power series (actually polynomial in \(u\))
+and
+<me>
+    \Phi(C_0+\de) \approx \Phi(C_0) +\Phi'(C_0)\de;
+</me>
+this works provided \(\de\) is divisible by a power of \(t\).
+So if \(C_0\) is an approximate solution to \(\Phi(C(t))=C(t)\), then our aim is to 
+choose \(\de\) so that
+<me>
+    C_0 + \de = \Phi(C_0) +\Phi'(C_0)\de,
+</me>
+which implies that
+<me>
+    \de = \frac{\Phi(C_0)-C_0}{1-\Phi'(C_0)}.
+</me>
+Hence our proposed update formula is now
+<me>
+    C_{n+1} = C_n + \frac{\Phi(C_n)-C_n}{1-\Phi'(C_n)}
+</me>
+Here
+<me>
+    \Phi'(C_n(t)) = 2tC_n(t).
+</me>
+</p>
+        <p>
+We can run a quick test. With
+</p>
+        <sage>
+            <input>
+phi = lambda u: 1+t*u^2
+nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
+</input>
+        </sage>
+        <p>
+we find that the first 22 terms of <c>nr(nr(nr(1+t)))</c> are correct.
+</p>
+        <sage>
+            <input>
+nr(nr(nr(1+t)))
+</input>
+            <output>
+1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 
+429*t^7 + 1430*t^8 + 4862*t^9 + 16796*t^10 + 58786*t^11 + 
+208012*t^12 + 742900*t^13 + 2674440*t^14 + 9694845*t^15 + 
+35357670*t^16 + 129644790*t^17 + 477638700*t^18 + 
+1767263190*t^19 + 6564120420*t^20 + 24466267020*t^21 + O(t^22)
+</output>
+        </sage>
+        <!--  How to make Ct have O(22)? -->
+        <sage>
+            <input>
+nr(nr(nr(1+t))).O(19) - Ct.O(19)
+</input>
+            <output>
+O(t^19)
+</output>
+        </sage>
+        <p>
+Your task is to write an efficient implementation of this method.
+</p>
+    </section>
+    <section>
+        <title>Counting Trees</title>
+        <p>
+Our aim is to derive the generating series for the number of trees on
+\(n\) vertices (or, more precisely, the number of isomorphism classes of
+tress on \(n\) vertices). We use \(R(x)\) to denote the generating series
+for rooted trees on \(n\) vertices. We can check that
+<me>
+    R(x) = x+x^2+2x^2+\ldots
+</me>
+The problem is to get further. We do not have an explicit formula for
+\(R(x)\), just an equation:
+<me>
+    R(x) = x\exp\left(\sum_{k\ge1}\frac{1}{k}R(x^k)\right).
+</me>
+We use the technology from the previous sections to solve this.
+</p>
+        <p>
+We see that \(R(x)\) is a fixed point of a map of the form
+<me>
+    R = \Phi(R)
+</me>
+and we can use this to compute \(R\).
+</p>
+        <p>
+We set up our ring of power series:
+</p>
+        <sage>
+            <input>
+QQx.&lt;x&gt; = QQ[[]]; QQx
+</input>
+            <output>
+Power Series Ring in x over Rational Field
+</output>
+        </sage>
+        <p>
+If <c>R</c> is a power series \(\sum r_n x^n\), then <c>R.V(i)</c> denotes the series \(\sum r_n x^{ni}\).  For example,
+</p>
+        <sage>
+            <input>
+R = 5 + 4*x -3*x^3
+R.V(4)
+</input>
+            <output>
+5 + 4*x^4 - 3*x^12
+</output>
+        </sage>
+        <p>
+So our mapping on series is easy.
+</p>
+        <sage>
+            <input>
+Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
+def iter2( init, acc, times):
+    val = Phi( init, acc)
+    for i in [1..times]:
+        acc += 1
+        val = Phi( val, acc)
+    return val
+</input>
+        </sage>
+        <sage>
+            <input>
+iter2( x+x^2,2,7)
+</input>
+            <output>
+x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 48*x^7 + 
+115*x^8 + 286*x^9 + 719*x^10 + O(x^11)
+</output>
+        </sage>
+        <p>
+You should prove that this procedure produces a sequence of
+series that converges to the generating series for rooted trees.
+You will probably find this procedure converges somewhat more
+quickly then your convergence proof implies.
+</p>
+        <p>
+Next we apply the Newton-Raphson procedure.
+Here's the code, without explanation :-(
+</p>
+        <sage>
+            <input>
+def nrtrees(n):
+    Qx.&lt;x&gt; =QQ[[]]
+    rr = Qx([0,1,1])
+    lim = 2
+    for j in [1..n]:
+        ss = x*(sum([rr.V(i)/i for i in [1..2*lim]]).exp(2*lim+1))
+        lim = 2*lim+1
+        rr = rr +(ss-rr)/(1-ss)
+        rr = Qx(rr.list())
+    return rr
+</input>
+        </sage>
+        <sage>
+            <input>
+nrtrees(2)
+</input>
+            <output>
+x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 
+48*x^7 + 115*x^8 + 286*x^9 + 719*x^10 + 1842*x^11
+</output>
+        </sage>
+        <p>
+Note that <c>rr = Qx([0,1,1])</c> is an up-market version of <c>rr = x+x^2</c>.
+The line <c>rr = Qx(rr.list())</c> is a hack to force sage to work with the
+required degree of precision. Your exercise is to show that the output of this 
+procedure is correct.
+</p>
+        <p>
+If \(T(x)\) is the generating series for trees, then
+<me>
+    T(x) = R(x) -\frac12(R(x)^2-R(x^2))
+</me>
+Hence we can easily get the number of trees from \(R(x)\).
+</p>
+        <sage>
+            <input>
+rr = nrtrees(3)
+rr - (1/2)*(rr^2-rr.V(2)).O(14)
+</input>
+            <output>
+x + x^2 + x^3 + 2*x^4 + 3*x^5 + 6*x^6 + 
+11*x^7 + 23*x^8 + 47*x^9 + 106*x^10 + 
+235*x^11 + 551*x^12 + 1301*x^13 + O(x^14)
+</output>
+        </sage>
+    </section>
+</chapter>
