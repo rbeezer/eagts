@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="cayley" filebase="cayley">
+    <title>Cayley Graphs</title>
+    <section>
+        <title>Cayley Graphs</title>
+        <p>
+If \(G\) is a group and \(C\sbs G\) (i.e., a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):
+</p>
+        <sage>
+            <input>
+G = DihedralGroup(5)
+C = [G.gen(0), G.gen(1)]
+CG = G.cayley_graph( generators = C)
+CG.show()  # not tested
+</input>
+        </sage>
+        <p>
+The output is a directed graph, even if \(C\) is inverse-closed; in the latter
+case we can convert \(G\) to a graph by
+</p>
+        <sage>
+            <input>
+CGU = CG.to_undirected()
+CGU.show()  # not tested
+</input>
+        </sage>
+        <p>
+Note that \(C\) is not required to generate \(G\). There are a number of keywords
+to this command (for example, <c>side</c> and <c>simple</c>) but I cannot
+follow their documentation and so I do not know what they do.
+</p>
+        <p>
+Note that the <c>Graph()</c> command makes it easy to construct Cayley
+graphs ourselves. For example, a <term>cubelike graph</term> is a Cayley
+graph for \(GF(2)^d\). We can construct them using <c>Graph()</c>.
+</p>
+        <sage>
+            <input>
+def cubelike(d, vector_list):
+    VS = VectorSpace(GF(2),d)
+    vxs = range(2^d)
+    return Graph([vxs, lambda i,j: VS[i]-VS[j] in vector_list])
+</input>
+        </sage>
+        <p>
+Here <c>vector_list</c> is a list of 01-vectors of length \(d\).
+</p>
+        <sage>
+            <input>
+V = GF(2)^5
+vl = [V([0,1,1,0,0]), V([1,1,0,1,1]), V([1,0,0,0,1])]         
+T = cubelike(5, vl)                                   
+show(T, layout='circular')  # not tested                      
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+For a general group, we can use the following construction to create an undirected Cayley graph.
+</p>
+        <sage>
+            <input>
+G = DihedralGroup(5)
+C = [G.gen(0), G.gen(0)^-1, G.gen(1), G.gen(1)^-1]
+CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
+CG.show()  # not tested
+</input>
+            <output>
+</output>
+        </sage>
+        <p>
+This will produce an incorrect result if \(C\) is not inverse-closed.
+</p>
+        <p>
+Sage provides access to GAP, and hence access to any group that is
+in GAP or can be constructed in GAP.  Be warned that the documentation
+for GAP probably outweighs that for Sage.
+</p>
+    </section>
+    <section>
+        <title>The Higman-Sims Graph</title>
+        <p>
+We construct the famous Higman-Sims graph as a Cayley graph for a permutation
+group. Our code is based on an interesting paper by Jorgensen and Klin
+from the Electronic Journal of Combinatorics
+(<url href="http://www.combinatorics.org/Volume_10/PDF/v10i1r17.pdf"/>).
+They provide constructions for a number of srg's on 100 vertices.
+</p>
+        <p>
+First we form a permutation group.
+</p>
+        <sage>
+            <input>
+H1 = PermutationGroup([[(1,2,3,4,5)], [(6,7,8,9,10)], [(2,3,5,4)]])
+H1
+</input>
+            <output>
+Permutation Group with generators [(6,7,8,9,10), (2,3,5,4), (1,2,3,4,5)]
+</output>
+        </sage>
+        <p>
+The argument to <c>PermutationGroup()</c> is a list where each item in the
+list is a list of cycles. Using <c>H1.order()</c> shows that <c>H1</c> has 
+order 100 while <c>H1.gens()</c> provides a list of generators<ndash/>-naturally they 
+are the three elements we used, but in a different order.
+The command <c>H1.cayley_graph()</c> will return a directed Cayley graph using
+the elements of <c>H.gens()</c> as the connection set.
+</p>
+        <p>
+Obviously, to get the Higman-Sims graph we need a special connection set.
+For this we make use of the following set of 22 triples:
+</p>
+        <sage>
+            <input>
+ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),
+      (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),
+      (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),
+      (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
+</input>
+        </sage>
+        <p>
+We set
+</p>
+        <sage>
+            <input>
+y,z,x = H1.gens()
+</input>
+        </sage>
+        <p>
+and then create a connection set
+</p>
+        <sage>
+            <input>
+C = [ x^it[0]*y^it[1]*z^it[2] for it in ds]
+C
+</input>
+            <output>
+[(1,2,3,4,5), (1,5,4,3,2), (2,3,5,4)(6,7,8,9,10), 
+(2,3,5,4)(6,10,9,8,7), (1,5,3,4), (1,4,5,2)(6,8,10,7,9), 
+(1,4,5,2)(6,9,7,10,8), (2,5)(3,4)(6,7,8,9,10), 
+(2,5)(3,4)(6,10,9,8,7), (1,5)(2,4)(6,8,10,7,9), 
+(1,5)(2,4)(6,9,7,10,8), (1,4)(2,3), (1,3)(4,5)(6,7,8,9,10), 
+(1,3)(4,5)(6,8,10,7,9), (1,3)(4,5)(6,9,7,10,8), 
+(1,3)(4,5)(6,10,9,8,7), (1,2)(3,5), (2,4,5,3)(6,7,8,9,10), 
+(2,4,5,3)(6,10,9,8,7), (1,4,3,5), (1,2,5,4)(6,8,10,7,9), 
+(1,2,5,4)(6,9,7,10,8)]
+</output>
+        </sage>
+        <p>
+Here \(x\), \(y\) and \(z\) are our original generators and \(C\) is a subset
+of \(G\) consisting of elements of the form \(x^iy^jz^k\). So they are
+specified by triples \((i,j,k)\) and <c>ds</c> is indeed a set of triples.
+We perform a partial check on our work by testing if \(C\) is inverse-closed.
+</p>
+        <sage>
+            <input>
+all( [x^-1 in C for x in C] )
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+The graph we want is
+</p>
+        <sage>
+            <input>
+G = H1.cayley_graph( generators=C)
+</input>
+        </sage>
+        <p>
+How can we confirm that this is the Higman-Sims graph?  Well, it is connected,
+regular, and has exactly three eigenvalues (as we see in the factored characteristic polynomial):
+</p>
+        <sage>
+            <input>
+G.is_connected(), G.is_regular(), G.am().fcp()
+</input>
+            <output>
+(True, True, (x - 22) * (x + 8)^22 * (x - 2)^77)
+</output>
+        </sage>
+        <p>
+Since the Higman-Sims graph is determined by its eigenvalues, we have it.
+We used <c>G.am().fcp()</c> to get the factored characteristic polynomial
+of \(G\), because it's shorter than <c>G.characteristic_polynomial().factor()</c>
+even with tab completion. Also, for a graph on any significant number of vertices
+there is very little to be gained by looking at the coefficients of its
+characteristic polynomial<ndash/>-they are far too large!
+</p>
+        <p>
+We can use <c>G.girth()</c> to see that \(G\) is triangle-free and we can see that \(G\) is vertex transitive.
+</p>
+        <sage>
+            <input>
+G.girth(), G.is_vertex_transitive()
+</input>
+            <output>
+(4, True)
+</output>
+        </sage>
+        <p>
+To verify that \(G\) is arc-transitive, we prove more by showing
+that the stabilizer of a vertex has exactly three orbits on vertices.
+We set things up with
+</p>
+        <sage>
+            <input>
+G.relabel()
+part = [[0], [1..99]]
+orbs = G.automorphism_group( return_group=False,\
+    partition=part, orbits=True)
+</input>
+        </sage>
+        <p>
+Some explanations are in order. As created the vertices of \(G\) are permutations,
+after <c>G.relabel()</c> they are the integers in \([0..99]\). Now
+<c>part</c> is a simple partition of \(G\), isolating the vertex \(0\).  Then 
+<c>orbs</c> is the list of orbits of the subgroup of automorphisms of \(G\)
+that fix each cell of the partition <c>part</c>, effectively the 
+stabiliser of the vertex \(0\). From
+</p>
+        <sage>
+            <input>
+len(orbs)
+</input>
+            <output>
+3
+</output>
+        </sage>
+        <p>
+we infer that the vertex stabiliser has three orbits, which must be 0,
+the neighbors of 0 and the vertices at distance two from 0. We conclude
+that \(\aut G\) is a rank-three permutation group. Its order?
+</p>
+        <sage>
+            <input>
+G.automorphism_group(return_group=False,order=True)
+</input>
+            <output>
+88704000
+</output>
+        </sage>
+        <p>
+The Higman-Sims graph contains many triangle-free srg's as subgraphs.
+For example, the subgraphs obtained by deleting a vertex and its neighbors,
+or by deleting two adjacent vertices and its neighbors. Its vertices
+can be partitioned into two copies of the Hoffman-Singleton graph,
+but that's another story.
+</p>
+    </section>
+    <section>
+        <title>The 600-Cell</title>
+        <p>
+It's a wikifact that if \(f:=(1+\sqrt{5})/2\), then the vertices of a 600-cell 
+centered at the origin of 4-space with edges of length \(1/f\) 
+can be given as follows: 
+<ol><li>
+    16 vertices of the form
+<me>
+        \frac12(\pm1,\pm1,\pm1,\pm1),
+</me>
+    </li><li>
+    8 vertices obtained from all permutations of the coordinates of
+<me>
+        (\pm1,0,0,0)
+</me>
+    </li><li>
+    96 vertices obtained by taking all even permutations of
+<me>
+        \frac12\left(\pm1,\pm f,\pm f^{-1},0\right).
+</me>
+    </li></ol>  
+</p>
+        <p>
+The first step is produce a \(120\times4\) matrix \(U\) with these vectors
+its rows. The game is to do this without using a for-loop.
+We set up our background,
+</p>
+        <sage>
+            <input>
+x = QQ['x'].0
+K.&lt;f&gt; = NumberField(x^2-x-1)
+RR4 = VectorSpace(K,4) 
+H.&lt;i,j,k&gt; = QuaternionAlgebra(K,-1,-1)
+</input>
+        </sage>
+        <p>
+So we work with quaternions over \(\rats(f)\), where \(f\) is a zero of \(f^2-f-1\).
+Due to an unfortunate feature of Python, we must remember now <em>never</em>
+to use \(i\) or \(j\) or \(k\) as an index in a list comprehension.  If we evaluate 
+<c>[i^2 for i in [1..5]]</c> the value of \(i\) becomes \(5\) once complete.
+</p>
+        <p>
+Now we create \(U\). 
+</p>
+        <sage>
+            <input>
+CP3 = CartesianProduct([-1,1],[-1,1],[-1,1],[0])
+CP4 = CartesianProduct([-1,1],[-1,1],[-1,1],[-1,1])
+fv1 = RR4([1/2,f/2,(f-1)/2,0])
+fv2 = RR4([(f-1)/2,1/2,f/2,0])
+fv3 = RR4([f/2,(f-1)/2,1/2,0])
+xx= [fv1.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]\
+    +[fv2.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]\
+    +[fv3.pairwise_product(RR4(sign_v))\
+    for sign_v in CP3]
+mm = Matrix(xx)
+mma = mm.matrix_from_columns([1,0,3,2])
+mmb = mm.matrix_from_columns([2,3,0,1])
+mmc = mm.matrix_from_columns([3,2,1,0])
+MM = block_matrix([mm,mma,mmb,mmc], nrows=4)
+ww = RR4([1/2,1/2,1/2,1/2])
+xxd =\ 
+    [ww.pairwise_product(RR4(sign_v))\
+    for sign_v in CP4]+[RR4([1,0,0,0]),\  
+    RR4([-1,0,0,0]),RR4([0,1,0,0]),RR4([0,-1,0,0]),\ 
+    RR4([0,0,1,0]), RR4([0,0,-1,0]),RR4([0,0,0,1]),\
+    RR4([0,0,0,-1])]
+U = MM.stack(Matrix(xxd))
+</input>
+        </sage>
+        <p>
+The best we can say for the above code is that it works. Interestingly
+enough, the columns of \(U\) are orthogonal since \(U^TU =30I\).
+</p>
+        <sage>
+            <input>
+U.transpose()*U
+</input>
+            <output>
+[30  0  0  0]
+[ 0 30  0  0]
+[ 0  0 30  0]
+[ 0  0  0 30]
+</output>
+        </sage>
+        <p>
+Two vectors are adjacent in the 1-skeleton if their inner product is \(1/f\).
+</p>
+        <sage>
+            <input>
+DC = Graph([[1..120], lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
+DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
+</input>
+            <output>
+(True, True, 12, 5)
+</output>
+        </sage>
+        <p>
+We compute the orbits of the vertex stabilizer of \(\aut{DC}\).
+</p>
+        <sage>
+            <input>
+DCgrp = DC.automorphism_group( partition = [[1],[2..120]])
+map( len, DCgrp.orbits())
+</input>
+            <output>
+[12, 12, 20, 20, 12, 12, 1, 30, 1]
+</output>
+        </sage>
+        <p>
+We convert the rows of \(U\) to quaternions.
+</p>
+        <sage>
+            <input>
+qu = [uu[0]+uu[1]*i+uu[2]*j +uu[3]*k for uu in U.rows()]
+</input>
+        </sage>
+        <p>
+The reduced trace of a quaternion \(q\) is \(q+q^*\), in other words it is
+twice its real part. The multiplicative order of a quaternion is determined
+by its real trace. We compute the partition of \(qu\) by reduced trace
+</p>
+        <sage>
+            <input>
+def ls_dict( tuples):
+    dc = {} 
+    for pair in tuples:
+        if dc.has_key( pair[0]):
+            dc[ pair[0]].append(pair[1])
+        else:
+            dc[ pair[0]] = [pair[1]]
+    return dc
+</input>
+        </sage>
+        <sage>
+            <input>
+tuples = [(qq.reduced_trace(),qq) for qq in qu]
+dc = ls_dict( tuples)
+[(kit, len(dc[kit])) for kit in dc.keys()]
+</input>
+            <output>
+[(0, 30), (1, 20), (2, 1), (-f, 12), (-f + 1, 12), 
+(f - 1, 12), (f, 12), (-2, 1), (-1, 20)]
+</output>
+        </sage>
+        <p>
+Comparing the number of quaternions with given reduced trace with the
+sizes of the orbits of the vertex stabilizer, suggests that the two partitions
+are equal. You should verify this. You should also verify that the
+multiplicative order of an element of <c>qu</c> is determined by its 
+reduced trace. (Use <c>qq.order()</c>.) In particular the quaternions
+with reduced trace \(f\) or \(1-f\) have order 10. The quaternions in
+<c>qu</c> form a multiplicative group isomorphic to \(SL(2,5)\).
+You can access this group in Sage by
+</p>
+        <sage>
+            <input>
+T = SL(2,5)
+T
+</input>
+            <output>
+Special Linear Group of degree 2 over Finite Field of size 5
+</output>
+        </sage>
+        <p>
+The 600-cell is a Cayley graph for this group with a connection
+set consisting of a conjugacy class of elements of order 10.
+There are two such conjugacy classes, one formed by the elements
+with reduced trace \(f\) and the other consisting of the elements of reduced
+trace \(1-f\). We show now that the Cayley graph with respect to the first of these
+conjugacy classes is isomorphic to \(DC\), you should verify that the second is.
+</p>
+        <sage>
+            <input>
+rtf = [it for it in qu if it.reduced_trace() == f]
+conn = Set([ it^(-1)*rtf[0]*it for it in qu]).list()
+CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
+</input>
+        </sage>
+        <p>
+and now
+</p>
+        <sage>
+            <input>
+CG.is_isomorphic( DC)
+</input>
+            <output>
+True
+</output>
+        </sage>
+        <p>
+The quaternion
+<me>
+    th = (-1/2) + 1/2*i + 1/2*j + 1/2*k
+</me>
+has order three and its orbits on \(DC\) are cocliques. The quotient
+over its orbits is a graph on 40 vertices which, like <c>DC</c>, is locally
+an icosahedron. We confirm the first claim:
+</p>
+        <sage>
+            <input>
+nbhd = DC.subgraph( vertices=DC[1])
+nbhd.is_isomorphic( graphs.IcosahedralGraph())
+</input>
+            <output>
+True
+</output>
+        </sage>
+    </section>
+    <section>
+        <title>Cubelike Graphs</title>
+        <p>
+A cubelike graph is a Cayley graph for \(\ints_2^d\). The connection
+set of such a graph can be encoded by a \(d\times m\) matrix with distinct
+columns. If \(M\) is such a matrix then we can get a list of its columns with <c>cols = M.columns()</c> and we can recover \(M\) with <c>M = Matrix(cols).transpose()</c>.
+</p>
+        <p>
+The natural choice for the vertices of a cubelike graph are the elements of
+</p>
+        <sage>
+            <input>
+V = VectorSpace( GF(2)), d)  # not tested
+</input>
+        </sage>
+        <p>
+but these are not hashable. We can make a vector <c>v</c> hashable with <c>v.set_immutable()</c> and use vectors as vertices, or work as follows.  Suppose that <c>vls</c> is a list of vectors from a vector space <c>V</c>.
+</p>
+        <sage>
+            <input>
+G = Graph( [[0..len(vls)-1],\
+    lambda i,j: vls[i]-vls[j] in V.list()]) # not tested
+</input>
+        </sage>
+        <sage>
+            <input>
+P = graphs.PetersenGraph()
+D = P.incidence_matrix()
+B = D.change_ring( GF(2))  # convert to a matrix over GF(2)
+B0 = B.submatrix( nrows=B.nrows()-1)  # delete last row
+B0
+</input>
+            <output>
+[1 1 1 0 0 0 0 0 0 0 0 0 0 0 0]
+[0 0 1 1 1 0 0 0 0 0 0 0 0 0 0]
+[0 0 0 0 1 1 1 0 0 0 0 0 0 0 0]
+[0 0 0 0 0 0 1 1 1 0 0 0 0 0 0]
+[0 1 0 0 0 0 0 0 1 1 0 0 0 0 0]
+[1 0 0 0 0 0 0 0 0 0 1 1 0 0 0]
+[0 0 0 1 0 0 0 0 0 0 0 0 1 1 0]
+[0 0 0 0 0 1 0 0 0 0 0 1 0 0 1]
+[0 0 0 0 0 0 0 1 0 0 1 0 0 1 0]
+</output>
+        </sage>
+        <p>
+For humans it can be convenient to encode binary vectors of length \(d\) as 
+integers between 0 and \(2^{d-1}\). With \(G\) as just defined, its connection
+set will be the correct set of integers.
+</p>
+        <sage>
+            <input>
+def cubelike(vecls):
+    d = len(vecls[0])
+    VS = VectorSpace(GF(2),d)
+    return Graph([[0..(2^d-1)], lambda i,j: VS[i]-VS[j] in vecls])
+</input>
+        </sage>
+        <sage>
+            <input>
+PP = cubelike(B0.columns())
+PP.am().fcp()
+</input>
+            <output>
+(x - 15) * (x + 9)^5 * (x - 9)^10 * (x - 7)^15 * 
+(x + 7)^30 * (x - 5)^36 * (x + 3)^60 * (x + 5)^60 * 
+(x + 1)^75 * (x - 3)^100 * (x - 1)^120
+</output>
+        </sage>
+    </section>
+</chapter>
