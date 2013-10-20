@@ -3,11 +3,9 @@
     <title>Distance-Regular Graphs</title>
     <section>
         <title>Distance Regularity</title>
-        <p>
-First some code to allow us to test if a graph is distance regular.
-The main use of this is to provide a test that some graph we have constructed is
-distance regular.
-</p>
+
+        <p>First some code to allow us to test if a graph is distance regular. The main use of this is to provide a test that some graph we have constructed is distance regular.</p>
+
         <sage>
             <input>
 def distance_partition( X, vxi):
@@ -16,264 +14,189 @@ def distance_partition( X, vxi):
     for vxj in xvs:
         dj = X.distance(vxi, vxj)
         E.setdefault(dj,[]).append(vxj)
-    return E.values()    
-</input>
+    return E.values()
+            </input>
         </sage>
-        <!--      -->
-        <p>
-If \(X\) is distance-regular, then the distance partition is equitable
-and the quotient matrix with respect to this partition is the same for all
-vertices. 
-</p>
-        <p>
-We use the Kneser graphs as a test case, though we must relabel the vertices to convert them from sets to integers.
-</p>
+
+        <p>If \(X\) is distance-regular, then the distance partition is equitable and the quotient matrix with respect to this partition is the same for all vertices. </p>
+
+        <p>We use the Kneser graphs as a test case, though we must relabel the vertices to convert them from sets to integers.</p>
+
         <sage>
             <input>
 X = graphs.KneserGraph(7, 3)
 X.relabel()
 dp = distance_partition( X, X.vertices()[0])
 X.is_equitable( dp, quotient_matrix=True) 
-</input>
+                </input>
             <output>
-[0 4 0 0]                               
-[1 0 3 0]                               
-[0 1 0 3]                               
+[0 4 0 0]
+[1 0 3 0]
+[0 1 0 3]
 [0 0 2 2]
-</output>
+            </output>
         </sage>
-        <p>
-If the partition is not equitable, the response would be a simple
-<c>False</c>.
-</p>
-        <p>
-Many distance-regular graphs are distance-transitive. We can test for this
-by verifying that our graph is vertex transitive and the number of
-orbits of the stabilizer of a vertex is the diameter plus one.
-</p>
+
+        <p>If the partition is not equitable, the response would be a simple <c>False</c>.</p>
+
+        <p>Many distance-regular graphs are distance-transitive. We can test for this by verifying that our graph is vertex transitive and the number of orbits of the stabilizer of a vertex is the diameter plus one.</p>
+
         <sage>
             <input>
 orbs = X.automorphism_group( return_group=0, orbits=1)
 len(orbs) == 1 
-</input>
-            <output>
-True
-</output>
+            </input>
+            <output>True</output>
         </sage>
+
         <sage>
             <input>
 pn = [ [X.vertices()[0]], X.vertices()[1:]]
 grp = X.automorphism_group( partition=pn)
 len( grp.orbits()) == X.diameter() + 1
-</input>
-            <output>
-True
-</output>
+            </input>
+            <output>True</output>
         </sage>
-        <p>
-The Kneser graph has a perfect 1-code<ndash/>-a set of seven vertices pairwise at distance
-three. If we delete the vertices in a perfect 1-code, the resulting graph
-is the Coxeter graph which is a distance-regular cubic graph.
-It is not too hard to see that a perfect 1-code will be a coclique of size seven
-that is maximal under inclusion. So we can find one and construct the
-Coxeter graph as follows.
-</p>
+
+        <p>The Kneser graph has a perfect 1-code<ndash/>-a set of seven vertices pairwise at distance three. If we delete the vertices in a perfect 1-code, the resulting graph is the Coxeter graph which is a distance-regular cubic graph. It is not too hard to see that a perfect 1-code will be a coclique of size seven that is maximal under inclusion. So we can find one and construct the Coxeter graph as follows.</p>
+
         <sage>
             <input>
 colqs = X.complement().cliques_maximal()
 colqs7 = filter( lambda it: len(it)==7, colqs)
 Y = X.copy()
 Y.delete_vertices( colqs7[0])
-</input>
+            </input>
         </sage>
-        <p>
-We confirm that \(Y\) has girth seven, an increase of one from the girth of \(X\).  You might verify that \(Y\) is distance-transitive.
-</p>
+
+        <p>We confirm that \(Y\) has girth seven, an increase of one from the girth of \(X\).  You might verify that \(Y\) is distance-transitive.</p>
+
         <sage>
-            <input>
-X.girth(), Y.girth()
-</input>
-            <output>
-(6, 7)
-</output>
+            <input>X.girth(), Y.girth()</input>
+            <output>(6, 7)</output>
         </sage>
     </section>
+
+
     <section>
         <title>Generalized Quadrangles</title>
-        <p>
-A <term>generalized quadrangle</term> is an incidence structure of points
-and lines such that
-</p>
-        <ol>
-            <li>
-    Any two points lie on at most one line.
-    </li>
-            <li>
-    If the point \(x\) is off the line \(\ell\), then there is a unique
-    point on \(\ell\) collinear with \(x\).
-    </li>
-        </ol>
-        <p>
-These axioms are self-dual, and therefore the incidence structure
-dual to a \(GQ\) is again a \(GQ\).
-</p>
-        <p>
-The smallest interesting example has as points the 15 edges of \(K_6\) and
-as lines the 15 1-factors of \(K_6\); each edge is incident with the three
-1-factors that contain it. A \(GQ\) is <term>thick</term> if each point is on at least 
-three lines and each line contains at least three points. If a \(GQ\) is thick then
-it is point and line regular, this means there are integers \(s\) and \(t\) such that
-each point lies on exactly \(t+1\) lines and each line contains exactly \(s+1\)
-points. Our example above is a \(GQ(2,2)\), traditionally denoted by \(W(2)\).
-</p>
-        <p>
-Associated to an incidence structure we have a point graph, a line graph
-and an incidence graph.  For \(W(2)\) the point and line graphs are isomorphic
-to \(L(K_6)\) (which is very easy to check); the incidence graph is
-a bipartite cubic graph on 30 vertices with diameter four and girth eight.
-It is known as <term>Tutte's 8-cage</term>. For a thick \(GQ\), both the point
-and line graphs are strongly regular.
-</p>
-        <p>
-We describe how to construct a family of \(GQ\)'s denoted by \(W(q)\), where
-\(q\) is a primes power. We will accompany the description with the
-code for \(W(3)\).
-</p>
-        <p>
-Let \(V\) be the vector space of dimension four over \(GF(q)\). Its 1-dimensional
-subspaces will be the points of our generalized quadrangle. To define
-the lines we want a non-degenerate alternating form on \(V\); this is
-given by an invertible matrix \(S\) with diagonal entries zero such that \(S+S^T=0\).
-(So if \(q\) is odd, then \(S\) is skew symmetric; if \(q\) is even it's symmetric
-with zero diagonal.) A subspace \(U\) of \(V\) is <term>isotropic</term>
-if
-<me>
-    u^THv = 0
-</me>
-for all \(u\), \(v\) in \(U\). All 1-dimensional subspaces of \(V\) are isotropic and the
-lines of \(W(q)\) will be the 2-dimensional isotropic subspaces.
-</p>
-        <p>
-Time for some actual work. We define our form:
-</p>
+
+        <p>A <term>generalized quadrangle</term> is an incidence structure of points and lines such that<ol>
+            <li>Any two points lie on at most one line. </li>
+            <li> If the point \(x\) is off the line \(\ell\), then there is a unique point on \(\ell\) collinear with \(x\).</li>
+        </ol></p>
+
+        <p>These axioms are self-dual, and therefore the incidence structure dual to a \(GQ\) is again a \(GQ\).</p>
+
+        <p>The smallest interesting example has as points the 15 edges of \(K_6\) and as lines the 15 1-factors of \(K_6\); each edge is incident with the three 1-factors that contain it. A \(GQ\) is <term>thick</term> if each point is on at least three lines and each line contains at least three points. If a \(GQ\) is thick then it is point and line regular, this means there are integers \(s\) and \(t\) such that each point lies on exactly \(t+1\) lines and each line contains exactly \(s+1\) points. Our example above is a \(GQ(2,2)\), traditionally denoted by \(W(2)\).</p>
+
+        <p>Associated to an incidence structure we have a point graph, a line graph and an incidence graph.  For \(W(2)\) the point and line graphs are isomorphic to \(L(K_6)\) (which is very easy to check); the incidence graph is a bipartite cubic graph on 30 vertices with diameter four and girth eight. It is known as <term>Tutte's 8-cage</term>. For a thick \(GQ\), both the point and line graphs are strongly regular.</p>
+
+        <p>We describe how to construct a family of \(GQ\)'s denoted by \(W(q)\), where \(q\) is a primes power. We will accompany the description with the code for \(W(3)\).</p>
+
+        <p>Let \(V\) be the vector space of dimension four over \(GF(q)\). Its 1-dimensional subspaces will be the points of our generalized quadrangle. To define the lines we want a non-degenerate alternating form on \(V\); this is given by an invertible matrix \(S\) with diagonal entries zero such that \(S+S^T=0\). (So if \(q\) is odd, then \(S\) is skew symmetric; if \(q\) is even it's symmetric with zero diagonal.) A subspace \(U\) of \(V\) is <term>isotropic</term> if <me>u^THv = 0</me> for all \(u\), \(v\) in \(U\). All 1-dimensional subspaces of \(V\) are isotropic and the lines of \(W(q)\) will be the 2-dimensional isotropic subspaces.</p>
+
+        <p>Time for some actual work. We define our form:</p>
+
         <sage>
             <input>
 def beta(u,v):
     return u[0]*v[2]+u[1]*v[3] -u[2]*v[0] -u[3]*v[1]
-</input>
+            </input>
         </sage>
-        <p>
-and create our points and lines:
-</p>
+
+        <p>and create our points and lines:</p>
+
         <sage>
             <input>
 V = VectorSpace( GF(3), 4)
 pnts = [u[1] for u in V.subspaces(1)]
 lines = [sub for sub in V.subspaces(2)\
     if beta(sub.matrix()[0],sub.matrix()[1])==0]
-</input>
+            </input>
         </sage>
-        <p>
-Two points \(u\) and \(v\) are collinear if \(\beta(u,v)=0\). Two lines \(L\) and \(M\) 
-are incident if
-</p>
+
+        <p>Two points \(u\) and \(v\) are collinear if \(\beta(u,v)=0\). Two lines \(L\) and \(M\) are incident if</p>
+
         <sage>
-            <input>
-(L != M) and (L.intersection(M) != V.zero_subspace()) # not tested
-</input>
+            <input>(L != M) and (L.intersection(M) != V.zero_subspace()) # not tested</input>
         </sage>
-        <p>
-or if they are not equal and
-</p>
+
+        <p>or if they are not equal and</p>
+
         <sage>
-            <input>
-det( L.matrix().stack(M.matrix)) == 0 # not tested
-</input>
+            <input>det( L.matrix().stack(M.matrix)) == 0 # not tested</input>
         </sage>
-        <p>
-Elements of our vector space \(V\) are "mutable", so not hashable, 
-and therefore cannot be used as vertices of a graph. This is easily circumvented:
-</p>
+
+        <p>Elements of our vector space \(V\) are "mutable", so not hashable, and therefore cannot be used as vertices of a graph. This is easily circumvented:</p>
+
         <sage>
             <input>
 adj = lambda i,j: beta(pnts[i],pnts[j])==0
 W3 = Graph([range(len(pnts)),adj], loops=False)
-</input>
+            </input>
         </sage>
-        <p>
-We can check that \(W3\) is connected and regular, and that it has exactly three
-eigenvalues (obvious in the factored characteristic polynomial):
-</p>
+
+        <p>We can check that \(W3\) is connected and regular, and that it has exactly three eigenvalues (obvious in the factored characteristic polynomial):</p>
+
         <sage>
-            <input>
-W3.is_connected(), W3.is_regular(), W3.am().fcp()
-</input>
-            <output>
-(True, True, (x - 12) * (x + 4)^15 * (x - 2)^24)
-</output>
+            <input>W3.is_connected(), W3.is_regular(), W3.am().fcp()</input>
+            <output>(True, True, (x - 12) * (x + 4)^15 * (x - 2)^24)</output>
         </sage>
-        <p>
-The lines of the \(GQ\) correspond to the cliques of maximal size, which we
-can find by
-</p>
+
+        <p>The lines of the \(GQ\) correspond to the cliques of maximal size, which we can find by</p>
+
         <sage>
-            <input>
-cliques = W3.cliques_maximum()
-</input>
+            <input>cliques = W3.cliques_maximum()</input>
         </sage>
-        <p>
-We get the point graph of the dual \(GQ\) by
-</p>
+
+        <p>We get the point graph of the dual \(GQ\) by</p>
+
         <sage>
             <input>
 adj = lambda i,j: i != j and det( lines[i].matrix().stack(lines[j].matrix())) == 0
 W3d = Graph( [range(len(lines)), adj])
-</input>
+            </input>
         </sage>
-        <p>
-As expected \(W3d\) is not isomorphic to \(W3\), but it is strongly regular with
-the same parameters.
-</p>
+
+        <p>As expected \(W3d\) is not isomorphic to \(W3\), but it is strongly regular with the same parameters.</p>
+
         <sage>
-            <input>
-W3.is_isomorphic(W3d)
-</input>
-            <output>
-False
-</output>
+            <input>W3.is_isomorphic(W3d)</input>
+            <output>False</output>
         </sage>
+
         <sage>
             <input>
 dp = distance_partition( W3, W3.vertices()[0])
 W3.is_equitable( dp, quotient_matrix=True) 
-</input>
+            </input>
             <output>
 [ 0 12  0]
 [ 1  2  9]
 [ 0  4  8]
-</output>
+            </output>
         </sage>
+
         <sage>
             <input>
 dp = distance_partition( W3d, W3d.vertices()[0])
 W3d.is_equitable( dp, quotient_matrix=True) 
-</input>
+            </input>
             <output>
 [ 0 12  0]
 [ 1  2  9]
 [ 0  4  8]
-</output>
+            </output>
         </sage>
     </section>
+
+
     <section>
         <title>The McLaughlin Graph</title>
-        <p>
-A partition \((S,\comp{S})\) of \(V(G)\) determines a bipartite subgraph of \(G\);
-if we replace this subgraph by its bipartite complement, we say that the
-resulting graph is got by <term>switching</term> on \(S\) (or on \(\comp{S}\)).
-If \(S\) is the neighborhood of a vertex \(u\) in \(G\), then after switching
-on \(S\) the vertex \(u\) is isolated.
-</p>
+
+        <p>A partition \((S,\comp{S})\) of \(V(G)\) determines a bipartite subgraph of \(G\); if we replace this subgraph by its bipartite complement, we say that the resulting graph is got by <term>switching</term> on \(S\) (or on \(\comp{S}\)). If \(S\) is the neighborhood of a vertex \(u\) in \(G\), then after switching on \(S\) the vertex \(u\) is isolated.</p>
+
         <sage>
             <input>
 def switch(G,sub):
@@ -283,19 +206,12 @@ def switch(G,sub):
         for v in rest:
             if H.has_edge(u,v): H.delete_edge(u,v)
             else: H.add_edge(u,v)
-    return H   
-</input>
+    return H
+            </input>
         </sage>
-        <p>
-We construct a graph on the blocks of the \(4\)-\((23,7,1)\) design
-formed by the words of weight seven in the binary Golay code of length 23.
-(This graph is strongly regular.)
-We then add 23 vertices \(\{0,\ldots,23\}\) corresponding to the 23 coordinate 
-positions of a code word, and join the \(i\)-th new vertex to the blocks
-that do not contain it. The resulting graph is not regular but if we switch on
-one of the new vertices and then delete it we get the McLaughlin graph
-on 275 vertices, which is strongly regular.
-</p>
+
+        <p>We construct a graph on the blocks of the \(4\)-\((23,7,1)\) design formed by the words of weight seven in the binary Golay code of length 23. (This graph is strongly regular.) We then add 23 vertices \(\{0,\ldots,23\}\) corresponding to the 23 coordinate positions of a code word, and join the \(i\)-th new vertex to the blocks that do not contain it. The resulting graph is not regular but if we switch on one of the new vertices and then delete it we get the McLaughlin graph on 275 vertices, which is strongly regular.</p>
+
         <sage>
             <input>
 C = ExtendedBinaryGolayCode()
@@ -308,24 +224,21 @@ edges = [ (i,a) for i in [0..22] for a in words if i not in a]
 MM.add_edges( edges)
 McL = switch( MM, MM[0])
 McL.delete_vertex(0)
-</input>
+            </input>
         </sage>
-        <p>
-It's strongly regular, with a big automorphism group:
-</p>
+
+        <p>It's strongly regular, with a big automorphism group:</p>
+
         <sage>
             <input>
 grp_order = McL.automorphism_group(return_group=0,order=1)
 McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
-</input>
-            <output>
-(True, True, (x - 112) * (x + 28)^22 * (x - 2)^252, 1796256000)
-</output>
+            </input>
+            <output>(True, True, (x - 112) * (x + 28)^22 * (x - 2)^252, 1796256000)</output>
         </sage>
-        <p>
-The McLaughlin graph gives rise to a regular two-graph. For details on regular
-two-graphs, see any recent book on algebraic graph theory. 
-</p>
+
+        <p>The McLaughlin graph gives rise to a regular two-graph. For details on regular two-graphs, see any recent book on algebraic graph theory. </p>
+
         <sage>
             <input>
 G = McL.copy()
@@ -339,98 +252,33 @@ C = block_matrix( 2, 2, [A,B,B,A])
 SMcL = Graph( C)
 grp = SMcL.automorphism_group()
 grp.order(), SMcL.am().fcp()
-</input>
-            <output>
-(991533312000, (x - 275) * (x + 55)^23 * (x - 5)^253 * (x + 1)^275)
-</output>
+            </input>
+            <output>(991533312000, (x - 275) * (x + 55)^23 * (x - 5)^253 * (x + 1)^275)</output>
         </sage>
-        <p>
-and now
-</p>
+
+        <p>and now</p>
+
         <sage>
-            <input>
-grp.composition_series()[1].is_simple()
-</input>
-            <output>
-True
-</output>
+            <input>grp.composition_series()[1].is_simple()</input>
+            <output>True</output>
         </sage>
-        <p>
-The group is one of Conway's simple groups.  [* Too big by a factor of two!  Does the graph need adjustment or does the simple group just come as an index 2 subgroup of the automorphism group? *]
-</p>
+
+        <p>The group is one of Conway's simple groups.  [* Too big by a factor of two!  Does the graph need adjustment or does the simple group just come as an index 2 subgroup of the automorphism group? *]</p>
     </section>
+
     <section>
         <title>Drackns: Generating Parameter Sets</title>
-        <p>
-We are interested in distance-regular antipodal covers of \(K_n\).
-First we explain `cover'. We construct a <term>cover</term> of
-index \(r\) of a graph \(X\) (or an <term>\(r\)-fold cover</term>)
-as follows. Choose a function \(f\) from the arcs (ordered pairs of adjacent
-vertices of \(X\)) to the symmetric group \(\sym r\), such that
-<me>
-    F((v,u)) =f((u,v))^{-1}
-</me>
-The vertex set of the cover \(X^f\) is 
-<me>
-    V(X)\times \{1,\ldots,r\}
-</me>
-and \((u,i)\sim (v,j)\) if \(j = i^{f(u,v)}\). Less formally, we replace each
-vertex of \(V(X)\) by a coclique of size \(r\), and cocliques corresponding
-to adjacent vertices are joined by a matching of size \(r\). The \(r\)-cocliques
-are called the <term>fibers</term> of the cover.
-</p>
-        <p>
-A cover \(X^f\) is <term>antipodal</term> if its diameter is \(d\) and two vertices
-are in the same fiber if and only they are at distance \(d\). The 3-cube is an antipodal
-cover of \(K_4\) with index two and diameter three. The line graph of the Petersen
-graph is an antipodal cover of \(K_5\) with index and diameter three.
-</p>
-        <p>
-Here we are concerned with distance-regular antipodal covers of complete graphs \(K_n\).
-Such covers must have diameter three. There are four obvious parameters \((n,r,a_1,c_2)\),
-although these are not independent, in fact counting edges joining neighbors
-of \(u\) to vertices at distance two from \(u\), we get
-<me>
-    n(n-2-a_2) = n(r-1)c_2
-</me>
-whence
-<me>
-\label{eq:n1rc2}
-    n-1-rc_2 = a_1-c_2.
-</me>
-The difference \(a_1-c_2\) occurs frequently, and we denote it by \(\de\).
-It is not too hard to show that an antipodal
-cover of \(K_n\) is distance regular if its diameter is three and any two 
-distinct non-adjacent vertices have \(c_2\) common neighbors.
-</p>
-        <p>
-Our basic problem is to determine the parameter triples \((n,r,c_2)\)
-for which a cover exists. This is an impossible problem, so we settle
-for generating parameter sets for which there is a good chance that a
-cover exists. Here our first design question surfaces: do we want to order
-our parameters by \(n\) and then \(r\) (lexicographically), or by \(nr\) then \(r\)
-(for example). We arbitrarily select the first approach.
-</p>
-        <p>
-As a first step we aim to generate a list of quadruples \((n,r,a_1,c_2)\).
-Now we know that
-<me>
-\label{eq:rbnd}
-    2\le r\le n-1.
-</me>
-What about \(c_2\). The neighborhood of a vertex induces a regular graph
-on \(n-1\) vertices with valency \(a_1\), whence \(na_1\) must be even.
-From (\ref{eq:n1rc2}) we have 
-<me>
-    n-1-a_1 = (r-1)c_2,
-</me>
-from which we infer that if \(n\) is odd and \(r\) is even, then \(c_2\) must be
-even. We also have
-<me>
-\label{c2bnd}
-    1\le c_2 \le \left\lfloor\frac{n-1}{r-1}\right\rfloor
-</me>
-</p>
+
+        <p>We are interested in distance-regular antipodal covers of \(K_n\). First we explain `cover'. We construct a <term>cover</term> of index \(r\) of a graph \(X\) (or an <term>\(r\)-fold cover</term>) as follows. Choose a function \(f\) from the arcs (ordered pairs of adjacent vertices of \(X\)) to the symmetric group \(\sym r\), such that <me>F((v,u)) =f((u,v))^{-1}</me> The vertex set of the cover \(X^f\) is <me>V(X)\times \{1,\ldots,r\}</me> and \((u,i)\sim (v,j)\) if \(j = i^{f(u,v)}\). Less formally, we replace each vertex of \(V(X)\) by a coclique of size \(r\), and cocliques corresponding to adjacent vertices are joined by a matching of size \(r\). The \(r\)-cocliques are called the <term>fibers</term> of the cover.</p>
+
+        <p>A cover \(X^f\) is <term>antipodal</term> if its diameter is \(d\) and two vertices are in the same fiber if and only they are at distance \(d\). The 3-cube is an antipodal cover of \(K_4\) with index two and diameter three. The line graph of the Petersen graph is an antipodal cover of \(K_5\) with index and diameter three.</p>
+
+        <p>Here we are concerned with distance-regular antipodal covers of complete graphs \(K_n\). Such covers must have diameter three. There are four obvious parameters \((n,r,a_1,c_2)\), although these are not independent, in fact counting edges joining neighbors of \(u\) to vertices at distance two from \(u\), we get <me>n(n-2-a_2) = n(r-1)c_2</me> whence <men xml:id="eq-n1rc2">n-1-rc_2 = a_1-c_2.</men> The difference \(a_1-c_2\) occurs frequently, and we denote it by \(\de\). It is not too hard to show that an antipodal cover of \(K_n\) is distance regular if its diameter is three and any two distinct non-adjacent vertices have \(c_2\) common neighbors.</p>
+
+        <p>Our basic problem is to determine the parameter triples \((n,r,c_2)\) for which a cover exists. This is an impossible problem, so we settle for generating parameter sets for which there is a good chance that a cover exists. Here our first design question surfaces: do we want to order our parameters by \(n\) and then \(r\) (lexicographically), or by \(nr\) then \(r\) (for example). We arbitrarily select the first approach.</p>
+
+        <p>As a first step we aim to generate a list of quadruples \((n,r,a_1,c_2)\). Now we know that <men xml:id="eq-rbnd">2\le r\le n-1.</men> What about \(c_2\). The neighborhood of a vertex induces a regular graph on \(n-1\) vertices with valency \(a_1\), whence \(na_1\) must be even. From (<xref ref="eq-n1rc2" />) we have <me>n-1-a_1 = (r-1)c_2,</me> from which we infer that if \(n\) is odd and \(r\) is even, then \(c_2\) must be even. We also have <men xml:id="eq-c2bnd">1\le c_2 \le \left\lfloor\frac{n-1}{r-1}\right\rfloor</men></p>
+
         <sage>
             <input>
     def nrc( n):
@@ -439,47 +287,13 @@ even. We also have
          for c in [1..lim] and n*(r-1)*c % 2 == 0]
     def get_a( n, r, c):
         return n, r, n-1-(r-1)*c, c
-</input>
+            </input>
         </sage>
-        <p>
-So we will generate a sequence of 4-tuples, and filter out the ones
-that obviously do not work. The most useful condition rests on the formulas
-for the multiplicities of the eigenvalues. As a distance-regular graph
-with diameter three, a drackn has exactly four distinct eigenvalues
-<me>
-    n &gt; \th &gt; -1 &gt; \tau
-</me>
-where \(n\) is simple, \(-1\) has multiplicity \(n-1\) and \(-\th\tau=n-1\).
-The eigenvalues \(\th\) and \(\tau\) are the zeros of
-<me>
-    t^2 -\de t - (n-1).
-</me>
-It is their multiplicities that interest us. With an obvious notation we have
-<md>
-    rn &amp;= 1 + (n-1) +m_\th+m_\tau\\
-    0  &amp;= (n-1) +(n-1)(-1) +m_\th\th+m_\tau\tau
-</md>
-and therefore
-<me>
-\label{eq:mult}
-    m_\th = \frac{(r-1)n(-\tau)}{\th -\tau}.
-</me>
-</p>
-        <p>
-Two cases arise. First, if \(\th\) and \(\tau\) are not integers, then
-<me>
-    \th=\sqrt{n-1},\quad \tau=-\sqrt{n-1}
-</me>
-and their multiplicities are equal to \(n(r-1)/2\). Otherwise they are integers
-and consequently the discriminant
-<me>
-\label{eq:discr}
-    (\th-\tau)^2 = \de^2+4(n-1) = (a_1-c_2)^2+4(n-1)
-</me>
-must be a perfect square. (Note that \(\de=n-1-rc_2\).) If this is a perfect square
-we can determine \(\th\) and \(\tau\), and then check that our formula for \(m_th\)
-is an integer.
-</p>
+
+        <p>So we will generate a sequence of 4-tuples, and filter out the ones that obviously do not work. The most useful condition rests on the formulas for the multiplicities of the eigenvalues. As a distance-regular graph with diameter three, a drackn has exactly four distinct eigenvalues <me>n &gt; \th &gt; -1 &gt; \tau</me> where \(n\) is simple, \(-1\) has multiplicity \(n-1\) and \(-\th\tau=n-1\). The eigenvalues \(\th\) and \(\tau\) are the zeros of <me>t^2 -\de t - (n-1).</me> It is their multiplicities that interest us. With an obvious notation we have <md>rn &amp;= 1 + (n-1) +m_\th+m_\tau\\0 &amp;= (n-1) +(n-1)(-1) +m_\th\th+m_\tau\tau</md> and therefore <men xml:id="eq-mult">m_\th = \frac{(r-1)n(-\tau)}{\th -\tau}.</men></p>
+
+        <p>Two cases arise. First, if \(\th\) and \(\tau\) are not integers, then <me>\th=\sqrt{n-1},\quad \tau=-\sqrt{n-1}</me> and their multiplicities are equal to \(n(r-1)/2\). Otherwise they are integers and consequently the discriminant <men xml:id="eq-discr">(\th-\tau)^2 = \de^2+4(n-1) = (a_1-c_2)^2+4(n-1)</men> must be a perfect square. (Note that \(\de=n-1-rc_2\).) If this is a perfect square we can determine \(\th\) and \(\tau\), and then check that our formula for \(m_th\) is an integer.</p>
+
         <sage>
             <input>
 def mult_chk( n, r, a, c):
@@ -493,32 +307,13 @@ def mult_chk( n, r, a, c):
         return (theta, tau, mth, mtau)
     else:
         return False
-</input>
+            </input>
         </sage>
-        <p>
-How do we generate 4-tuples? The simplest approach is to use <c>CartesianProduct</c>,
-but a more efficient strategy is to use generators.
-</p>
-        <p>
-Now we can generate a selected family of 4-tuples. There are other conditions
-that must hold, we write a predicate for each of these and then write
-a function that takes a 4-tuple and applies each term in a list of
-predicates. Note that, when a parameter set is eliminated we need to know
-at least one of the predicates that it fails.
-</p>
-        <p>
-There is a very strong case to be made that a better parameterization is available.
-The idea is to search on triples
-<me>
-    (-\tau,\theta, r)
-</me>
-Our approach above throws out most triples because \((a_1-c_2)^2+4(n-1)\) is not
-a perfect square. Our alternative approach only produces triples where
-this condition is satisfied. We need to treat separately the case where
-\(m_\th=m_\tau\), (equivalently \(\de=0\)) but this makes sense combinatorially. 
-If we want the parameters for covers of \(K_n\) with index \(r\), then we filter
-through the pairs \((-\tau, \theta)\) where \(\theta\) runs over the elements
-of <c>divisors(n-1)</c> such that the Krein bound holds.
-</p>
+
+        <p>How do we generate 4-tuples? The simplest approach is to use <c>CartesianProduct</c>, but a more efficient strategy is to use generators.</p>
+
+        <p>Now we can generate a selected family of 4-tuples. There are other conditions that must hold, we write a predicate for each of these and then write a function that takes a 4-tuple and applies each term in a list of predicates. Note that, when a parameter set is eliminated we need to know at least one of the predicates that it fails.</p>
+
+        <p>There is a very strong case to be made that a better parameterization is available. The idea is to search on triples <me>(-\tau,\theta, r)</me> Our approach above throws out most triples because \((a_1-c_2)^2+4(n-1)\) is not a perfect square. Our alternative approach only produces triples where this condition is satisfied. We need to treat separately the case where \(m_\th=m_\tau\), (equivalently \(\de=0\)) but this makes sense combinatorially. If we want the parameters for covers of \(K_n\) with index \(r\), then we filter through the pairs \((-\tau, \theta)\) where \(\theta\) runs over the elements of <c>divisors(n-1)</c> such that the Krein bound holds.</p>
     </section>
 </chapter>
