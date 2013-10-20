@@ -3,83 +3,45 @@
     <title>Matrices</title>
     <section>
         <title>Continuous Quantum Walks</title>
-        <p>
-One goal of this section is to introduce you to the joys of numerical linear
-algebra with sage.
-</p>
-        <p>
-Suppose \(A\) is the adjacency matrix of \(X\). We define \(H(t)=H_X(t)\) by
-<me>
-    H =\exp(iAt)
-</me>
-We are concerned with the absolute values of the entries \(H(t)\), and in particular
-want to know when we can have
-<me>
-    |H(\tau)_{u,v}| =1
-</me>
-for some time \(\tau\) and some vertices \(u\) and \(v\). Since \(A\) is symmetric 
-it has a spectral decomposition
-<me>
-    A =\sum_\th \th E_\th
-</me>
-and consequently
-<me>
-    H(t) = \sum_\th \exp(i\th t)E_\th
-</me>
-</p>
-        <p>
-To use this formula we need an orthogonal basis for each eigenspace.
-The difficulty if that if we work in floating point, then we have
-to decide which eigenvalues are actually equal before we determine
-an eigenspace.
-</p>
-        <p>
-We are going to use scipy and numpy. 
-It seems that numpy is basically an array package, which 
-provides such things as \(k\)-dimensional arrays. (Computer scientists seem
-to think these are useful, I have no idea why.) Scipy builds on numpy, providing
-access to standard linear algebra routines (eigenthings, svd, etc.)
-There is on-line documentation for scipy and numpy, but it is not very good.
-(For example it illustrates how solve linear equations by inverting the matrix 
-of coefficients.) The syntax for scipy and numpy is not consistent with sage, or 
-with python. 
-</p>
-        <p>
-Anyway, here is the opening incantation:
-</p>
+
+        <p>One goal of this section is to introduce you to the joys of numerical linear algebra with sage.</p>
+
+        <p>Suppose \(A\) is the adjacency matrix of \(X\). We define \(H(t)=H_X(t)\) by <me>H =\exp(iAt)</me> We are concerned with the absolute values of the entries \(H(t)\), and in particular want to know when we can have <me>|H(\tau)_{u,v}| =1</me> for some time \(\tau\) and some vertices \(u\) and \(v\). Since \(A\) is symmetric it has a spectral decomposition <me>A =\sum_\th \th E_\th</me> and consequently <me>H(t) = \sum_\th \exp(i\th t)E_\th</me></p>
+
+        <p>To use this formula we need an orthogonal basis for each eigenspace. The difficulty if that if we work in floating point, then we have to decide which eigenvalues are actually equal before we determine an eigenspace.</p>
+
+        <p>We are going to use scipy and numpy. It seems that numpy is basically an array package, which provides such things as \(k\)-dimensional arrays. (Computer scientists seem to think these are useful, I have no idea why.) Scipy builds on numpy, providing access to standard linear algebra routines (eigenthings, svd, etc.) There is on-line documentation for scipy and numpy, but it is not very good. (For example it illustrates how solve linear equations by inverting the matrix of coefficients.) The syntax for scipy and numpy is not consistent with sage, or with python.</p>
+
+        <p>Anyway, here is the opening incantation:</p>
+
         <sage>
             <input>
 import scipy
 from scipy import linalg as lin
-</input>
+            </input>
         </sage>
-        <p>
-We will go through some simple computations, so you can get a feel for things.
-</p>
+
+        <p>We will go through some simple computations, so you can get a feel for things.</p>
+
         <sage>
             <input>
 P = graphs.PetersenGraph()
 AP = P.am()
-</input>
-            <output>
-</output>
+            </input>
         </sage>
-        <p>
-Now with
-</p>
+
+        <p>Now with</p>
+
         <sage>
             <input>
 la, v = lin.eigh(AP)
 la
-</input>
-            <output>
-array([-2., -2., -2., -2.,  1.,  1.,  1.,  1.,  1.,  3.])
-</output>
+            </input>
+            <output> array([-2., -2., -2., -2.,  1.,  1.,  1.,  1.,  1.,  3.]) </output>
         </sage>
+
         <sage>
-            <input>
-v
-</input>
+            <input> v </input>
             <output>
 array([[ 0.        ,  0.        ,  0.        ,  0.63245553,  0.        ,
          0.        ,  0.        ,  0.        ,  0.70710678, -0.31622777],
@@ -103,30 +65,12 @@ array([[ 0.        ,  0.        ,  0.        ,  0.63245553,  0.        ,
         -0.03317306, -0.30732088, -0.06408065, -0.23570226, -0.31622777]])
 </output>
         </sage>
-        <p>
-we get the eigenvalues of \(AP\) (in \(\la\)) and the eigenvectors (in \(v\)).
-The routine <c>linalg.eigh</c> takes a Hermitian matrix and returns real eigenvalues.
-Eigenvectors corresponding to distinct eigenvalues are orthogonal. Note that the
-eigenvectors are returned by
-<c>linalg.eigh</c> as numpy arrays, and there is a argument for
-wrapping it in a routine that immediately transforms them into sage vectors.
-</p>
-        <p>
-We intend to make use of the fact that if the vector \(\seq z1m\) are an orthogonal basis
-for a subspace then the matrix representing projection onto the subspace is
-<me>
-    z_1z_1^T+\cdots+z_mz_m^T
-</me>
-The problem is that our eigenvalues have been computed in floating point, and
-so we need a routine with arguments \(\la\) and \(\eps\) which divides the
-eigenvalues into equivalence classes, where two eigenvalues are equivalent if their
-difference is less than \(\eps\). The output of the routine
-is a dictionary keyed on distinct eigenvalues and the entry with given eigenvalue
-is the set of indices of the eigenvalues equivalent to the key.
-</p>
-        <p>
-Given this it is straightforward to write the code that takes this dictionary and
-returns a list of pairs consisting of an eigenvalue and its associated projection.
-</p>
+
+        <p>we get the eigenvalues of \(AP\) (in \(\la\)) and the eigenvectors (in \(v\)). The routine <c>linalg.eigh</c> takes a Hermitian matrix and returns real eigenvalues. Eigenvectors corresponding to distinct eigenvalues are orthogonal. Note that the eigenvectors are returned by <c>linalg.eigh</c> as numpy arrays, and there is a argument for wrapping it in a routine that immediately transforms them into sage vectors.</p>
+
+        <p>We intend to make use of the fact that if the vector \(\seq z1m\) are an orthogonal basis for a subspace then the matrix representing projection onto the subspace is <me>z_1z_1^T+\cdots+z_mz_m^T</me> The problem is that our eigenvalues have been computed in floating point, and so we need a routine with arguments \(\la\) and \(\eps\) which divides the eigenvalues into equivalence classes, where two eigenvalues are equivalent if their difference is less than \(\eps\). The output of the routine is a dictionary keyed on distinct eigenvalues and the entry with given eigenvalue is the set of indices of the eigenvalues equivalent to the key.</p>
+
+        <p>Given this it is straightforward to write the code that takes this dictionary and returns a list of pairs consisting of an eigenvalue and its associated projection.</p>
+
     </section>
 </chapter>
