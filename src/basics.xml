@@ -194,7 +194,7 @@ M
 
         <sage>
             <input>G[0]</input>
-            <output>[8, 1, 2, 7]</output>
+            <output>[1, 2, 7, 8]</output>
         </sage>
 
         <p>and attempt to confirm that \((0,1)\) is an edge by</p>

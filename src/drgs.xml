@@ -216,7 +216,7 @@ def switch(G,sub):
             <input>
 C = ExtendedBinaryGolayCode()
 D = C.punctured([0])
-words = [ tuple(it.support()) for it in D if hamming_weight(it)==7]
+words = [ tuple(it.support()) for it in D if it.hamming_weight()==7]
 MG = Graph( [words, lambda a,b: len(Set(a).intersection(Set(b)))==1])
 MM = MG.copy()
 MM.add_vertices([0..22])
@@ -243,7 +243,7 @@ McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
             <input>
 G = McL.copy()
 G.relabel()
-G.add_vertex()
+newvertex = G.add_vertex()
 A = G.am()
 n = G.num_verts()
 J = Matrix(n,n,n^2*[1])
@@ -281,12 +281,12 @@ grp.order(), SMcL.am().fcp()
 
         <sage>
             <input>
-    def nrc( n):
-        lim = (n-1)/(r-1)
-        return [(n,r,c) for r in [2..n-1]\ 
-         for c in [1..lim] and n*(r-1)*c % 2 == 0]
-    def get_a( n, r, c):
-        return n, r, n-1-(r-1)*c, c
+def nrc( n):
+    lim = (n-1)/(r-1)
+    return [(n,r,c) for r in [2..n-1]
+        for c in [1..lim] and n*(r-1)*c % 2 == 0]
+def get_a( n, r, c):
+    return n, r, n-1-(r-1)*c, c
             </input>
         </sage>
 

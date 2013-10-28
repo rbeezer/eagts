@@ -44,18 +44,11 @@ D.delete_vertex(0)
             <output>[[1], [2], [3], [4], [5], [6], [7], [8, 11], [9], [10]]</output>
         </sage>
 
-        <p>As an alternative to the last command we could try the following, but its output is misleading!</p>
+        <p>As an alternative to the last command we can also use</p>
 
         <sage>
             <input>D.automorphism_group().orbits()</input>
-            <output>[[1], [2], [3], [4], [5], [6], [7, 10], [8], [9], [11]]</output>
-        </sage>
-
-        <p>This is because automorphism groups of graphs do not always exactly match the integer symbols for the permutation group to the names of the vertices.  Here is the translation between vertex names to permutation group symbols, as a Python dictionary.</p>
-
-        <sage>
-            <input>D.automorphism_group(return_group=False, translation=True)</input>
-            <output>{1: 11, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9, 11: 10}</output>
+            <output>[[1], [2], [3], [4], [5], [6], [7], [8, 11], [9], [10]]</output>
         </sage>
 
         <p>I claim \(D\) has a pair of pseudosimilar vertices. In this case we could find them by inspecting our drawing of \(D\), but we work through a general approach. The idea is to find a canonical label for each of the 11 vertex-deleted subgraphs of \(D\). The sage command</p>
@@ -90,9 +83,9 @@ P == Q, Pc == Qc
         <sage>
             <input>
 def vdi(G, i):
-H = G.copy()
-H.delete_vertex(i)
-return (H.canonical_label().graph6_string(), i)
+    H = G.copy()
+    H.delete_vertex(i)
+    return (H.canonical_label().graph6_string(), i)
            </input>
         </sage>
 
