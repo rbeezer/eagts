@@ -18,18 +18,18 @@
 
         <sage>
             <input>
-some_list = ['A', 356, x^2]
-save( some_list, 'smlst')
-           </input>
+            some_list = ['A', 356, x^2]
+            save( some_list, 'smlst')
+            </input>
         </sage>
 
         <p>and reload it with:</p>
 
         <sage>
             <input>
-renamed_list = load('smlst')
-renamed_list
-           </input>
+            renamed_list = load('smlst')
+            renamed_list
+            </input>
             <output>['A', 356, x^2]</output>
         </sage>
 
@@ -66,10 +66,10 @@ renamed_list
         <sage>
             <input>K.edges()</input>
             <output>
-[(0, 1, None), (0, 2, None), (0, 3, None), (0, 4, None),
-(1, 2, None), (1, 3, None), (1, 4, None),
-(2, 3, None), (2, 4, None), (3, 4, None)]
-           </output>
+            [(0, 1, None), (0, 2, None), (0, 3, None), (0, 4, None),
+            (1, 2, None), (1, 3, None), (1, 4, None),
+            (2, 3, None), (2, 4, None), (3, 4, None)]
+            </output>
         </sage>
 
         <p>displays the edges. To avoid the empty labels, try</p>
@@ -77,9 +77,9 @@ renamed_list
         <sage>
             <input>K.edges(labels=False)</input>
             <output>
-[(0, 1), (0, 2), (0, 3), (0, 4), (1, 2),
-(1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
-           </output>
+            [(0, 1), (0, 2), (0, 3), (0, 4), (1, 2),
+            (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
+            </output>
         </sage>
 
         <p>The command <c>K.degree()</c> produces a list of the vertex degrees, while <c>K.deg(u)</c> gives the degree of the vertex \(u\). Further <c>K[i]</c> returns the neighbors of \(i\) in \(K\). If your graph is regular (<c>K.is_regular()</c> returns <c>True</c>) then its valency is given by</p>
@@ -148,11 +148,11 @@ renamed_list
 
         <sage>
             <input>
-K2 = graphs.CompleteGraph(2)
-K3 = graphs.CompleteGraph(3)
-M = K2.union(K3)
-M
-           </input>
+            K2 = graphs.CompleteGraph(2)
+            K3 = graphs.CompleteGraph(3)
+            M = K2.union(K3)
+            M
+            </input>
             <output>Graph on 3 vertices</output>
         </sage>
 
@@ -242,16 +242,16 @@ M
 
         <sage>
             <input>
-an_edge_list = [(0, 7), (2, 4)]
-G.delete_edges( an_edge_list)
-G.edges(labels=False)
-           </input>
+            an_edge_list = [(0, 7), (2, 4)]
+            G.delete_edges( an_edge_list)
+            G.edges(labels=False)
+            </input>
             <output>
-[(0, 2), (0, 8), (1, 2), (1, 3), 
-(1, 8), (2, 3), (3, 4), (3, 5), 
-(4, 5), (4, 6), (5, 6), (5, 7), 
-(6, 7), (6, 8), (7, 8)]
-           </output>
+            [(0, 2), (0, 8), (1, 2), (1, 3),
+            (1, 8), (2, 3), (3, 4), (3, 5),
+            (4, 5), (4, 6), (5, 6), (5, 7),
+            (6, 7), (6, 8), (7, 8)]
+            </output>
         </sage>
 
         <p>Similarly we can add an edge or list of edges<ndash/>-type <c>G.add</c> followed by tab to see the things we can add and <c>G.delete</c> followed by tab for the things we can delete (which of course include vertices and list of vertices).</p>
@@ -260,16 +260,16 @@ G.edges(labels=False)
 
         <sage>
             <input>
-G.add_edges( [(10,s) for s in [1,2,3]] )
-G.edges(labels=False)
-           </input>
+            G.add_edges( [(10,s) for s in [1,2,3]] )
+            G.edges(labels=False)
+            </input>
             <output>
-[(0, 2), (0, 8), (1, 2), (1, 3), 
-(1, 8), (1, 10), (2, 3), (2, 10), 
-(3, 4), (3, 5), (3, 10), (4, 5), 
-(4, 6), (5, 6), (5, 7), (6, 7), 
-(6, 8), (7, 8)]
-           </output>
+            [(0, 2), (0, 8), (1, 2), (1, 3),
+            (1, 8), (1, 10), (2, 3), (2, 10),
+            (3, 4), (3, 5), (3, 10), (4, 5),
+            (4, 6), (5, 6), (5, 7), (6, 7),
+            (6, 8), (7, 8)]
+            </output>
         </sage>
 
         <p>Here the argument <c>[ (10,s) for s in S ]</c> to <c>G.add_edges()</c> is a simple example of a list comprehension.  We will find these are very useful.</p>
@@ -278,14 +278,14 @@ G.edges(labels=False)
 
         <sage>
             <input>
-def contract(H, e):
-    G = H.copy() 
-    u, v = e[0], e[1]
-    vedges = [(v,x) for x in G[u]]  
-    G.delete_vertex(u)
-    G.add_edges( vedges)
-    return G
-           </input>
+            def contract(H, e):
+                G = H.copy() 
+                u, v = e[0], e[1]
+                vedges = [(v,x) for x in G[u]]  
+                G.delete_vertex(u)
+                G.add_edges( vedges)
+                return G
+            </input>
         </sage>
 
         <p>A useful generalization would be a procedure that took a graph \(G\) and a partition of its vertex set as its input, and returned a graph with the cells of the partition as vertices and where two cells are adjacent if there is an edge that joins a vertex in the first cell to a vertex in the second.</p>
@@ -301,30 +301,30 @@ def contract(H, e):
 
         <sage>
             <input>
-P9 = Graph([[0..8], lambda i,j: i-j == 1])
-P9.edges(labels=False)
-           </input>
+            P9 = Graph([[0..8], lambda i,j: i-j == 1])
+            P9.edges(labels=False)
+            </input>
             <output>
-[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8)]
-           </output>
+            [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8)]
+            </output>
         </sage>
 
         <p>Here <c>lambda</c> is a synonym for <q>function</q>, its inputs precede the colon and the subsequent text computes its value. By using <c>lambda</c>, we can define our predicate inline. You should experiment to see what happens if you type <c>=</c> in place of <c>==</c>, since you will eventually do it by accident, and it is good to be able to recognize what's gone wrong. We could have defined the predicate first:</p>
 
         <sage>
             <input>
-def adj_pred( i,j):
-    return i - j == 1
-           </input>
+            def adj_pred( i,j):
+                return i - j == 1
+            </input>
         </sage>
 
         <p>and then created our graph with</p>
 
         <sage>
             <input>
-P9_2 = Graph([[0..8], adj_pred])
-P9_2.is_isomorphic(P9)
-           </input>
+            P9_2 = Graph([[0..8], adj_pred])
+            P9_2.is_isomorphic(P9)
+            </input>
             <output>True</output>
         </sage>
         <p>This illustrates that Python allows us to pass a function as an argument.</p>
@@ -344,10 +344,10 @@ P9_2.is_isomorphic(P9)
 
         <sage>
             <input>
-an_edge_list = [(0,1), (1,2), (2, 3), (3, 0), (1,3)]
-G = Graph(an_edge_list)
-G.degree()
-           </input>
+            an_edge_list = [(0,1), (1,2), (2, 3), (3, 0), (1,3)]
+            G = Graph(an_edge_list)
+            G.degree()
+            </input>
             <output>[2, 3, 2, 3]</output>
         </sage>
     </section>
