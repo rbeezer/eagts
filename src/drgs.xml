@@ -8,13 +8,13 @@
 
         <sage>
             <input>
-def distance_partition( X, vxi):
-    xvs = X.vertices()
-    E = dict()
-    for vxj in xvs:
-        dj = X.distance(vxi, vxj)
-        E.setdefault(dj,[]).append(vxj)
-    return E.values()
+            def distance_partition( X, vxi):
+                xvs = X.vertices()
+                E = dict()
+                for vxj in xvs:
+                    dj = X.distance(vxi, vxj)
+                    E.setdefault(dj,[]).append(vxj)
+                return E.values()
             </input>
         </sage>
 
@@ -24,16 +24,16 @@ def distance_partition( X, vxi):
 
         <sage>
             <input>
-X = graphs.KneserGraph(7, 3)
-X.relabel()
-dp = distance_partition( X, X.vertices()[0])
-X.is_equitable( dp, quotient_matrix=True) 
-                </input>
+            X = graphs.KneserGraph(7, 3)
+            X.relabel()
+            dp = distance_partition( X, X.vertices()[0])
+            X.is_equitable( dp, quotient_matrix=True) 
+            </input>
             <output>
-[0 4 0 0]
-[1 0 3 0]
-[0 1 0 3]
-[0 0 2 2]
+            [0 4 0 0]
+            [1 0 3 0]
+            [0 1 0 3]
+            [0 0 2 2]
             </output>
         </sage>
 
@@ -43,17 +43,17 @@ X.is_equitable( dp, quotient_matrix=True)
 
         <sage>
             <input>
-orbs = X.automorphism_group( return_group=0, orbits=1)
-len(orbs) == 1 
+            orbs = X.automorphism_group( return_group=0, orbits=1)
+            len(orbs) == 1
             </input>
             <output>True</output>
         </sage>
 
         <sage>
             <input>
-pn = [ [X.vertices()[0]], X.vertices()[1:]]
-grp = X.automorphism_group( partition=pn)
-len( grp.orbits()) == X.diameter() + 1
+            pn = [ [X.vertices()[0]], X.vertices()[1:]]
+            grp = X.automorphism_group( partition=pn)
+            len( grp.orbits()) == X.diameter() + 1
             </input>
             <output>True</output>
         </sage>
@@ -62,10 +62,10 @@ len( grp.orbits()) == X.diameter() + 1
 
         <sage>
             <input>
-colqs = X.complement().cliques_maximal()
-colqs7 = filter( lambda it: len(it)==7, colqs)
-Y = X.copy()
-Y.delete_vertices( colqs7[0])
+            colqs = X.complement().cliques_maximal()
+            colqs7 = filter( lambda it: len(it)==7, colqs)
+            Y = X.copy()
+            Y.delete_vertices( colqs7[0])
             </input>
         </sage>
 
@@ -100,8 +100,8 @@ Y.delete_vertices( colqs7[0])
 
         <sage>
             <input>
-def beta(u,v):
-    return u[0]*v[2]+u[1]*v[3] -u[2]*v[0] -u[3]*v[1]
+            def beta(u,v):
+                return u[0]*v[2]+u[1]*v[3] -u[2]*v[0] -u[3]*v[1]
             </input>
         </sage>
 
@@ -109,10 +109,10 @@ def beta(u,v):
 
         <sage>
             <input>
-V = VectorSpace( GF(3), 4)
-pnts = [u[1] for u in V.subspaces(1)]
-lines = [sub for sub in V.subspaces(2)\
-    if beta(sub.matrix()[0],sub.matrix()[1])==0]
+            V = VectorSpace( GF(3), 4)
+            pnts = [u[1] for u in V.subspaces(1)]
+            lines = [sub for sub in V.subspaces(2)\
+                if beta(sub.matrix()[0],sub.matrix()[1])==0]
             </input>
         </sage>
 
@@ -132,8 +132,8 @@ lines = [sub for sub in V.subspaces(2)\
 
         <sage>
             <input>
-adj = lambda i,j: beta(pnts[i],pnts[j])==0
-W3 = Graph([range(len(pnts)),adj], loops=False)
+            adj = lambda i,j: beta(pnts[i],pnts[j])==0
+            W3 = Graph([range(len(pnts)),adj], loops=False)
             </input>
         </sage>
 
@@ -154,8 +154,8 @@ W3 = Graph([range(len(pnts)),adj], loops=False)
 
         <sage>
             <input>
-adj = lambda i,j: i != j and det( lines[i].matrix().stack(lines[j].matrix())) == 0
-W3d = Graph( [range(len(lines)), adj])
+            adj = lambda i,j: i != j and det( lines[i].matrix().stack(lines[j].matrix())) == 0
+            W3d = Graph( [range(len(lines)), adj])
             </input>
         </sage>
 
@@ -168,25 +168,25 @@ W3d = Graph( [range(len(lines)), adj])
 
         <sage>
             <input>
-dp = distance_partition( W3, W3.vertices()[0])
-W3.is_equitable( dp, quotient_matrix=True) 
+            dp = distance_partition( W3, W3.vertices()[0])
+            W3.is_equitable( dp, quotient_matrix=True) 
             </input>
             <output>
-[ 0 12  0]
-[ 1  2  9]
-[ 0  4  8]
+            [ 0 12  0]
+            [ 1  2  9]
+            [ 0  4  8]
             </output>
         </sage>
 
         <sage>
             <input>
-dp = distance_partition( W3d, W3d.vertices()[0])
-W3d.is_equitable( dp, quotient_matrix=True) 
+            dp = distance_partition( W3d, W3d.vertices()[0])
+            W3d.is_equitable( dp, quotient_matrix=True) 
             </input>
             <output>
-[ 0 12  0]
-[ 1  2  9]
-[ 0  4  8]
+            [ 0 12  0]
+            [ 1  2  9]
+            [ 0  4  8]
             </output>
         </sage>
     </section>
@@ -199,14 +199,14 @@ W3d.is_equitable( dp, quotient_matrix=True)
 
         <sage>
             <input>
-def switch(G,sub):
-    H = G.copy()
-    rest = Set(H.vertices()).difference(Set(sub))
-    for u in sub:
-        for v in rest:
-            if H.has_edge(u,v): H.delete_edge(u,v)
-            else: H.add_edge(u,v)
-    return H
+            def switch(G,sub):
+                H = G.copy()
+                rest = Set(H.vertices()).difference(Set(sub))
+                for u in sub:
+                    for v in rest:
+                        if H.has_edge(u,v): H.delete_edge(u,v)
+                        else: H.add_edge(u,v)
+                return H
             </input>
         </sage>
 
@@ -214,16 +214,16 @@ def switch(G,sub):
 
         <sage>
             <input>
-C = ExtendedBinaryGolayCode()
-D = C.punctured([0])
-words = [ tuple(it.support()) for it in D if it.hamming_weight()==7]
-MG = Graph( [words, lambda a,b: len(Set(a).intersection(Set(b)))==1])
-MM = MG.copy()
-MM.add_vertices([0..22])
-edges = [ (i,a) for i in [0..22] for a in words if i not in a]
-MM.add_edges( edges)
-McL = switch( MM, MM[0])
-McL.delete_vertex(0)
+            C = ExtendedBinaryGolayCode()
+            D = C.punctured([0])
+            words = [ tuple(it.support()) for it in D if it.hamming_weight()==7]
+            MG = Graph( [words, lambda a,b: len(Set(a).intersection(Set(b)))==1])
+            MM = MG.copy()
+            MM.add_vertices([0..22])
+            edges = [ (i,a) for i in [0..22] for a in words if i not in a]
+            MM.add_edges( edges)
+            McL = switch( MM, MM[0])
+            McL.delete_vertex(0)
             </input>
         </sage>
 
@@ -231,8 +231,8 @@ McL.delete_vertex(0)
 
         <sage>
             <input>
-grp_order = McL.automorphism_group(return_group=0,order=1)
-McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
+            grp_order = McL.automorphism_group(return_group=0,order=1)
+            McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
             </input>
             <output>(True, True, (x - 112) * (x + 28)^22 * (x - 2)^252, 1796256000)</output>
         </sage>
@@ -241,17 +241,17 @@ McL.is_connected(), McL.is_regular(), McL.am().fcp(), grp_order
 
         <sage>
             <input>
-G = McL.copy()
-G.relabel()
-newvertex = G.add_vertex()
-A = G.am()
-n = G.num_verts()
-J = Matrix(n,n,n^2*[1])
-B = J -1 -A
-C = block_matrix( 2, 2, [A,B,B,A])
-SMcL = Graph( C)
-grp = SMcL.automorphism_group()
-grp.order(), SMcL.am().fcp()
+            G = McL.copy()
+            G.relabel()
+            newvertex = G.add_vertex()
+            A = G.am()
+            n = G.num_verts()
+            J = Matrix(n,n,n^2*[1])
+            B = J -1 -A
+            C = block_matrix( 2, 2, [A,B,B,A])
+            SMcL = Graph( C)
+            grp = SMcL.automorphism_group()
+            grp.order(), SMcL.am().fcp()
             </input>
             <output>(991533312000, (x - 275) * (x + 55)^23 * (x - 5)^253 * (x + 1)^275)</output>
         </sage>
@@ -281,12 +281,12 @@ grp.order(), SMcL.am().fcp()
 
         <sage>
             <input>
-def nrc( n):
-    lim = (n-1)/(r-1)
-    return [(n,r,c) for r in [2..n-1]
-        for c in [1..lim] and n*(r-1)*c % 2 == 0]
-def get_a( n, r, c):
-    return n, r, n-1-(r-1)*c, c
+            def nrc( n):
+                lim = (n-1)/(r-1)
+                return [(n,r,c) for r in [2..n-1]
+                    for c in [1..lim] and n*(r-1)*c % 2 == 0]
+            def get_a( n, r, c):
+                return n, r, n-1-(r-1)*c, c
             </input>
         </sage>
 
@@ -296,17 +296,17 @@ def get_a( n, r, c):
 
         <sage>
             <input>
-def mult_chk( n, r, a, c):
-    disc = (a-c)^2+4*(n-1)
-    if is_square(disc):
-        sqroot = sqrt( disc)
-        theta = (a-c+sqroot)/2
-        tau = (a-c-sqroot)/2
-        mth = n*(r-1)*theta/sqroot
-        mtau = n*(r-1)-mth
-        return (theta, tau, mth, mtau)
-    else:
-        return False
+            def mult_chk( n, r, a, c):
+                disc = (a-c)^2+4*(n-1)
+                if is_square(disc):
+                    sqroot = sqrt( disc)
+                    theta = (a-c+sqroot)/2
+                    tau = (a-c-sqroot)/2
+                    mth = n*(r-1)*theta/sqroot
+                    mtau = n*(r-1)-mth
+                    return (theta, tau, mth, mtau)
+                else:
+                    return False
             </input>
         </sage>
 
