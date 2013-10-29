@@ -8,10 +8,10 @@
 
         <sage>
             <input>
-G = DihedralGroup(5)
-C = [G.gen(0), G.gen(1)]
-CG = G.cayley_graph( generators = C)
-CG.show()  # not tested
+            G = DihedralGroup(5)
+            C = [G.gen(0), G.gen(1)]
+            CG = G.cayley_graph( generators = C)
+            CG.show()  # not tested
             </input>
         </sage>
 
@@ -19,8 +19,8 @@ CG.show()  # not tested
 
         <sage>
             <input>
-CGU = CG.to_undirected()
-CGU.show()  # not tested
+            CGU = CG.to_undirected()
+            CGU.show()  # not tested
             </input>
         </sage>
 
@@ -30,10 +30,10 @@ CGU.show()  # not tested
 
         <sage>
             <input>
-def cubelike(d, vector_list):
-    VS = VectorSpace(GF(2),d)
-    vxs = range(2^d)
-    return Graph([vxs, lambda i,j: VS[i]-VS[j] in vector_list])
+            def cubelike(d, vector_list):
+                VS = VectorSpace(GF(2),d)
+                vxs = range(2^d)
+                return Graph([vxs, lambda i,j: VS[i]-VS[j] in vector_list])
             </input>
         </sage>
 
@@ -41,10 +41,10 @@ def cubelike(d, vector_list):
 
         <sage>
             <input>
-V = GF(2)^5
-vl = [V([0,1,1,0,0]), V([1,1,0,1,1]), V([1,0,0,0,1])]
-T = cubelike(5, vl)
-show(T, layout='circular')  # not tested
+            V = GF(2)^5
+            vl = [V([0,1,1,0,0]), V([1,1,0,1,1]), V([1,0,0,0,1])]
+            T = cubelike(5, vl)
+            show(T, layout='circular')  # not tested
             </input>
         </sage>
 
@@ -52,10 +52,10 @@ show(T, layout='circular')  # not tested
 
         <sage>
             <input>
-G = DihedralGroup(5)
-C = [G.gen(0), G.gen(0)^-1, G.gen(1), G.gen(1)^-1]
-CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
-CG.show()  # not tested
+            G = DihedralGroup(5)
+            C = [G.gen(0), G.gen(0)^-1, G.gen(1), G.gen(1)^-1]
+            CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
+            CG.show()  # not tested
             </input>
         </sage>
 
@@ -74,8 +74,8 @@ CG.show()  # not tested
 
         <sage>
             <input>
-H1 = PermutationGroup([[(1,2,3,4,5)], [(6,7,8,9,10)], [(2,3,5,4)]])
-H1
+            H1 = PermutationGroup([[(1,2,3,4,5)], [(6,7,8,9,10)], [(2,3,5,4)]])
+            H1
             </input>
             <output>Permutation Group with generators [(6,7,8,9,10), (2,3,5,4), (1,2,3,4,5)]</output>
         </sage>
@@ -86,10 +86,10 @@ H1
 
         <sage>
             <input>
-ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),
-      (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),
-      (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),
-      (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
+            ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),
+                  (4,3,1), (0,1,2), (0,4,2), (1,2,2), (1,3,2), (2,0,2),
+                  (3,1,2), (3,2,2), (3,3,2), (3,4,2), (4,0,2), (0,1,3),
+                  (0,4,3), (1,0,3), (2,2,3), (2,3,3)]
             </input>
         </sage>
 
@@ -103,19 +103,19 @@ ds = [(1,0,0), (4,0,0), (0,1,1), (0,4,1), (2,0,1), (4,2,1),
 
         <sage>
             <input>
-C = [ x^it[0]*y^it[1]*z^it[2] for it in ds]
-C
+            C = [ x^it[0]*y^it[1]*z^it[2] for it in ds]
+            C
             </input>
             <output>
-[(1,2,3,4,5), (1,5,4,3,2), (2,3,5,4)(6,7,8,9,10), 
-(2,3,5,4)(6,10,9,8,7), (1,5,3,4), (1,4,5,2)(6,8,10,7,9), 
-(1,4,5,2)(6,9,7,10,8), (2,5)(3,4)(6,7,8,9,10), 
-(2,5)(3,4)(6,10,9,8,7), (1,5)(2,4)(6,8,10,7,9), 
-(1,5)(2,4)(6,9,7,10,8), (1,4)(2,3), (1,3)(4,5)(6,7,8,9,10), 
-(1,3)(4,5)(6,8,10,7,9), (1,3)(4,5)(6,9,7,10,8), 
-(1,3)(4,5)(6,10,9,8,7), (1,2)(3,5), (2,4,5,3)(6,7,8,9,10), 
-(2,4,5,3)(6,10,9,8,7), (1,4,3,5), (1,2,5,4)(6,8,10,7,9), 
-(1,2,5,4)(6,9,7,10,8)]
+            [(1,2,3,4,5), (1,5,4,3,2), (2,3,5,4)(6,7,8,9,10),
+            (2,3,5,4)(6,10,9,8,7), (1,5,3,4), (1,4,5,2)(6,8,10,7,9),
+            (1,4,5,2)(6,9,7,10,8), (2,5)(3,4)(6,7,8,9,10),
+            (2,5)(3,4)(6,10,9,8,7), (1,5)(2,4)(6,8,10,7,9),
+            (1,5)(2,4)(6,9,7,10,8), (1,4)(2,3), (1,3)(4,5)(6,7,8,9,10),
+            (1,3)(4,5)(6,8,10,7,9), (1,3)(4,5)(6,9,7,10,8),
+            (1,3)(4,5)(6,10,9,8,7), (1,2)(3,5), (2,4,5,3)(6,7,8,9,10),
+            (2,4,5,3)(6,10,9,8,7), (1,4,3,5), (1,2,5,4)(6,8,10,7,9),
+            (1,2,5,4)(6,9,7,10,8)]
            </output>
         </sage>
 
@@ -152,10 +152,9 @@ C
 
         <sage>
             <input>
-G.relabel()
-part = [[0], [1..99]]
-orbs = G.automorphism_group( return_group=False,\
-    partition=part, orbits=True)
+            G.relabel()
+            part = [[0], [1..99]]
+            orbs = G.automorphism_group( return_group=False, partition=part, orbits=True)
             </input>
         </sage>
 
@@ -190,10 +189,10 @@ orbs = G.automorphism_group( return_group=False,\
 
         <sage>
             <input>
-x = QQ['x'].0
-K.&lt;f&gt; = NumberField(x^2-x-1)
-RR4 = VectorSpace(K,4) 
-H.&lt;i,j,k&gt; = QuaternionAlgebra(K,-1,-1)
+            x = QQ['x'].0
+            K.&lt;f&gt; = NumberField(x^2-x-1)
+            RR4 = VectorSpace(K,4) 
+            H.&lt;i,j,k&gt; = QuaternionAlgebra(K,-1,-1)
             </input>
         </sage>
 
@@ -203,30 +202,25 @@ H.&lt;i,j,k&gt; = QuaternionAlgebra(K,-1,-1)
 
         <sage>
             <input>
-CP3 = CartesianProduct([-1,1],[-1,1],[-1,1],[0])
-CP4 = CartesianProduct([-1,1],[-1,1],[-1,1],[-1,1])
-fv1 = RR4([1/2,f/2,(f-1)/2,0])
-fv2 = RR4([(f-1)/2,1/2,f/2,0])
-fv3 = RR4([f/2,(f-1)/2,1/2,0])
-xx= [fv1.pairwise_product(RR4(sign_v))\
-    for sign_v in CP3]\
-    +[fv2.pairwise_product(RR4(sign_v))\
-    for sign_v in CP3]\
-    +[fv3.pairwise_product(RR4(sign_v))\
-    for sign_v in CP3]
-mm = Matrix(xx)
-mma = mm.matrix_from_columns([1,0,3,2])
-mmb = mm.matrix_from_columns([2,3,0,1])
-mmc = mm.matrix_from_columns([3,2,1,0])
-MM = block_matrix([mm,mma,mmb,mmc], nrows=4)
-ww = RR4([1/2,1/2,1/2,1/2])
-xxd =\ 
-    [ww.pairwise_product(RR4(sign_v))\
-    for sign_v in CP4]+[RR4([1,0,0,0]),\  
-    RR4([-1,0,0,0]),RR4([0,1,0,0]),RR4([0,-1,0,0]),\ 
-    RR4([0,0,1,0]), RR4([0,0,-1,0]),RR4([0,0,0,1]),\
-    RR4([0,0,0,-1])]
-U = MM.stack(Matrix(xxd))
+            CP3 = CartesianProduct([-1,1],[-1,1],[-1,1],[0])
+            CP4 = CartesianProduct([-1,1],[-1,1],[-1,1],[-1,1])
+            fv1 = RR4([1/2,f/2,(f-1)/2,0])
+            fv2 = RR4([(f-1)/2,1/2,f/2,0])
+            fv3 = RR4([f/2,(f-1)/2,1/2,0])
+            xx = [fv1.pairwise_product(RR4(sign_v)) for sign_v in CP3] +\
+                 [fv2.pairwise_product(RR4(sign_v)) for sign_v in CP3] +\
+                 [fv3.pairwise_product(RR4(sign_v)) for sign_v in CP3]
+            mm = Matrix(xx)
+            mma = mm.matrix_from_columns([1,0,3,2])
+            mmb = mm.matrix_from_columns([2,3,0,1])
+            mmc = mm.matrix_from_columns([3,2,1,0])
+            MM = block_matrix([mm,mma,mmb,mmc], nrows=4)
+            ww = RR4([1/2,1/2,1/2,1/2])
+            xxd = [ww.pairwise_product(RR4(sign_v)) for sign_v in CP4] +\
+                [RR4([1,0,0,0]), RR4([-1,0,0,0]),RR4([0,1,0,0]),
+                 RR4([0,-1,0,0]), RR4([0,0,1,0]), RR4([0,0,-1,0]),
+                 RR4([0,0,0,1]), RR4([0,0,0,-1])]
+            U = MM.stack(Matrix(xxd))
             </input>
         </sage>
         <p>The best we can say for the above code is that it works. Interestingly enough, the columns of \(U\) are orthogonal since \(U^TU =30I\).</p>
@@ -234,18 +228,18 @@ U = MM.stack(Matrix(xxd))
         <sage>
             <input>U.transpose()*U</input>
             <output>
-[30  0  0  0]
-[ 0 30  0  0]
-[ 0  0 30  0]
-[ 0  0  0 30]
-           </output>
+            [30  0  0  0]
+            [ 0 30  0  0]
+            [ 0  0 30  0]
+            [ 0  0  0 30]
+            </output>
         </sage>
         <p>Two vectors are adjacent in the 1-skeleton if their inner product is \(1/f\).</p>
 
         <sage>
             <input>
-DC = Graph([[1..120], lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
-DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
+            DC = Graph([[1..120], lambda i,j: U[i-1].inner_product(U[j-1]) == 1/2*f])
+            DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
             </input>
             <output>(True, True, 12, 5)</output>
         </sage>
@@ -254,8 +248,8 @@ DC.is_regular(), DC.is_vertex_transitive(), DC.degree()[0], DC.diameter()
 
         <sage>
             <input>
-DCgrp = DC.automorphism_group( partition = [[1],[2..120]])
-map( len, DCgrp.orbits())
+            DCgrp = DC.automorphism_group( partition = [[1],[2..120]])
+            map( len, DCgrp.orbits())
             </input>
             <output>[1, 12, 12, 20, 20, 12, 12, 1, 30]</output>
         </sage>
@@ -270,35 +264,35 @@ map( len, DCgrp.orbits())
 
         <sage>
             <input>
-def ls_dict( tuples):
-    dc = {} 
-    for pair in tuples:
-        if dc.has_key( pair[0]):
-            dc[ pair[0]].append(pair[1])
-        else:
-            dc[ pair[0]] = [pair[1]]
-    return dc
+            def ls_dict( tuples):
+                dc = {}
+                for pair in tuples:
+                    if dc.has_key( pair[0]):
+                        dc[ pair[0]].append(pair[1])
+                    else:
+                        dc[ pair[0]] = [pair[1]]
+                return dc
             </input>
         </sage>
 
         <sage>
             <input>
-tuples = [(qq.reduced_trace(),qq) for qq in qu]
-dc = ls_dict( tuples)
-[(kit, len(dc[kit])) for kit in dc.keys()]
+            tuples = [(qq.reduced_trace(),qq) for qq in qu]
+            dc = ls_dict( tuples)
+            [(kit, len(dc[kit])) for kit in dc.keys()]
             </input>
             <output>
-[(0, 30), (1, 20), (2, 1), (-f, 12), (-f + 1, 12), 
-(f - 1, 12), (f, 12), (-2, 1), (-1, 20)]
-           </output>
+            [(0, 30), (1, 20), (2, 1), (-f, 12), (-f + 1, 12), 
+            (f - 1, 12), (f, 12), (-2, 1), (-1, 20)]
+            </output>
         </sage>
 
         <p>Comparing the number of quaternions with given reduced trace with the sizes of the orbits of the vertex stabilizer, suggests that the two partitions are equal. You should verify this. You should also verify that the multiplicative order of an element of <c>qu</c> is determined by its reduced trace. (Use <c>qq.order()</c>.) In particular the quaternions with reduced trace \(f\) or \(1-f\) have order 10. The quaternions in <c>qu</c> form a multiplicative group isomorphic to \(SL(2,5)\). You can access this group in Sage by</p>
 
         <sage>
             <input>
-T = SL(2,5)
-T
+            T = SL(2,5)
+            T
             </input>
             <output>Special Linear Group of degree 2 over Finite Field of size 5</output>
         </sage>
@@ -307,9 +301,9 @@ T
 
         <sage>
             <input>
-rtf = [it for it in qu if it.reduced_trace() == f]
-conn = Set([ it^(-1)*rtf[0]*it for it in qu]).list()
-CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
+            rtf = [it for it in qu if it.reduced_trace() == f]
+            conn = Set([ it^(-1)*rtf[0]*it for it in qu]).list()
+            CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
             </input>
         </sage>
 
@@ -324,8 +318,8 @@ CG = Graph( [qu, lambda q1, q2: q2*q1^(-1) in conn])
 
         <sage>
             <input>
-nbhd = DC.subgraph( vertices=DC[1])
-nbhd.is_isomorphic( graphs.IcosahedralGraph())
+            nbhd = DC.subgraph( vertices=DC[1])
+            nbhd.is_isomorphic( graphs.IcosahedralGraph())
             </input>
             <output>True</output>
         </sage>
@@ -347,29 +341,28 @@ nbhd.is_isomorphic( graphs.IcosahedralGraph())
 
         <sage>
             <input>
-G = Graph( [[0..len(vls)-1],\
-    lambda i,j: vls[i]-vls[j] in V.list()]) # not tested
+            G = Graph( [[0..len(vls)-1], lambda i,j: vls[i]-vls[j] in V.list()]) # not tested
             </input>
         </sage>
 
         <sage>
             <input>
-P = graphs.PetersenGraph()
-D = P.incidence_matrix()
-B = D.change_ring( GF(2))  # convert to a matrix over GF(2)
-B0 = B.submatrix( nrows=B.nrows()-1)  # delete last row
-B0
+            P = graphs.PetersenGraph()
+            D = P.incidence_matrix()
+            B = D.change_ring( GF(2))  # convert to a matrix over GF(2)
+            B0 = B.submatrix( nrows=B.nrows()-1)  # delete last row
+            B0
             </input>
             <output>
-[1 1 1 0 0 0 0 0 0 0 0 0 0 0 0]
-[0 0 1 1 1 0 0 0 0 0 0 0 0 0 0]
-[0 0 0 0 1 1 1 0 0 0 0 0 0 0 0]
-[0 0 0 0 0 0 1 1 1 0 0 0 0 0 0]
-[0 1 0 0 0 0 0 0 1 1 0 0 0 0 0]
-[1 0 0 0 0 0 0 0 0 0 1 1 0 0 0]
-[0 0 0 1 0 0 0 0 0 0 0 0 1 1 0]
-[0 0 0 0 0 1 0 0 0 0 0 1 0 0 1]
-[0 0 0 0 0 0 0 1 0 0 1 0 0 1 0]
+            [1 1 1 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 1 1 1 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 1 1 1 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 1 1 1 0 0 0 0 0 0]
+            [0 1 0 0 0 0 0 0 1 1 0 0 0 0 0]
+            [1 0 0 0 0 0 0 0 0 0 1 1 0 0 0]
+            [0 0 0 1 0 0 0 0 0 0 0 0 1 1 0]
+            [0 0 0 0 0 1 0 0 0 0 0 1 0 0 1]
+            [0 0 0 0 0 0 0 1 0 0 1 0 0 1 0]
            </output>
         </sage>
 
@@ -377,22 +370,22 @@ B0
 
         <sage>
             <input>
-def cubelike(vecls):
-    d = len(vecls[0])
-    VS = VectorSpace(GF(2),d)
-    return Graph([[0..(2^d-1)], lambda i,j: VS[i]-VS[j] in vecls])
+            def cubelike(vecls):
+                d = len(vecls[0])
+                VS = VectorSpace(GF(2),d)
+                return Graph([[0..(2^d-1)], lambda i,j: VS[i]-VS[j] in vecls])
             </input>
         </sage>
 
         <sage>
             <input>
-PP = cubelike(B0.columns())
-PP.am().fcp()
+            PP = cubelike(B0.columns())
+            PP.am().fcp()
             </input>
             <output>
-(x - 15) * (x + 9)^5 * (x - 9)^10 * (x - 7)^15 * 
-(x + 7)^30 * (x - 5)^36 * (x + 3)^60 * (x + 5)^60 * 
-(x + 1)^75 * (x - 3)^100 * (x - 1)^120
+            (x - 15) * (x + 9)^5 * (x - 9)^10 * (x - 7)^15 *
+            (x + 7)^30 * (x - 5)^36 * (x + 3)^60 * (x + 5)^60 *
+            (x + 1)^75 * (x - 3)^100 * (x - 1)^120
            </output>
         </sage>
     </section>
