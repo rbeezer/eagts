@@ -66,9 +66,9 @@
 
         <sage>
             <input>
-Qu.&lt;u&gt; = QQ[]
-F = FractionField( Qu)
-Qu
+            Qu.&lt;u&gt; = QQ[]
+            F = FractionField( Qu)
+            Qu
             </input>
             <output>Univariate Polynomial Ring in u over Rational Field</output>
         </sage>
@@ -77,8 +77,8 @@ Qu
 
         <sage>
             <input>
-rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
-rf.numerator(), rf.denominator()
+            rf = (1-2*u+ u^3/(1+u+u^2))^(-1)
+            rf.numerator(), rf.denominator()
             </input>
             <output>(u^2 + u + 1, -u^3 - u^2 - u + 1)</output>
         </sage>
@@ -99,15 +99,15 @@ rf.numerator(), rf.denominator()
 
         <sage>
             <input>
-Cs = FractionField( PolynomialRing( CDF, 's'))
-whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
-for p in parts:
-    print p
+            Cs = FractionField( PolynomialRing( CDF, 's'))
+            whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
+            for p in parts:
+                print p
             </input>
             <output>
-(-0.618419922319 - 4.81868832957e-17*I)/(s - 0.543689012692)
-(-0.19079003884 + 0.0187005831117*I)/(s + 0.771844506346 + 1.11514250804*I)
-(-0.19079003884 - 0.0187005831117*I)/(s + 0.771844506346 - 1.11514250804*I)
+            (-0.618419922319 - 4.81868832957e-17*I)/(s - 0.543689012692)
+            (-0.19079003884 + 0.0187005831117*I)/(s + 0.771844506346 + 1.11514250804*I)
+            (-0.19079003884 - 0.0187005831117*I)/(s + 0.771844506346 - 1.11514250804*I)
             </output>
         </sage>
     </section>
@@ -119,8 +119,8 @@ for p in parts:
 
         <sage>
             <input>
-Rt.&lt;t&gt; = QQ[[]]
-Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
+            Rt.&lt;t&gt; = QQ[[]]
+            Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
             </input>
         </sage>
 
@@ -140,11 +140,11 @@ Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
 
         <sage>
             <input>
-def iter( Fun, init, acc, n):
-    val = init
-    for i in [1..n]:
-        val = Fun( val).O(acc)
-        acc += 1
+            def iter( Fun, init, acc, n):
+                val = init
+                for i in [1..n]:
+                    val = Fun( val).O(acc)
+                    acc += 1
             </input>
         </sage>
 
@@ -161,8 +161,8 @@ def iter( Fun, init, acc, n):
 
         <sage>
             <input>
-phi = lambda u: 1+t*u^2
-nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
+            phi = lambda u: 1+t*u^2
+            nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
             </input>
         </sage>
 
@@ -171,11 +171,11 @@ nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
         <sage>
             <input>nr(nr(nr(1+t)))</input>
             <output>
-1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 
-429*t^7 + 1430*t^8 + 4862*t^9 + 16796*t^10 + 58786*t^11 + 
-208012*t^12 + 742900*t^13 + 2674440*t^14 + 9694845*t^15 + 
-35357670*t^16 + 129644790*t^17 + 477638700*t^18 + 
-1767263190*t^19 + 6564120420*t^20 + 24466267020*t^21 + O(t^22)
+            1 + t + 2*t^2 + 5*t^3 + 14*t^4 + 42*t^5 + 132*t^6 + 
+            429*t^7 + 1430*t^8 + 4862*t^9 + 16796*t^10 + 58786*t^11 + 
+            208012*t^12 + 742900*t^13 + 2674440*t^14 + 9694845*t^15 + 
+            35357670*t^16 + 129644790*t^17 + 477638700*t^18 + 
+            1767263190*t^19 + 6564120420*t^20 + 24466267020*t^21 + O(t^22)
             </output>
         </sage>
 
@@ -207,8 +207,8 @@ nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
 
         <sage>
             <input>
-R = 5 + 4*x -3*x^3
-R.V(4)
+            R = 5 + 4*x -3*x^3
+            R.V(4)
             </input>
             <output>5 + 4*x^4 - 3*x^12</output>
         </sage>
@@ -217,13 +217,13 @@ R.V(4)
 
         <sage>
             <input>
-Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
-def iter2( init, acc, times):
-    val = Phi( init, acc)
-    for i in [1..times]:
-        acc += 1
-        val = Phi( val, acc)
-    return val
+            Phi = lambda R, n: x*(sum([R.V(i)/i for i in [1..n]]).exp(n+1))
+            def iter2( init, acc, times):
+                val = Phi( init, acc)
+                for i in [1..times]:
+                    acc += 1
+                    val = Phi( val, acc)
+                return val
             </input>
         </sage>
 
@@ -237,24 +237,24 @@ def iter2( init, acc, times):
         <p>Next we apply the Newton-Raphson procedure. Here's the code, without explanation :-(</p>
         <sage>
             <input>
-def nrtrees(n):
-    Qx.&lt;x&gt; =QQ[[]]
-    rr = Qx([0,1,1])
-    lim = 2
-    for j in [1..n]:
-        ss = x*(sum([rr.V(i)/i for i in [1..2*lim]]).exp(2*lim+1))
-        lim = 2*lim+1
-        rr = rr +(ss-rr)/(1-ss)
-        rr = Qx(rr.list())
-    return rr
+        def nrtrees(n):
+            Qx.&lt;x&gt; =QQ[[]]
+            rr = Qx([0,1,1])
+            lim = 2
+            for j in [1..n]:
+                ss = x*(sum([rr.V(i)/i for i in [1..2*lim]]).exp(2*lim+1))
+                lim = 2*lim+1
+                rr = rr +(ss-rr)/(1-ss)
+                rr = Qx(rr.list())
+            return rr
             </input>
         </sage>
 
         <sage>
             <input>nrtrees(2)</input>
             <output>
-x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 
-48*x^7 + 115*x^8 + 286*x^9 + 719*x^10 + 1842*x^11
+            x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 +
+            48*x^7 + 115*x^8 + 286*x^9 + 719*x^10 + 1842*x^11
             </output>
         </sage>
 
@@ -264,13 +264,13 @@ x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 +
 
         <sage>
             <input>
-rr = nrtrees(3)
-rr - (1/2)*(rr^2-rr.V(2)).O(14)
+            rr = nrtrees(3)
+            rr - (1/2)*(rr^2-rr.V(2)).O(14)
             </input>
             <output>
-x + x^2 + x^3 + 2*x^4 + 3*x^5 + 6*x^6 + 
-11*x^7 + 23*x^8 + 47*x^9 + 106*x^10 + 
-235*x^11 + 551*x^12 + 1301*x^13 + O(x^14)
+            x + x^2 + x^3 + 2*x^4 + 3*x^5 + 6*x^6 + 
+            11*x^7 + 23*x^8 + 47*x^9 + 106*x^10 + 
+            235*x^11 + 551*x^12 + 1301*x^13 + O(x^14)
             </output>
         </sage>
     </section>
