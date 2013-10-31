@@ -12,6 +12,7 @@
 XSL = /home/rob/mathbook/mathbook/xsl
 CSS = /home/rob/mathbook/mathbook/css
 SRC = /home/rob/books/eagts/eagts/src
+IMAGES = $(SRC)/images
 SCRATCH = /tmp/eagts-scratch
 
 VERSION = testing
@@ -25,13 +26,23 @@ SAGE = /sage/sage-5.12/sage
 test:
 	install -d $(HTMLOUT)
 	cp $(CSS)/mathbook.css $(HTMLOUT)
+	cp -a $(IMAGES) $(HTMLOUT)
 	cd $(HTMLOUT); \
 	xsltproc --xinclude  $(XSL)/mathbook-html.xsl $(SRC)/eagts.xml
 
 latex:
 	install -d $(PDFOUT)
+	cp -a $(IMAGES) $(PDFOUT)
 	cd $(PDFOUT); \
 	xsltproc --xinclude  $(XSL)/mathbook-latex.xsl $(SRC)/eagts.xml > eagts.tex; \
 	pdflatex eagts.tex; \
 	pdflatex eagts.tex
+
+showpdf:
+	evince $(PDFOUT)/eagts.pdf &
+
+doctest:
+	install -d $(SCRATCH)
+	xsltproc --xinclude  $(XSL)/mathbook-sage-doctest.xsl $(SRC)/eagts.xml > $(SCRATCH)/eagts_doctest.py
+	$(SAGE) -t  $(SCRATCH)/eagts_doctest.py
 
