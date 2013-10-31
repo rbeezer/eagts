@@ -1,3 +1,10 @@
+# This file is part of the book
+#
+#    Explorations in Algebraic Graph Theory with Sage
+#
+# Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil
+# See the file COPYING for copying conditions.
+
 # Prerequisites
 #    install         (system tool to make directories)
 #    xsltproc        (xml/xsl text processor)

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!-- This file is part of the book                            -->
+<!--                                                          -->
+<!--    Explorations in Algebraic Graph Theory with Sage      -->
+<!--                                                          -->
+<!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
+<!-- See the file COPYING for copying conditions.             -->
+
 <!-- USE XINCLUDE SWITCH ON XSLTPROC -->
 <mathbook xmlns:xi="http://www.w3.org/2001/XInclude">
 
@@ -16,6 +23,7 @@
             <xi:include href="pseries.xml" />
             <xi:include href="matrices.xml" />
 <!--             <xi:include href="factor-six.xml" /> -->
+            <xi:include href="gfdl-mathbook.xml" />
 
     </book>
 
