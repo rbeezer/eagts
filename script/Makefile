@@ -23,14 +23,14 @@ PDFOUT  = $(SCRATCH)/$(VERSION)
 SAGE = /sage/sage-5.12/sage
 
 
-test:
+html:
 	install -d $(HTMLOUT)
 	cp $(CSS)/mathbook.css $(HTMLOUT)
 	cp -a $(IMAGES) $(HTMLOUT)
 	cd $(HTMLOUT); \
 	xsltproc --xinclude  $(XSL)/mathbook-html.xsl $(SRC)/eagts.xml
 
-latex:
+pdf:
 	install -d $(PDFOUT)
 	cp -a $(IMAGES) $(PDFOUT)
 	cd $(PDFOUT); \
@@ -38,7 +38,7 @@ latex:
 	pdflatex eagts.tex; \
 	pdflatex eagts.tex
 
-showpdf:
+viewpdf:
 	evince $(PDFOUT)/eagts.pdf &
 
 doctest:
