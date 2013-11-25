@@ -18,7 +18,7 @@
 
         <p>There are two basic ways of running Sage.  One is to start Sage in a terminal window and then type <c>notebook()</c>.  This starts up a web browser and you work from there.</p>
 
-        <p>The alternative, which I use, is to start Sage in a terminal window and then open up an editor. Set the working directory in Sage to the directory where your files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><ndash/>-so don't use <c>ls</c> as the name of a list!) Write your code in the editor, save it as <c>stuff.sage</c> (say), then type  <c> load stuff.sage</c> in your terminal window. Now you can run your code in Sage. You can load as many files as you like, and if you edit a file, load it again.</p>
+        <p>The alternative, which I use, is to start Sage in a terminal window and then open up an editor. Set the working directory in Sage to the directory where your files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><mdash/>so don't use <c>ls</c> as the name of a list!) Write your code in the editor, save it as <c>stuff.sage</c> (say), then type  <c> load stuff.sage</c> in your terminal window. Now you can run your code in Sage. You can load as many files as you like, and if you edit a file, load it again.</p>
 
         <p>You can load a file with the command <c>attach stuff.sage</c> and then Sage will automatically reload your file each time you save it.  A disadvantage of this approach is that certain syntax errors in your file can confuse Sage considerably.  In this case you may have to hit control-C (and perhaps wait a bit) to unlock things.  I have found it more convenient just to use the load command, as above.</p>
 
@@ -104,7 +104,7 @@
             <output>Cycle graph: Graph on 8 vertices</output>
         </sage>
 
-        <p>gives us the cycle on 8 vertices. To get the list of possible graphs, type <c>graphs.</c> at the prompt, followed by a tab. (That's 8 keypresses<ndash/>-6 letters, a period and a tab.)</p>
+        <p>gives us the cycle on 8 vertices. To get the list of possible graphs, type <c>graphs.</c> at the prompt, followed by a tab. (That's 8 keypresses<mdash/>6 letters, a period and a tab.)</p>
 
         <p>There are many graph operations we can use. We can get the complement of our cycle by</p>
 
@@ -262,7 +262,7 @@
             </output>
         </sage>
 
-        <p>Similarly we can add an edge or list of edges<ndash/>-type <c>G.add</c> followed by tab to see the things we can add and <c>G.delete</c> followed by tab for the things we can delete (which of course include vertices and list of vertices).</p>
+        <p>Similarly we can add an edge or list of edges<mdash/>type <c>G.add</c> followed by tab to see the things we can add and <c>G.delete</c> followed by tab for the things we can delete (which of course include vertices and list of vertices).</p>
 
         <p>Adding a vertex increases the vertex set but, naturally enough, does not add any edges. If \(S\) is a list of vertices of \(G\), we can add a new vertex adjacent to each vertex in \(S\) as follows.</p>
 

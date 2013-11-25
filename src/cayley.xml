@@ -88,7 +88,7 @@
             <output>Permutation Group with generators [(6,7,8,9,10), (2,3,5,4), (1,2,3,4,5)]</output>
         </sage>
 
-        <p>The argument to <c>PermutationGroup()</c> is a list where each item in the list is a list of cycles. Using <c>H1.order()</c> shows that <c>H1</c> has order 100 while <c>H1.gens()</c> provides a list of generators<ndash/>-naturally they are the three elements we used, but in a different order. The command <c>H1.cayley_graph()</c> will return a directed Cayley graph using the elements of <c>H.gens()</c> as the connection set.</p>
+        <p>The argument to <c>PermutationGroup()</c> is a list where each item in the list is a list of cycles. Using <c>H1.order()</c> shows that <c>H1</c> has order 100 while <c>H1.gens()</c> provides a list of generators<mdash/>naturally they are the three elements we used, but in a different order. The command <c>H1.cayley_graph()</c> will return a directed Cayley graph using the elements of <c>H.gens()</c> as the connection set.</p>
 
         <p>Obviously, to get the Higman-Sims graph we need a special connection set. For this we make use of the following set of 22 triples:</p>
 

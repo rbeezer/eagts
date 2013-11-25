@@ -66,7 +66,7 @@
             <output>True</output>
         </sage>
 
-        <p>The Kneser graph has a perfect 1-code<ndash/>-a set of seven vertices pairwise at distance three. If we delete the vertices in a perfect 1-code, the resulting graph is the Coxeter graph which is a distance-regular cubic graph. It is not too hard to see that a perfect 1-code will be a coclique of size seven that is maximal under inclusion. So we can find one and construct the Coxeter graph as follows.</p>
+        <p>The Kneser graph has a perfect 1-code<mdash/>a set of seven vertices pairwise at distance three. If we delete the vertices in a perfect 1-code, the resulting graph is the Coxeter graph which is a distance-regular cubic graph. It is not too hard to see that a perfect 1-code will be a coclique of size seven that is maximal under inclusion. So we can find one and construct the Coxeter graph as follows.</p>
 
         <sage>
             <input>
