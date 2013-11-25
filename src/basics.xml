@@ -24,10 +24,11 @@
 
         <p>You can save data to a file:</p>
 
+        <!-- Do not edit file name below without adjusting doctest script -->
         <sage>
             <input>
             some_list = ['A', 356, x^2]
-            save( some_list, 'smlst')
+            save( some_list, 'testlist-eagts')
             </input>
         </sage>
 
@@ -35,7 +36,7 @@
 
         <sage>
             <input>
-            renamed_list = load('smlst')
+            renamed_list = load('testlist-eagts')
             renamed_list
             </input>
             <output>['A', 356, x^2]</output>

@@ -41,8 +41,13 @@ pdf:
 viewpdf:
 	evince $(PDFOUT)/eagts.pdf &
 
+# first doctest writes the file "testlist-eagts.sobj" in current directory
+#   this can look suspicious when left behind
+#   also prevents running doctest if working directory is below /tmp
+#   leading dash supresses shutdown on a doctest failure, so rm executes
 doctest:
 	install -d $(SCRATCH)
 	xsltproc --xinclude  $(XSL)/mathbook-sage-doctest.xsl $(SRC)/eagts.xml > $(SCRATCH)/eagts_doctest.py
-	$(SAGE) -t  $(SCRATCH)/eagts_doctest.py
+	-$(SAGE) -t  $(SCRATCH)/eagts_doctest.py
+	rm testlist-eagts.sobj
 
