@@ -114,7 +114,12 @@
             </output>
         </sage>
 
-        <p>and on inspecting the output, we see that \(D\diff 3\cong D\diff 6\).</p>
+        <p>and on inspecting the output, we see that \(D\diff 3\cong D\diff 6\), which we can also ask Sage to do for us instead via a one-line list comprehension,</p>
+
+        <sage>
+            <input>[(l1[1], l2[1]) for l1 in labels for l2 in labels if (l1[0] == l2[0]) and (l1[1] &lt; l2[1])]</input>
+            <output>[(3, 6)]</output>
+        </sage>
 
         <p>As an exercise, construct a graph on 8 vertices with a pair of pseudosimilar vertices.</p>
 
@@ -155,7 +160,7 @@
 
         <p>We see again that 3 and 6 form a pseudosimilar pair of vertices.</p>
 
-        <p>For further reading on pseudosimilar vertices, you will have to dig out papers on the topic.  I suspect that few of these are on the web, since they predate <LaTeX/>.  Fortunately we still have libraries.  Note that pseudosimilar sets of size greater than two are possible.</p>
+        <p>For further reading on pseudosimilar vertices, you will have to dig out papers on the topic.  I suspect that few of these are on the web, since they predate <latex />.  Fortunately we still have libraries.  Note that pseudosimilar sets of size greater than two are possible.</p>
 
     </section>
 
@@ -243,7 +248,7 @@
     <section>
         <title>Line Graphs and Covers</title>
 
-        <p>Let \(D\) be the incidence matrix of an orientation of the graph \(X\). Then<me>DD^T = \De -A,\quad D^TD = 2I +S</me> where \(\De\) is the diagonal matrix of valencies of \(X\) and \(S\) is a symmetric matrix with zero diaogonal and off-diagonal entries from \(\{0,1,-1\}\). In other words, \(S\) is a <term>signed adjacency matrix</term>. The entries of \(S\) are indexed by \(E(X)\), and the \(ab\)-entry is non-zero if and only if the edges \(a\) and \(b\) are adjacent in the line graph \(L(X)\) of \(X\), so we have a signed adjacency matrix for \(L(X)\).</p>
+        <p>Let \(D\) be the incidence matrix of an orientation of the graph \(X\). Then<me>DD^T = \De -A,\quad D^TD = 2I +S</me> where \(\De\) is the diagonal matrix of valencies of \(X\) and \(S\) is a symmetric matrix with zero diagonal and off-diagonal entries from \(\{0,1,-1\}\). In other words, \(S\) is a <term>signed adjacency matrix</term>. The entries of \(S\) are indexed by \(E(X)\), and the \(ab\)-entry is non-zero if and only if the edges \(a\) and \(b\) are adjacent in the line graph \(L(X)\) of \(X\), so we have a signed adjacency matrix for \(L(X)\).</p>
 
         <p>A signed ajacency matrix \(T\) of a graph \(Y\) determines a <term>two-fold cover</term> \(Z\) of \(Y\), as follows. The vertex set of the cover is <me>V(Y) \times \{0,1\}</me> and \((u,i)\) and \((v,j)\) are adjacent if and only if \(u\sim v\) and either <me>i=j,\quad T_{u,v}=1</me> or <me>i\ne j,\quad T_{u,v}=-1.</me> It is easy to check that the map that sends \((u,i)\) to \((u,1-i)\) is an automorphism of \(Z\). In matrix terms, we get the adjacency matrix of \(Z\) by applying the following substitutions to the entries of \(A(Y)\): <me>0\to\pmat{0&amp;0\\0&amp;0},\qquad 1\to\pmat{1&amp;0\\0&amp;1} \qquad -1\to\pmat{0&amp;1\\1&amp;0}.</me></p> 
 
@@ -254,7 +259,7 @@
                 <me>\phi(Z,t) =\phi(T,t)\phi(Y,t).</me>
             </statement>
             <proof>
-                <p>(Outline.) Let \(H\) be the matrix <me>\frac{1}{\sqrt{2}} \pmat{1&amp;1\\1&amp;-1}</me> and let \(K\) be the block-diagonal matrix formed using \(|V(Y)|\) copies of \(H\). If \(M\) is a complex matrix, let \(|M\) denote the matrix we get by replacing each entry of \(M\) by its absolute value. Then \(K\) is orthogonal and symmetric and \(KA(Z)K\) is permutation equivalent to <me>\pmat{S&amp;0\\0&amp;|S|}.</me></p>
+                <p>(Outline.) Let \(H\) be the matrix <me>\frac{1}{\sqrt{2}} \pmat{1&amp;1\\1&amp;-1}</me> and let \(K\) be the block-diagonal matrix formed using \(|V(Y)|\) copies of \(H\). If \(M\) is a complex matrix, let \(|M|\) denote the matrix we get by replacing each entry of \(M\) by its absolute value. Then \(K\) is orthogonal and symmetric and \(KA(Z)K\) is permutation equivalent to <me>\pmat{S&amp;0\\0&amp;|S|}.</me></p>
             </proof>
         </lemma></p>
 

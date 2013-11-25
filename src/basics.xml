@@ -180,7 +180,7 @@
         <title>Fiddling with Vertices and Edges</title>
         <p>Although we can get a lot done with the graphs already in Sage, most of the time we will need to construct our own. The simplest approach is to modify one of the prebuilt graphs.</p>
 
-        <p>For an examples, we start with the circulant graph \(G\) on 9 vertices with connection set \(C=\{1,2,7,8\}\). So \(V(G)=\mathbb{Z}_9\) and vertices \(i\) and \(j\) are adjacent if their difference is in \(C\).</p>
+        <p>For an example, we start with the circulant graph \(G\) on 9 vertices with connection set \(C=\{1,2,7,8\}\). So \(V(G)=\mathbb{Z}_9\) and vertices \(i\) and \(j\) are adjacent if their difference is in \(C\).</p>
 
         <sage>
             <input>G = graphs.CirculantGraph( 9, [1,2]); G</input>
