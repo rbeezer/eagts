@@ -12,7 +12,7 @@
     <section>
         <title>Cayley Graphs</title>
 
-        <p>If \(G\) is a group and \(C\sbs G\) (i.e., a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):</p>
+   <p>If \(G\) is a group and \(C\sbs G\) (<ie />, a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):</p>
 
         <sage>
             <input>
@@ -268,7 +268,7 @@
             <input>qu = [uu[0]+uu[1]*i+uu[2]*j +uu[3]*k for uu in U.rows()]</input>
         </sage>
 
-        <p>The reduced trace of a quaternion \(q\) is \(q+q^*\), in other words it is twice its real part. The multiplicative order of a quaternion is determined by its real trace. We compute the partition of \(qu\) by reduced trace</p>
+        <p>The reduced trace of a quaternion \(q\) is \(q+q^*\), in other words it is twice its real part. The multiplicative order of a quaternion is determined by its real trace. We compute a partition of \(qu\) according to the reduced trace.</p>
 
         <sage>
             <input>
@@ -322,7 +322,7 @@
             <output>True</output>
         </sage>
 
-        <p>The quaternion <me>th = (-1/2) + 1/2*i + 1/2*j + 1/2*k</me> has order three and its orbits on \(DC\) are cocliques. The quotient over its orbits is a graph on 40 vertices which, like <c>DC</c>, is locally an icosahedron. We confirm the first claim:</p>
+        <p>The quaternion <me>th = (-1/2) + 1/2*i + 1/2*j + 1/2*k</me> has order three and its orbits on \(DC\) are cocliques. The quotient over its orbits is a graph on 40 vertices which, like <c>DC</c>, is locally an icosahedron. We confirm the last claim:</p>
 
         <sage>
             <input>

@@ -203,7 +203,7 @@
     <section>
         <title>The McLaughlin Graph</title>
 
-        <p>A partition \((S,\comp{S})\) of \(V(G)\) determines a bipartite subgraph of \(G\); if we replace this subgraph by its bipartite complement, we say that the resulting graph is got by <term>switching</term> on \(S\) (or on \(\comp{S}\)). If \(S\) is the neighborhood of a vertex \(u\) in \(G\), then after switching on \(S\) the vertex \(u\) is isolated.</p>
+        <p>A partition \((S,\comp{S})\) of \(V(G)\) determines a bipartite subgraph of \(G\); if we replace this subgraph by its bipartite complement, we say that the resulting graph is obtained by <term>switching</term> on \(S\) (or on \(\comp{S}\)). If \(S\) is the neighborhood of a vertex \(u\) in \(G\), then after switching on \(S\) the vertex \(u\) is isolated.</p>
 
         <sage>
             <input>
@@ -277,15 +277,15 @@
     <section>
         <title>Drackns: Generating Parameter Sets</title>
 
-        <p>We are interested in distance-regular antipodal covers of \(K_n\). First we explain `cover'. We construct a <term>cover</term> of index \(r\) of a graph \(X\) (or an <term>\(r\)-fold cover</term>) as follows. Choose a function \(f\) from the arcs (ordered pairs of adjacent vertices of \(X\)) to the symmetric group \(\sym r\), such that <me>F((v,u)) =f((u,v))^{-1}</me> The vertex set of the cover \(X^f\) is <me>V(X)\times \{1,\ldots,r\}</me> and \((u,i)\sim (v,j)\) if \(j = i^{f(u,v)}\). Less formally, we replace each vertex of \(V(X)\) by a coclique of size \(r\), and cocliques corresponding to adjacent vertices are joined by a matching of size \(r\). The \(r\)-cocliques are called the <term>fibers</term> of the cover.</p>
+        <p>We are interested in distance-regular antipodal covers of \(K_n\). We construct a <term>cover</term> of index \(r\) of a graph \(X\) (or an <term>\(r\)-fold cover</term>) as follows. Choose a function \(f\) from the arcs (ordered pairs of adjacent vertices of \(X\)) to the symmetric group \(\sym r\), such that <me>F((v,u)) =f((u,v))^{-1}</me> The vertex set of the cover \(X^f\) is <me>V(X)\times \{1,\ldots,r\}</me> and \((u,i)\sim (v,j)\) if \(j = i^{f(u,v)}\). Less formally, we replace each vertex of \(V(X)\) by a coclique of size \(r\), and cocliques corresponding to adjacent vertices are joined by a matching of size \(r\). The \(r\)-cocliques are called the <term>fibers</term> of the cover.</p>
 
         <p>A cover \(X^f\) is <term>antipodal</term> if its diameter is \(d\) and two vertices are in the same fiber if and only they are at distance \(d\). The 3-cube is an antipodal cover of \(K_4\) with index two and diameter three. The line graph of the Petersen graph is an antipodal cover of \(K_5\) with index and diameter three.</p>
 
-        <p>Here we are concerned with distance-regular antipodal covers of complete graphs \(K_n\). Such covers must have diameter three. There are four obvious parameters \((n,r,a_1,c_2)\), although these are not independent, in fact counting edges joining neighbors of \(u\) to vertices at distance two from \(u\), we get <me>n(n-2-a_2) = n(r-1)c_2</me> whence <men xml:id="eq-n1rc2">n-1-rc_2 = a_1-c_2.</men> The difference \(a_1-c_2\) occurs frequently, and we denote it by \(\de\). It is not too hard to show that an antipodal cover of \(K_n\) is distance regular if its diameter is three and any two distinct non-adjacent vertices have \(c_2\) common neighbors.</p>
+        <p>Here we are concerned with distance-regular antipodal covers of complete graphs \(K_n\). Such covers must have diameter three. There are four obvious parameters \((n,r,a_1,c_2)\), although they are not independent. Counting edges joining neighbors of \(u\) to vertices at distance two from \(u\), we get <me>n(n-2-a_2) = n(r-1)c_2</me> whence <men xml:id="eq-n1rc2">n-1-rc_2 = a_1-c_2.</men> The difference \(a_1-c_2\) occurs frequently, and we denote it by \(\de\). It is not too hard to show that an antipodal cover of \(K_n\) is distance regular if its diameter is three and any two distinct non-adjacent vertices have \(c_2\) common neighbors.</p>
 
         <p>Our basic problem is to determine the parameter triples \((n,r,c_2)\) for which a cover exists. This is an impossible problem, so we settle for generating parameter sets for which there is a good chance that a cover exists. Here our first design question surfaces: do we want to order our parameters by \(n\) and then \(r\) (lexicographically), or by \(nr\) then \(r\) (for example). We arbitrarily select the first approach.</p>
 
-        <p>As a first step we aim to generate a list of quadruples \((n,r,a_1,c_2)\). Now we know that <men xml:id="eq-rbnd">2\le r\le n-1.</men> What about \(c_2\). The neighborhood of a vertex induces a regular graph on \(n-1\) vertices with valency \(a_1\), whence \(na_1\) must be even. From (<xref ref="eq-n1rc2" />) we have <me>n-1-a_1 = (r-1)c_2,</me> from which we infer that if \(n\) is odd and \(r\) is even, then \(c_2\) must be even. We also have <men xml:id="eq-c2bnd">1\le c_2 \le \left\lfloor\frac{n-1}{r-1}\right\rfloor</men></p>
+        <p>As a first step we aim to generate a list of quadruples \((n,r,a_1,c_2)\). Now we know that <men xml:id="eq-rbnd">2\le r\le n-1.</men> What about \(c_2\)? The neighborhood of a vertex induces a regular graph on \(n-1\) vertices with valency \(a_1\), whence \(na_1\) must be even. From (<xref ref="eq-n1rc2" />) we have <me>n-1-a_1 = (r-1)c_2,</me> from which we infer that if \(n\) is odd and \(r\) is even, then \(c_2\) must be even. We also have <men xml:id="eq-c2bnd">1\le c_2 \le \left\lfloor\frac{n-1}{r-1}\right\rfloor</men></p>
 
         <sage>
             <input>
@@ -298,7 +298,10 @@
             </input>
         </sage>
 
-        <p>So we will generate a sequence of 4-tuples, and filter out the ones that obviously do not work. The most useful condition rests on the formulas for the multiplicities of the eigenvalues. As a distance-regular graph with diameter three, a drackn has exactly four distinct eigenvalues <me>n &gt; \th &gt; -1 &gt; \tau</me> where \(n\) is simple, \(-1\) has multiplicity \(n-1\) and \(-\th\tau=n-1\). The eigenvalues \(\th\) and \(\tau\) are the zeros of <me>t^2 -\de t - (n-1).</me> It is their multiplicities that interest us. With an obvious notation we have <md>rn &amp;= 1 + (n-1) +m_\th+m_\tau\\0 &amp;= (n-1) +(n-1)(-1) +m_\th\th+m_\tau\tau</md> and therefore <men xml:id="eq-mult">m_\th = \frac{(r-1)n(-\tau)}{\th -\tau}.</men></p>
+        <p>So we will generate a sequence of 4-tuples, and filter out the ones that obviously do not work. The most useful condition rests on the formulas for the multiplicities of the eigenvalues. As a distance-regular graph with diameter three, a drackn has exactly four distinct eigenvalues <me>n &gt; \th &gt; -1 &gt; \tau</me> where \(n\) is simple, \(-1\) has multiplicity \(n-1\) and \(-\th\tau=n-1\). The eigenvalues \(\th\) and \(\tau\) are the zeros of <me>t^2 -\de t - (n-1).</me> It is their multiplicities that interest us. With an obvious notation we have <md>
+            <mrow>rn &amp;= 1 + (n-1) +m_\th+m_\tau</mrow>
+            <mrow>0 &amp;= (n-1) +(n-1)(-1) +m_\th\th+m_\tau\tau</mrow>
+        </md> and therefore <men xml:id="eq-mult">m_\th = \frac{(r-1)n(-\tau)}{\th -\tau}.</men></p>
 
         <p>Two cases arise. First, if \(\th\) and \(\tau\) are not integers, then <me>\th=\sqrt{n-1},\quad \tau=-\sqrt{n-1}</me> and their multiplicities are equal to \(n(r-1)/2\). Otherwise they are integers and consequently the discriminant <men xml:id="eq-discr">(\th-\tau)^2 = \de^2+4(n-1) = (a_1-c_2)^2+4(n-1)</men> must be a perfect square. (Note that \(\de=n-1-rc_2\).) If this is a perfect square we can determine \(\th\) and \(\tau\), and then check that our formula for \(m_th\) is an integer.</p>
 
