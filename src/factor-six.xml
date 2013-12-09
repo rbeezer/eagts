@@ -8,12 +8,12 @@
 <!-- See the file COPYING for copying conditions.             -->
 
 <chapter xml:id="chapter-factor-six" filebase="factor-six">
-    <title>One-Factors of K6</title>
+    <title>One-Factors of <m>K_6</m></title>
 
     <p>In this chapter, we begin with the complete graph on six vertices, \(K_6\) and construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine to create our three ultimate combinatorial structures.</p>
 
     <section>
-        <title>Factors of the Complete Graph on Six Vertices</title>
+        <title>Factors of <m>K_6</m></title>
 
         <p>A <term>factor</term> of a graph, or more precisely a <term>1-factor</term>, is a subgraph which includes every vertex and is regular of degree \(1\).  For \(K_6\) this is a collection of \(3\) edges with no common vertices.</p>
 
@@ -48,7 +48,7 @@
             edge_names  # not tested
             </input>
         </sage>
-        <p>Since \(K_6\) includes every possible edge, a factor is partition of the vertex set into a set of three \(2\)-sets.  We discover \(15\) factors.  The <c>Sequence()</c> function just allows us to print out the factors in a format that is easy to read.</p>
+        <p>Since \(K_6\) includes every possible edge, a factor is partition of the vertex set into a set of three \(2\)-sets.  We discover \(15\) factors.</p>
 
         <sage>
             <input>
@@ -91,7 +91,7 @@
 
         <figure>
             <image source="images/K6-fifteen-one-factors.png"/>
-            <caption>Fifteen one-factors of K6</caption>
+            <caption>Fifteen one-factors of <m>K_6</m></caption>
         </figure>
 
         <p>The edge-factor incidence graph is a remarkable graph.  The Tutte \(8\)-cage is the cubic graph (<ie /> regular of degree \(3\)) with girth \(8\) and having the fewest possible number of vertices.  It therefore also qualifies as a Moore graph.  Since it is distance-transitive, it is also distance-regular.</p>
@@ -111,7 +111,7 @@
             <output>True</output>
         </sage>
 
-        <p>Since this graph is built into Sage, we can get a much more pleasing drawing from the embedding that is hard-coded into Sage.  If we give our factors names (uppercase letters from the start of the alphabet), then we can relabel the vertices of a copy of the graph and use Sage's <c>BipartiteGraph</c> class to get another informative drawing.</p>
+        <p>Since this graph is built into Sage, we can get a much more pleasing drawing from the embedding that is hard-coded.  If we give our factors names (uppercase letters from the start of the alphabet), then we can relabel the vertices of a copy of the graph and use Sage's <c>BipartiteGraph</c> class to get another informative drawing.</p>
 
         <sage>
             <input>graphs.TutteCoxeterGraph().plot()</input>
@@ -135,11 +135,11 @@
     </section>
 
     <section>
-        <title>Factorizations of the Complete Graph on Six Vertices</title>
+        <title>Factorizations of <m>K_6</m></title>
 
         <p>A <term>factorization</term>, or more precisely a <term>\(1\)-factorization</term>, is a partition of the edge set of a graph into \(1\)-factors.  For \(K_6\) this is a partition of the \({6\choose 2}=15\) edges into \(5\) factors with \(3\) edges each.</p>
 
-        <p>We will see that \(K_6\) has six distinct factorizations, each isomorphic to the other.  Furthermore, each factor is contained in exactly two of these factorizations, and any pair of factorizations have exactly one factor in common.  So given a factor we can determine a pair of factorizations and given a pair of factorizations we can determine a factor.  These observatins will be critical in the following, especially the section on duality.  These claims can be verified analytically <mdash /> we will instead use Sage experimentally.</p>
+        <p>We will see that \(K_6\) has six distinct factorizations, each isomorphic to the other.  Furthermore, each factor is contained in exactly two of these factorizations, and any pair of factorizations have exactly one factor in common.  So given a factor we can determine a pair of factorizations and given a pair of factorizations we can determine a factor.  These observations will be critical in the following, especially the section on duality.  These claims can be verified analytically <mdash /> we will instead use Sage experimentally.</p>
 
         <p>We begin by employing a graph to help us find the factorizations.  The vertices of the graph are the factors of \(K_6\), and we join two vertices if the factors are disjoint.  Then a factorization of \(K_6\) is a clique of size \(5\) in this graph, and there is no possibility of any larger clique because the edge set is exhausted by \(5\) disjoint factors.  So factorizations of \(K_6\) are maximal cliques in this graph, which we record as Sage sets.</p>
 
@@ -736,7 +736,7 @@
             </output>
         </sage>
 
-        <p>Now we describe a natural bijection between edges of \(K_6\) and factors of \(Q\).  Given an edge of \(K_6\), there remain four vertices not incident to this edge.  The subgraph induced by these four vertices (a complete graph on 4 vertices) contains three pairs of disjoint edges, which may be combined with the first edge to form the three edges of a factor of \(K_6\).  Each of these three factors of \(K_6\) is then associated with an edge of \(Q\).  Since these three factors are not pairwise disjoint, no two of factors can be in the same factorization.  So the three factors determine three pairs of factorizations, and these six factorizations are different.  Thus, these three pairs of factorizations form a factor in the graph \(Q\).  So we begin with an edge of \(K_6\) and determine a factor of the dual, \(Q\).</p>
+        <p>Now we describe a natural bijection between edges of \(K_6\) and factors of \(Q\).  Given an edge of \(K_6\), there remain four vertices not incident to this edge.  The subgraph induced by these four vertices (a complete graph on 4 vertices) contains three pairs of disjoint edges, which may be combined with the first edge to form the three edges of a factor of \(K_6\).  Each of these three factors of \(K_6\) is then associated with an edge of \(Q\).  Since these three factors are not pairwise disjoint, no two of the factors can be in the same factorization.  So the three factors determine three pairs of factorizations, and these six factorizations are different.  Thus, these three pairs of factorizations form a factor in the graph \(Q\).  So we begin with an edge of \(K_6\) and determine a factor of the dual, \(Q\).</p>
 
         <p>Here is the function, and the test.</p>
 
