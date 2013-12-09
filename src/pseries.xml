@@ -24,7 +24,7 @@
 
         <p>Note that \(\al\backslash\al\) is a finite language, i.e., a finite set of strings.</p>
 
-        <p>If \(N\) is a set of binary strings, let \(N(t)\) denote its generating series. This is what we get when we substitute \(t\) for \(0\) and \(1\), a string of length \(\ell\) maps to \(t^\ell\) and the language maps to its generating series. Now \eqref{eq:eL01} yields <me>1+2t L(t) = L(t)+M(t)</me> and, if \(D=\al\backslash\al\) and \(|\al|\) denotes the length of \(\al\), the lemma yields that<me> L(t)t^{|\al|} = M(t) D(t).</me></p>
+        <p>If \(N\) is a set of binary strings, let \(N(t)\) denote its generating series. This is what we get when we substitute \(t\) for \(0\) and \(1\), a string of length \(\ell\) maps to \(t^\ell\) and the language maps to its generating series. Now \eqref{eq-eL01} yields <me>1+2t L(t) = L(t)+M(t)</me> and, if \(D=\al\backslash\al\) and \(|\al|\) denotes the length of \(\al\), the lemma yields that<me> L(t)t^{|\al|} = M(t) D(t).</me></p>
 
         <lemma>
             <statement>
@@ -57,7 +57,7 @@
 
         <p>Does this hold for other forbidden substrings?</p>
 
-        <p>For a second variant, suppose \(\cF=\{\seq\al1d\}\) is a set of binary strings. Let \(L\) be the set of strings that contain no element of \(\cF\) and let \(M_i\) denote the set of strings that contain one copy of \(\al_i\), as a suffix, bit do not contain any other copies of strings in \(\cF\). If \(|\cF|=2\), we have equations
+        <p>For a second variant, suppose \(\cF=\{\seq\al1d\}\) is a set of binary strings. Let \(L\) be the set of strings that contain no element of \(\cF\) and let \(M_i\) denote the set of strings that contain one copy of \(\al_i\), as a suffix, but do not contain any other copies of strings in \(\cF\). If \(|\cF|=2\), we have equations
             <md>
                 <mrow>\eps+L(0+1) &amp;= L +M_1 +M_2</mrow>
                 <mrow>L\al_1 &amp;= M_1(\al_1\backslash\al_1) +M_2(\al_1\backslash\al_2)</mrow>
@@ -75,7 +75,7 @@
         <sage>
             <input>
             Qu.&lt;u&gt; = QQ[]
-            F = FractionField( Qu)
+            F = FractionField(Qu)
             Qu
             </input>
             <output>Univariate Polynomial Ring in u over Rational Field</output>
@@ -92,12 +92,12 @@
         </sage>
 
         <sage>
-            <input>rf.subs( u=1/2)</input>
+            <input>rf.subs(u=1/2)</input>
             <output>14</output>
         </sage>
 
         <sage>
-            <input>rf.subs( u=t).O(9)</input>
+            <input>rf.subs(u=t).O(9)</input>
             <output>1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)</output>
         </sage>
 
@@ -107,7 +107,7 @@
 
         <sage>
             <input>
-            Cs = FractionField( PolynomialRing( CDF, 's'))
+            Cs = FractionField( PolynomialRing(CDF, 's'))
             whole, parts = rf.subs(u=Cs.gen()).partial_fraction_decomposition() 
             for p in parts:
                 print p
@@ -240,7 +240,7 @@
             <output>x + x^2 + 2*x^3 + 4*x^4 + 9*x^5 + 20*x^6 + 48*x^7 + 115*x^8 + 286*x^9 + 719*x^10 + O(x^11)</output>
         </sage>
 
-        <p>You should prove that this procedure produces a sequence of series that converges to the generating series for rooted trees. You will probably find this procedure converges somewhat more quickly then your convergence proof implies.</p>
+        <p>You should prove that this procedure produces a sequence of series that converges to the generating series for rooted trees. You will probably find this procedure converges somewhat more quickly than your convergence proof implies.</p>
 
         <p>Next we apply the Newton-Raphson procedure. Here's the code, without explanation :-(</p>
         <sage>
@@ -266,7 +266,7 @@
             </output>
         </sage>
 
-        <p>Note that <c>rr = Qx([0,1,1])</c> is an up-market version of <c>rr = x+x^2</c>. The line <c>rr = Qx(rr.list())</c> is a hack to force sage to work with the required degree of precision. Your exercise is to show that the output of this procedure is correct.</p>
+        <p>Note that <c>rr = Qx([0,1,1])</c> is an up-market version of <c>rr = x+x^2</c>. The line <c>rr = Qx(rr.list())</c> is a hack to force Sage to work with the required degree of precision. Your exercise is to show that the output of this procedure is correct.</p>
 
         <p>If \(T(x)\) is the generating series for trees, then <me>T(x) = R(x) -\frac12(R(x)^2-R(x^2))</me> Hence we can easily get the number of trees from \(R(x)\).</p>
 
