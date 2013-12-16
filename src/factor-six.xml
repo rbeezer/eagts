@@ -176,15 +176,28 @@
             </input>
         </sage>
 
-        <p>We now build and draw a copy of \(K_6\) for each factorization, using the provided color for the edges of each factor in the factorization.</p>
+        <p>We now build and draw a copy of \(K_6\) for each factorization, using the provided color for the edges of each factor in the factorization.  We will employ the <c>one_K6_graphic()</c> function twice, so be sure to execute it first.  We exercise some of the graphics primitives for a little more control over the design of our diagrams.</p>
 
-        <!-- Add a test for "thickness=5" option -->
         <sage>
             <input>
-            for factorization in factorizations:
-                K6factored = Graph( [e.list() for f in factorization for e in f] )
-                edge_coloring = { factor_colors[f]:[e.list() for e in f] for f in factorization}
-                K6factored.plot(layout='circular', edge_colors=edge_coloring).show()
+            def one_K6_graphic(center, factorization):
+                r'''Draw a single factorization of K6 at a center point'''
+                global factor_colors
+                radius = 300
+                v_radius = 20
+                points = [(center[0]+radius*cos(i*pi/3.0), center[1]+radius*sin(i*pi/3.0)) for i in range(6)]
+                vertices = [circle(p, v_radius, fill=True, facecolor='black', edgecolor='black', zorder=4) for p in points]
+                edges = [line([points[e[0]], points[e[1]]], color=factor_colors[f], thickness=3, zorder=3) for f in factorization for e in f]
+                mask = polygon2d(points, fill=True, rgbcolor=(1,1,1), zorder=2) # for combined plot
+                return sum([mask] + edges + vertices) # in z-order
+        </input>
+        </sage>
+
+        <sage>
+            <input>
+            six_plots = [one_K6_graphic((0,0), f) for f in factorizations]
+            array = graphics_array(six_plots,3,2)
+            array.show(axes=false)
             </input>
         </sage>
 
@@ -205,42 +218,19 @@
             <output>[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</output>
         </sage>
 
-        <p>As any two factorizations share a single factor, we can make the \(6\) factorizations the vertices of a graph, add every possible edge (a complete graph) and color each edge with the color of the factor shared by the two factorizations at the endpoints.  The graphics code here is a bit involved, but understanding how it works is not critical.</p>
+        <p>As any two factorizations share a single factor, we can make the \(6\) factorizations the vertices of a graph, add every possible edge (a complete graph) and color each edge with the color of the factor shared by the two factorizations at the endpoints.</p>
 
         <sage>
             <input>
-            def one_K6(center, factorization):
-                global factor_colors
-                radius = 300
-                vertex_radius = 20
-                plot=circle((0,0), 0)
-                points = []
-                for i in range(6):
-                    point = (center[0]+radius*cos(i*3.14159/3.0), center[1]+radius*sin(i*3.14159/3.0))
-                    plot += circle(point, vertex_radius, fill=True, facecolor=(0,0,0), edgecolor=(0,0,0), zorder=4)
-                    points.append(point)
-                #plot += circle(center, 320, fill=True, facecolor=(1,1,1), edgecolor=(1,1,1), zorder=2)
-                plot += polygon2d(points, fill=True, rgbcolor=(1,1,1), zorder=2)
-                for f in factorization:
-                    color = factor_colors[f]
-                    for e in f:
-                        plot += line([points[e[0]], points[e[1]]], color=color, thickness=3, zorder=3)
-                return plot
-
-            plot=circle((0,0), 0)
-            radius = 1000
-            points = []
-            for i in range(6):
-                f = factorizations[i]
-                point = (radius*cos(i*3.14159/3.0), radius*sin(i*3.14159/3.0))
-                plot += one_K6(point, f)
-                points.append(point)
+            points = [(1000*cos(i*pi/3.0), 1000*sin(i*pi/3.0)) for i in range(6)]
+            nodes = [one_K6_graphic(p, f) for (p,f) in zip(points, factorizations)]
+            arcs = []
             for i in range(6):
                 for j in range(i+1, 6):
-                    common = (factorizations[i].intersection(factorizations[j]))[0]
-                    color = factor_colors[common]
-                    plot += line([points[i], points[j]], thickness=5, color=color, zorder=1)
-            show(plot, axes=False)
+                    common_factor = (factorizations[i].intersection(factorizations[j]))[0]
+                    color = factor_colors[common_factor]
+                    arcs.append(line([points[i], points[j]], thickness=5, color=color, zorder=1))
+            show(sum(arcs + nodes), axes=False) # in z-order
             </input>
         </sage>
 
