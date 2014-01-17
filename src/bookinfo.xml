@@ -23,6 +23,9 @@
     <date><today /></date>
 
     <analytics>
+        <google>
+            <tracking>UA-6386040-2</tracking>
+        </google>
         <statcounter>
             <project>9481645</project>
             <security>da685f04</security>
