@@ -9,6 +9,9 @@
 
 <chapter xml:id="chapter-factor-six" filebase="factor-six">
     <title>One-Factors of <m>K_6</m></title>
+    <author>
+        <personname>Robert A. Beezer</personname>
+    </author>
 
     <p>In this chapter, we begin with the complete graph on six vertices, \(K_6\) and construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine to create our three ultimate combinatorial structures.</p>
 

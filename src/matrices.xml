@@ -9,6 +9,10 @@
 
 <chapter id="matrices" filebase="matrices">
     <title>Matrices</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
+
     <section>
         <title>Continuous Quantum Walks</title>
 

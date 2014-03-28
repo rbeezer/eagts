@@ -9,6 +9,9 @@
 
 <chapter id="projects" filebase="projects">
     <title>First Projects</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
 
     <section>
         <title>Pseudosimilar Vertices</title>

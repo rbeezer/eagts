@@ -9,6 +9,10 @@
 
 <chapter id="cayley" filebase="cayley">
     <title>Cayley Graphs</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
+
     <section>
         <title>Cayley Graphs</title>
 

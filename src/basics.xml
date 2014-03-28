@@ -9,6 +9,10 @@
 
 <chapter id="basics" filebase="basics">
     <title>Getting Started</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
+
     <section>
         <title>Getting Information</title>
 

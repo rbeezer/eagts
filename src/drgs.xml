@@ -9,6 +9,10 @@
 
 <chapter id="drgs" filebase="drgs">
     <title>Distance-Regular Graphs</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
+
     <section>
         <title>Distance Regularity</title>
 

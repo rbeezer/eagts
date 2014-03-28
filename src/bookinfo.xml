@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <docinfo>
-    <author>
+    <editor>
         <personname>Chris Godsil</personname>
         <department>Department of Combinatorics and Optimization</department>
         <institution>University of Waterloo</institution>
         <email>cgodsil@uwaterloo.ca</email>
-    </author>
-    <author>
+    </editor>
+    <editor>
         <personname>Robert A. Beezer</personname>
         <department>Department of Mathematics and Computer Science</department>
         <institution>University of Puget Sound</institution>
         <email>beezer@pugetsound.edu</email>
-    </author>
+    </editor>
 
     <copyright>
         <year>2011-2013</year>

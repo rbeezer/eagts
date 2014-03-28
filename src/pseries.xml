@@ -9,6 +9,10 @@
 
 <chapter id="pseries" filebase="pseries">
     <title>Polynomials and Power Series</title>
+    <author>
+        <personname>Chris Godsil</personname>
+    </author>
+
     <section>
         <title>Forbidden Words</title>
 
