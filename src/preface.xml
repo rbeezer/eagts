@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<preface xml:id="preface" filebase="preface">
+<preface xml:id="preface">
 
     <p>These are my working notes on using Sage. One aim is to provide a useful range of examples showing how Sage can be used in graph theory and combinatorics. Sage, and the packages it is built on, are the result of a lot of effort by a large number of people. I am hoping that these notes can also be viewed as a constructive <q>thank you.</q>  (CDG)</p>
 

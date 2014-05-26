@@ -7,7 +7,7 @@
 <!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
 <!-- See the file COPYING for copying conditions.             -->
 
-<chapter id="pseries" filebase="pseries">
+<chapter xml:idid="pseries">
     <title>Polynomials and Power Series</title>
     <author>
         <personname>Chris Godsil</personname>

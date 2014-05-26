@@ -12,7 +12,7 @@
 
     <xi:include href="./bookinfo.xml" />
 
-    <book filebase="eagts">
+    <book xml:id="eagts">
         <title>Explorations in Algebraic Graph Theory with Sage</title>
 
             <xi:include href="preface.xml" />
