@@ -50,6 +50,11 @@
         </sage>
 
         <p>If the partition is not equitable, the response would be a simple <c>False</c>.</p>
+				
+		<p>There is a built-in command in sage <c>is_distance-regular()</c> which we would normally use 
+		in place of the above, but we wanted to demonstrate the use of <c>is_equitable()</c>. We will use the
+		built-in command in the next section. </p>
+		
 
         <p>Many distance-regular graphs are distance-transitive. We can test for this by verifying that our graph is vertex transitive and the number of orbits of the stabilizer of a vertex is the diameter plus one.</p>
 
@@ -162,7 +167,8 @@
             <input>cliques = W3.cliques_maximum()</input>
         </sage>
 
-        <p>We get the point graph of the dual \(GQ\) by</p>
+        <p>You can check that the number of cliques is correct. We get the point graph of the 
+			dual \(GQ\) by</p>
 
         <sage>
             <input>
@@ -171,36 +177,28 @@
             </input>
         </sage>
 
-        <p>As expected \(W3d\) is not isomorphic to \(W3\), but it is strongly regular with the same parameters.</p>
+        <p>As expected \(W3d\) is not isomorphic to \(W3\), but it is strongly regular with the 
+			same parameters.</p>
 
         <sage>
             <input>W3.is_isomorphic(W3d)</input>
             <output>False</output>
         </sage>
+		
+		<p>but it is strongly regular</p>
+		
+		<sage>
+			<input>W3d.diameter(), W3d.is_distance_regular()</input>
+			<output>(2,True)</output>
+		</sage>
+		
+		<p>and it has the same characteristic polynomial (and hence the same parameters).</p>
+		
+		<sage>
+			<input>W3d.am().fcp()</input>
+			<output>(x - 12) * (x + 4)^15 * (x - 2)^24)</output>
+		</sage>
 
-        <sage>
-            <input>
-            dp = distance_partition( W3, W3.vertices()[0])
-            W3.is_equitable( dp, quotient_matrix=True) 
-            </input>
-            <output>
-            [ 0 12  0]
-            [ 1  2  9]
-            [ 0  4  8]
-            </output>
-        </sage>
-
-        <sage>
-            <input>
-            dp = distance_partition( W3d, W3d.vertices()[0])
-            W3d.is_equitable( dp, quotient_matrix=True) 
-            </input>
-            <output>
-            [ 0 12  0]
-            [ 1  2  9]
-            [ 0  4  8]
-            </output>
-        </sage>
     </section>
 
 
@@ -226,7 +224,7 @@
 
         <sage>
             <input>
-            C = ExtendedBinaryGolayCode()
+            C = codes.ExtendedBinaryGolayCode()
             D = C.punctured([0])
             words = [ tuple(it.support()) for it in D if it.hamming_weight()==7]
             MG = Graph( [words, lambda a,b: len(Set(a).intersection(Set(b)))==1])
@@ -249,7 +247,8 @@
             <output>(True, True, (x - 112) * (x + 28)^22 * (x - 2)^252, 1796256000)</output>
         </sage>
 
-        <p>The McLaughlin graph gives rise to a regular two-graph. For details on regular two-graphs, see any recent book on algebraic graph theory. </p>
+        <p>The McLaughlin graph gives rise to a regular two-graph. For details on regular two-graphs, 
+			see any recent book on algebraic graph theory. </p>
 
         <sage>
             <input>
@@ -268,14 +267,13 @@
             <output>(991533312000, (x - 275) * (x + 55)^23 * (x - 5)^253 * (x + 1)^275)</output>
         </sage>
 
-        <p>and now</p>
-
-        <sage>
-            <input>grp.composition_series()[1].is_simple()</input>
-            <output>True</output>
-        </sage>
-
-        <p>The group is one of Conway's simple groups.  [* Too big by a factor of two!  Does the graph need adjustment or does the simple group just come as an index 2 subgroup of the automorphism group? *]</p>
+        <p> The graph constructed here is distance-regular with diameter three on 552 vertices.
+			(You can check these claims.)
+			The vertices are partitioned into 276 pairs of vertices distance three, and the map that
+			swaps the vertices in each pair is a central element of order two in
+			the automorphism group of SMcL. The quotient
+			over this element is McLaughlin's simple group.</p>
+       
     </section>
 
     <section>
