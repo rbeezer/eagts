@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the book                            -->
+<!--                                                          -->
+<!--    Explorations in Algebraic Graph Theory with Sage      -->
+<!--                                                          -->
+<!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
+<!-- See the file COPYING for copying conditions.             -->
+
+<chapter xml:id="chapter-factor-six">
+    <title>The Hoffman-Singleton Graph</title>
+    <author>
+        <personname>Robert A. Beezer</personname>
+    </author>
+
+    <p>In this chapter, we begin with the complete graph on six vertices, \(K_6\) and construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine to create our three ultimate combinatorial structures.</p>
+
+
+    <section>
+        <title>Constructions</title>
+
+        <p>From vertices, edges, factors and factorizations we can stitch together some interesting combinatorial configurations.</p>
+
+
+        <subsection>
+            <title>Projective Plane of Order 4</title>
+
+            <p>A <term>projective plane</term> of order \(n\) is a \(2-(n^2+n+1, n+1, 1)\) design.  Such a design is therefore a collection of sets (called <term>blocks</term>), each of size \(n+1\), chosen from a universal set of size \(n^2+n+1\), with the property that any \(2\) elements chosen from the universal set is contained in exactly \(1\) of the blocks.</p>
+
+            <p>As a finite geometry a projective plane of order \(n\) is a set of <term>points</term> and <term>lines</term>, together with an incidence relation, such that:
+            <ul>
+            <li>Exactly one line passes through any two points.</li>
+            <li>Any two lines pass through exactly one common point.</li>
+            <li>Every point has exactly \(n+1\) lines pasing through the point.</li>
+            <li>Every line passes through exactly \(n+1\) points.</li>
+            </ul>
+            </p>
+
+            <p>Here the notion of a line <q>passing through</q> a point is more precisely given by the incidence relation.  One common such relation is that lines are sets of points, and a point and line are incident if the point is an element of the line.</p>
+
+            <p>A finite projective plane of order 4 is equivalent to a set of three mutually orthogonal Latin Squares (see Chapter 12 of  <i>Combinatorial Theory</i>, by Marshall Hall, Jr).  The impossibility  of the projective plane of order \(10\) was only settled in the late 1980s by Clement Lam.</p>
+
+            <p>We will build a design from our factorizations by first building a graph that describes an incidence relation.  The points of the geometry will be the six vertices of \(K_6\) together with the fifteen factors of \(K_6\).  The lines of the geometry will be the fifteen edges of \(K_6\) along with the six factorizations of \(K_6\).  So we have \(21\) points and \(21\) lines.  The graph will be bipartite with points in one set of the bipartition and lines in the other set.  A vertex will be incident to an edge which contains it, a factor will be incident to an edge if the factor contains the edge, and a factor will be incident to factorization which contains it.</p>
+
+            <p>The resulting biparite graph is regular of degree \(5\) on \(42\) vertices with girth \(6\).</p>
+
+            <sage>
+                <input>
+                P = Graph()
+                P.add_edges([(v, e)  for v in vertices for e in edges if v in e])
+                P.add_edges([(f, e)  for f in factors for e in edges if e in f])
+                P.add_edges([(f, fz) for f in factors for fz in factorizations if f in fz])
+                P.num_verts(), P.is_bipartite(), P.is_regular(), P.average_degree(), P.girth()
+                </input>
+                <output>(42, True, True, 5, 6)</output>
+            </sage>
+
+            <p>We can relabel the vertices of a copy of the graph, and then have Sage recognize the bipartite structure before producing a drawing.</p>
+
+            <sage>
+                <input>
+                R = copy(P)
+                R.relabel(edge_names)
+                R.relabel(factor_names)
+                R.relabel(factorization_names)
+                B = BipartiteGraph(R)
+                B.plot()
+                </input>
+            </sage>
+
+            <p>If we call Sage's relabeling function with no arguments, the points will be labeled with the integers \(0\) to \(20\) and the lines will be labeled with the integers \(21\) to \(41\).  We can create the blocks of a block design by creating lists of the points on each line.</p>
+
+            <sage>
+                <input>
+                C = copy(B)
+                C.relabel()
+                blocks = [[] for i in range(21)]
+                for e in C.edges():
+                    blocks[e[1]-21].append(e[0])
+                D = BlockDesign(21, blocks)
+                D.is_block_design()
+                </input>
+                <output>(True, [2, 21, 5, 1])</output>
+            </sage>
+
+            <p>So the parameters are those of a \(2-(21, 5, 1)\) design, a projective plane of order \(4\).</p>
+
+            <p>We can list all of the <m>21</m> blocks, if we wish.</p>
+
+            <sage>
+                <input>D.blocks()</input>
+                <output>
+                [[0, 1, 6, 7, 8],
+                 [0, 2, 9, 10, 11],
+                 [0, 3, 12, 13, 14],
+                 [0, 4, 15, 16, 17],
+                 [0, 5, 18, 19, 20],
+                 [1, 2, 12, 15, 18],
+                 [1, 3, 9, 16, 19],
+                 [1, 4, 10, 13, 20],
+                 [1, 5, 11, 14, 17],
+                 [2, 3, 6, 17, 20],
+                 [2, 4, 7, 14, 19],
+                 [2, 5, 8, 13, 16],
+                 [3, 4, 8, 11, 18],
+                 [3, 5, 7, 10, 15],
+                 [4, 5, 6, 9, 12],
+                 [6, 10, 14, 16, 18],
+                 [6, 11, 13, 15, 19],
+                 [7, 9, 13, 17, 18],
+                 [7, 11, 12, 16, 20],
+                 [8, 9, 14, 15, 20],
+                 [8, 10, 12, 17, 19]]
+                </output>
+            </sage>
+
+            <p>Notice that this subsection is made possible by the arithmetic: \(6+15=21=4^2+4+1\).</p>
+        </subsection>
+
+
+        <subsection>
+            <title>Hoffman-Singleton Graph</title>
+
+            <p>The Hoffman-Singleton Graph is an amazing structure, which can be created many different ways.  It is best known as a Moore graph: regular of degree \(7\) with odd girth \(5\), on \(50\) vertices, which is the minimum conceivable number.</p>
+
+            <p>Our construction begins with two new vertices, which Cameron and van Lint call <q>zero</q> and <q>infinity</q> <mdash /> we will shorten the label on the latter to simply <q>inf.</q>  Zero and infinity will be adjacent to each other, zero will be adjacent to each vertex of \(K_6\) and infinity will be adjacent to each factorization of \(K_6\).</p>
+
+            <sage>
+                <input>
+                G = Graph()
+                G.add_edge('inf', 'zero')
+                G.add_edges([(v, 'zero')for v in vertices])
+                G.add_edges([(fz, 'inf') for fz in factorizations])
+                </input>
+            </sage>
+
+            <p>We have \(14\) vertices in our graph so far, we get another \(36\) from the Cartesian product of the set of \(6\) \(K_6\) vertices with the set of \(6\) factorizations.  Each pair is joined to the \(K_6\) vertex of the pair and the factorization in the pair.  At this point the vertices from the Cartesian product have just degree \(2\), the other vertices have reached degree \(7\).</p>
+
+            <sage>
+                <input>
+                G.add_edges([(v,  (v,fz)) for v in vertices for fz in factorizations])
+                G.add_edges([(fz, (v,fz)) for v in vertices for fz in factorizations])
+                </input>
+            </sage>
+
+            <p>Among vertices of the Cartesian product a pair \((a, x)\) is adjacent to the pair \((b, y)\) if \(x\) and \(y\) are different factorizations and the edge \(\{a, b\}\) is contained in the factor common to \(x\) and \(y\).  (Recall that every pair of factorizations have a single factor in common.)</p>
+
+            <sage>
+                <input>
+                for v1, v2 in Subsets(vertices, 2):
+                    for fz1, fz2 in Subsets(factorizations, 2):
+                        common_factor = fz1.intersection(fz2)[0]
+                        if Set([v1, v2]) in common_factor:
+                            G.add_edge((v1, fz1), (v2, fz2))
+                            G.add_edge((v2, fz1), (v1, fz2))
+                </input>
+            </sage>
+
+            <p>Construction complete, we can check that the graph has the requiste properties to be the Moore graph of degree \(7\) and girth \(5\).</p>
+
+            <sage>
+                <input>G.num_verts(), G.is_regular(), G.average_degree(), G.girth()</input>
+                <output>(50, True, 7, 5)</output>
+            </sage>
+
+            <p>Since these properties are enough to characterize the graph, we know we have it.  However, we will let Sage do a brutish check.  Our graph will not plot very nicely, while the implementation of the graph in Sage has a very novel feature.  Each time you create the Hoffman-Singleton graph, you get a different layout, always displaying some of the inherent symmetry.  So you can run the construct-and-plot command below repeatedly to experience different layouts.</p>
+
+            <sage>
+                <input>
+                HS = graphs.HoffmanSingletonGraph()
+                G.is_isomorphic(HS)
+                </input>
+                <output>True</output>
+            </sage>
+
+            <sage>
+                <input>graphs.HoffmanSingletonGraph().plot()</input>
+            </sage>
+
+            <p>Notice that this subsection is made possible by the arithmetic: \(50 = 2 + 6 + 6 + 6\cdot 6\).</p>
+        </subsection>
+
+
+        <subsection>
+            <title>The Steiner System <m>S(5,\,6,\,12)</m></title>
+
+            <p>The Steiner system, \(S(5,\,6,\,12)\) is a collection of \(132\) \(6\)-sets (<q>blocks</q>), chosen from a \(12\)-set (the <q>points</q>), such that every set of \(5\) points chosen from the \(12\)-set is contained in exactly one of the blocks.  In other words, a \(S(5,\,6,\,12)\) Steiner system is a \(5\)-\((12,6,1)\) design.</p>
+
+            <p>The \(12\) points for our construction will be the \(6\) vertices of \(K_6\) and the \(6\) factorizations of \(K_6\).  The construction of designs in Sage is not as robust as those of graphs and permutation groups, and require our points to be integers, starting at zero.  We are in good shape with our vertices, and by necessity, we will use a dictionary to map factorizations to the integers \(6\) through \(11\).</p>
+
+            <sage>
+                <input>factorization_numbers = dict(zip(factorizations, range(6, 12)))</input>
+            </sage>
+
+            <p>The first two blocks of the construction will be the set of all six vertices and the set of all six factorizations.  We will create the blocks as sorted lists.  The sorting is only for the sake of appearance.</p>
+
+
+            <sage>
+                <input>
+                blocks = []
+                blocks.append(sorted(vertices))
+                blocks.append(sorted(factorization_numbers.values()))
+                </input>
+            </sage>
+
+            <p>The next \(90\) blocks come from considering each of the \(15\) pairs of distinct factorizations.  We know that each such pair has a single factor in common.  This factor has three edges, each edge providing two vertices as endpoints.  For each of the \(15\cdot 3=45\) factorization-pair/vertex-pair combinations we build two blocks.  Start the first block with the six vertices, remove the two vertices of the pair, and add in the two factorizations of the pair.  Similarly, start the second block with the six factorizations, remove the two factorizations of the pair, and add in the two vertices of the pair.</p>
+
+            <sage>
+                <input>
+                for fz1, fz2 in Subsets(factorizations, 2):
+                    common_factor = fz1.intersection(fz2)[0]
+                    for v1, v2 in common_factor:
+                        ablock = copy(vertices)
+                        ablock.remove(v1)
+                        ablock.remove(v2)
+                        ablock.append(factorization_numbers[fz1])
+                        ablock.append(factorization_numbers[fz2])
+                        blocks.append(sorted(ablock))
+
+                        ablock = factorization_numbers.values()
+                        ablock.remove(factorization_numbers[fz1])
+                        ablock.remove(factorization_numbers[fz2])
+                        ablock.append(v1)
+                        ablock.append(v2)
+                        blocks.append(sorted(ablock))
+                </input>
+            </sage>
+
+            <p>The final \(40\) blocks require more care.  Each of the \({6\choose 3}=20\) sets of triples can be used to create a permutation of the vertices that is a \(3\)-cycle.  While there are two possible ways to create this permutation, either choice leads to the same result in the following procedure.  As we did in the section on the faithful group action, this permutation of the vertices can be used to induce a permutation of the six factorizations.  It is not obvious (details are in van Lint and Wilson), but the induced permutation is a product of two \(3\)-cycles.  We use these two \(3\)-cycles merely to group the six factorizations into two sets of three.  (This decrease in structure partially explains the flexibility in the choice of the initial \(3\)-cycle.)  For each of the two sets of three factorizations so determined, append the three vertices chosen initially, so as to create the final \(20\cdot 2=40\) blocks.</p>
+
+            <sage>
+                <input>
+                G = SymmetricGroup(vertices)
+                H = SymmetricGroup(factorizations)
+
+                for triple in Subsets(vertices, 3):
+                    vertex_perm = G(tuple(triple))
+                    fz_perm = [permute_factorization(vertex_perm, fz) for fz in factorizations]
+                    fz_perm_cycles = H(fz_perm).cycle_tuples()
+                    for fz_triple in fz_perm_cycles:
+                        ablock = triple.list()
+                        for fz in fz_triple:
+                            ablock.append(factorization_numbers[fz])
+                        blocks.append(sorted(ablock))
+                </input>
+            </sage>
+
+            <p>There are now <m>132</m> blocks, which we can examine if we wish.</p>
+
+            <sage>
+                <input>blocks</input>
+                <output>
+                [[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11], [1, 3, 4, 5, 6, 7], [0, 2, 8, 9, 10, 11],
+                 [0, 2, 3, 5, 6, 7], [1, 4, 8, 9, 10, 11], [0, 1, 2, 4, 6, 7], [3, 5, 8, 9, 10, 11],
+                 [1, 2, 3, 5, 7, 8], [0, 4, 6, 9, 10, 11], [0, 1, 4, 5, 7, 8], [2, 3, 6, 9, 10, 11],
+                 [0, 2, 3, 4, 7, 8], [1, 5, 6, 9, 10, 11], [0, 1, 2, 5, 7, 11], [3, 4, 6, 8, 9, 10],
+                 [0, 1, 3, 4, 7, 11], [2, 5, 6, 8, 9, 10], [2, 3, 4, 5, 7, 11], [0, 1, 6, 8, 9, 10],
+                 [0, 2, 4, 5, 7, 9], [1, 3, 6, 8, 10, 11], [0, 1, 3, 5, 7, 9], [2, 4, 6, 8, 10, 11],
+                 [1, 2, 3, 4, 7, 9], [0, 5, 6, 8, 10, 11], [0, 3, 4, 5, 7, 10], [1, 2, 6, 8, 9, 11],
+                 [1, 2, 4, 5, 7, 10], [0, 3, 6, 8, 9, 11], [0, 1, 2, 3, 7, 10], [4, 5, 6, 8, 9, 11],
+                 [0, 3, 4, 5, 6, 8], [1, 2, 7, 9, 10, 11], [1, 2, 3, 4, 6, 8], [0, 5, 7, 9, 10, 11],
+                 [0, 1, 2, 5, 6, 8], [3, 4, 7, 9, 10, 11], [0, 1, 3, 5, 6, 11], [2, 4, 7, 8, 9, 10],
+                 [0, 2, 3, 4, 6, 11], [1, 5, 7, 8, 9, 10], [1, 2, 4, 5, 6, 11], [0, 3, 7, 8, 9, 10],
+                 [2, 3, 4, 5, 6, 9], [0, 1, 7, 8, 10, 11], [0, 1, 4, 5, 6, 9], [2, 3, 7, 8, 10, 11],
+                 [0, 1, 2, 3, 6, 9], [4, 5, 7, 8, 10, 11], [0, 2, 4, 5, 6, 10], [1, 3, 7, 8, 9, 11],
+                 [1, 2, 3, 5, 6, 10], [0, 4, 7, 8, 9, 11], [0, 1, 3, 4, 6, 10], [2, 5, 7, 8, 9, 11],
+                 [0, 2, 4, 5, 8, 11], [1, 3, 6, 7, 9, 10], [1, 3, 4, 5, 8, 11], [0, 2, 6, 7, 9, 10],
+                 [0, 1, 2, 3, 8, 11], [4, 5, 6, 7, 9, 10], [0, 2, 3, 5, 8, 9], [1, 4, 6, 7, 10, 11],
+                 [1, 2, 4, 5, 8, 9], [0, 3, 6, 7, 10, 11], [0, 1, 3, 4, 8, 9], [2, 5, 6, 7, 10, 11],
+                 [0, 1, 3, 5, 8, 10], [2, 4, 6, 7, 9, 11], [0, 1, 2, 4, 8, 10], [3, 5, 6, 7, 9, 11],
+                 [2, 3, 4, 5, 8, 10], [0, 1, 6, 7, 9, 11], [0, 3, 4, 5, 9, 11], [1, 2, 6, 7, 8, 10],
+                 [1, 2, 3, 5, 9, 11], [0, 4, 6, 7, 8, 10], [0, 1, 2, 4, 9, 11], [3, 5, 6, 7, 8, 10],
+                 [1, 2, 3, 4, 10, 11], [0, 5, 6, 7, 8, 9], [0, 1, 4, 5, 10, 11], [2, 3, 6, 7, 8, 9],
+                 [0, 2, 3, 5, 10, 11], [1, 4, 6, 7, 8, 9], [0, 1, 2, 5, 9, 10], [3, 4, 6, 7, 8, 11],
+                 [0, 2, 3, 4, 9, 10], [1, 5, 6, 7, 8, 11], [1, 3, 4, 5, 9, 10], [0, 2, 6, 7, 8, 11],
+                 [0, 1, 2, 6, 10, 11], [0, 1, 2, 7, 8, 9], [0, 1, 3, 6, 7, 8], [0, 1, 3, 9, 10, 11],
+                 [0, 1, 4, 6, 8, 11], [0, 1, 4, 7, 9, 10], [0, 1, 5, 6, 7, 10], [0, 1, 5, 8, 9, 11],
+                 [0, 2, 3, 6, 8, 10], [0, 2, 3, 7, 9, 11], [0, 2, 4, 6, 8, 9], [0, 2, 4, 7, 10, 11],
+                 [0, 2, 5, 6, 9, 11], [0, 2, 5, 7, 8, 10], [0, 3, 4, 6, 7, 9], [0, 3, 4, 8, 10, 11],
+                 [0, 3, 5, 6, 9, 10], [0, 3, 5, 7, 8, 11], [0, 4, 5, 6, 7, 11], [0, 4, 5, 8, 9, 10],
+                 [1, 2, 3, 6, 7, 11], [1, 2, 3, 8, 9, 10], [1, 2, 4, 6, 9, 10], [1, 2, 4, 7, 8, 11],
+                 [1, 2, 5, 6, 7, 9], [1, 2, 5, 8, 10, 11], [1, 3, 4, 6, 9, 11], [1, 3, 4, 7, 8, 10],
+                 [1, 3, 5, 6, 8, 9], [1, 3, 5, 7, 10, 11], [1, 4, 5, 6, 8, 10], [1, 4, 5, 7, 9, 11],
+                 [2, 3, 4, 6, 7, 10], [2, 3, 4, 8, 9, 11], [2, 3, 5, 6, 8, 11], [2, 3, 5, 7, 9, 10],
+                 [2, 4, 5, 6, 7, 8], [2, 4, 5, 9, 10, 11], [3, 4, 5, 6, 10, 11], [3, 4, 5, 7, 8, 9]]
+                </output>
+            </sage>
+
+            <p>We can, of course, verify analytically that this construction creates a Steiner system, but we let Sage do the work instead and see that the parameters returned are as expected.</p>
+
+            <sage>
+                <input>
+                B = BlockDesign(12, blocks)
+                B.is_block_design()
+                </input>
+                <output>(True, [5, 12, 6, 1])</output>
+            </sage>
+
+            <p>Note that the enabling arithmetic for this example is: \(12 = 6 + 6\) and \(132=2 + 15\cdot 3\cdot 2 + {6\choose 3}\cdot 2\).</p>
+
+            <p>The automorphism group of a design (Steiner system) is a permutation of the points which carries blocks to blocks, and non-blocks to non-blocks.  The Steiner system \(S(5,\,6,\,12)\) is remarkable, in part because its automorphism group is the Mathieu group, \(M_{12}\).  This permutation group is highly transitive and is one of the first five sporadic simple groups discovered.  In particular, \(M_{12}\) is \(5\)-transitive, a fact you can verify in Sage by creating the group and examining a succession of orbits and stabilizers.</p>
+
+            <sage>
+                <input>
+                M12 = MathieuGroup(12)
+                M12
+                </input>
+                <output>Mathieu group of degree 12 and order 95040 as a permutation group</output>
+            </sage>
+
+            <exercise>
+                <statement>
+                    <p>Verify that the Mathieu group, as implemented directly in Sage, is a \(5\)-transitive permutation group.</p>
+                </statement>
+            </exercise>
+
+            <p>Sage claims to be able to build the automorphism group of this design, but the routine is broken and would likely produce permutations on \(144\) symbols (all vertices of the point-block incidence graph of the design).  The code below will alert us, through automated testing, when this situation improves.</p>
+
+            <sage>
+                <input>B.automorphism_group()</input>
+                <output>
+                Traceback (most recent call last):
+                ...
+                ValueError: Invalid permutation vector: [1, 4, 3, 2, 9, 10, 8,
+                7, 5, 6, 11, 12, 36, 34, 35, 31, 32, 33, 38, 37, 41, 40, 39, 44,
+                45, 43, 42, 46, 48, 47, 16, 17, 18, 14, 15, 13, 20, 19, 23, 22,
+                21, 27, 26, 24, 25, 28, 30, 29, 51, 50, 49, 55, 54, 53, 52, 56,
+                57, 58, 59, 60, 66, 65, 64, 63, 62, 61, 72, 71, 70, 69, 68, 67,
+                73, 74, 75, 76, 77, 81, 80, 79, 78, 84, 83, 82, 104, 103, 105,
+                108, 109, 107, 106, 112, 111, 110, 114, 113, 120, 118, 119, 115,
+                116, 117, 86, 85, 87, 91, 90, 88, 89, 94, 93, 92, 96, 95, 100,
+                101, 102, 98, 99, 97, 121, 122, 127, 128, 126, 125, 123, 124,
+                131, 130, 129, 132]
+                </output>
+            </sage>
+
+            <exercise>
+                <statement>
+                    <p>Analyze all \(12!=479\,001\,600\) permutations of the \(12\) points of the \(S(5,\,6,\,12)\) Steiner system and identify the \(95\,040\) permutations which preserve the blocks.  This may take a long time (perhaps an unreasonable amount of time).  To be more efficient, perhaps use the Sage combinatorics routines to build the permutations quickly (rather than the permutation group code), and try to move on to testing the next permutation just as soon as the current one fails to preserve some block.</p>
+                </statement>
+            </exercise>
+
+            <exercise>
+                <statement>
+                    <p>Build the point-block incidence graph of the \(S(5,\,6,\,12)\) Steiner system and construct the group of graph automorphisms.  For these permuations, isolate the permutations of the points of the design which are automorphisms of the design.  Use the experience to debug and fix Sage's automorphism group routine for designs.</p>
+                </statement>
+            </exercise>
+
+        </subsection>
+    </section>
+
+
+</chapter>
+
+
+
+

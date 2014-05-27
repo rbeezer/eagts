@@ -23,6 +23,7 @@
             <xi:include href="pseries.xml" />
             <xi:include href="matrices.xml" />
             <xi:include href="factor-six.xml" /> 
+            <xi:include href="hoffman-singleton.xml" />
             <xi:include href="gfdl-mathbook.xml" />
 
     </book>
