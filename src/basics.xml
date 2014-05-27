@@ -18,11 +18,13 @@
 
         <p>The Sage tutorial at <url href="http://www.sagemath.org/doc/tutorial/index.html"/> is the best starting point, and is very easy to read.  The <q>Constructions</q> manual is of very little use for graphs. The Sage reference manual at <url href="http://www.sagemath.org/doc/reference/index.html"/> is vast. You will eventually need to read the sections on graphs, matrices, vector spaces, finite fields, power series and commutative rings.</p>
 
-        <p>If you are not up to speed with python, the first four or five chapters of <q>Dive into Python</q>  (<url href="http://diveintopython.org/"/>) could be useful and are available on line.  (I do not think you will get much out the later chapters dealing with XML and HTML.) I also recommend the Python Tutorial (<url href="http://docs.python.org/tutorial/"/>).  You need to become comfortable with lists, dictionaries and list comprehensions. You can get quite a ways in Sage without knowing anything much about objects and classes, but you will need some familiarity with Python.</p>
+        <p>If you are not up to speed with python, there are many books and web pages offering help. One
+			web offering we like is the set of notes by Heinold: <url href="http://faculty.msmary.edu/heinold/IntroductionToProgrammingUsingPython_Heinold.pdf"/>. (You can ignore the material there on graphics.)
+The Python Tutorial (<url href="http://docs.python.org/tutorial/"/>) can be useful as a reference.  You need to become comfortable with lists, dictionaries and list comprehensions. You can get quite a way in Sage without knowing anything much about objects and classes, but you will definitely need some familiarity with Python.</p>
 
         <p>There are two basic ways of running Sage.  One is to start Sage in a terminal window and then type <c>notebook()</c>.  This starts up a web browser and you work from there.</p>
 
-        <p>The alternative, which I use, is to start Sage in a terminal window and then open up an editor. Set the working directory in Sage to the directory where your files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><mdash/>so don't use <c>ls</c> as the name of a list!) Write your code in the editor, save it as <c>stuff.sage</c> (say), then type  <c> load stuff.sage</c> in your terminal window. Now you can run your code in Sage. You can load as many files as you like, and if you edit a file, load it again.</p>
+        <p>An alternative is to start Sage in a terminal window and then open up an editor. Set the working directory in Sage to the directory where your files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><mdash/>so don't use <c>ls</c> as the name of a list!) Write your code in the editor, save it as <c>stuff.sage</c> (say), then type  <c> %runfile stuff.sage</c> in your terminal window. Now you can run your code in Sage. You can load as many files as you like, and if you edit a file, load it again.</p>
 
         <p>You can load a file with the command <c>attach stuff.sage</c> and then Sage will automatically reload your file each time you save it.  A disadvantage of this approach is that certain syntax errors in your file can confuse Sage considerably.  In this case you may have to hit control-C (and perhaps wait a bit) to unlock things.  I have found it more convenient just to use the load command, as above.</p>
 
@@ -46,7 +48,7 @@
             <output>['A', 356, x^2]</output>
         </sage>
 
-        <p>(The output to save is not human readable.)             When you're working in Sage, on-line help can be obtained using <c>help()</c> and the <c>tab</c> key. Thus typing <c>tab</c> after <c>graphs?</c> or <c>graphs??</c> gives information about the command <c>graphs()</c>.  You will find situations where this does not work.  Tab completion can sometimes save you typing in the full name for some command, but you will also find there are many contexts where it does not.</p>
+        <p>(The output to save is not human readable.) When you're working in Sage, on-line help can be obtained using <c>help()</c> and the <c>tab</c> key. Thus typing <c>tab</c> after <c>graphs?</c> or <c>graphs??</c> gives information about the command <c>graphs()</c>.  You will find situations where this does not work.  Tab completion can sometimes save you typing in the full name for some command, but you will also find there are many contexts where it does not.</p>
 
         <p>Do not forget that the command you are trying to understand may be a Python command; reasonably enough these are not explained in the Sage docs.</p>
     </section>
@@ -151,7 +153,7 @@
             <output>Petersen graph: Graph on 10 vertices</output>
         </sage>
 
-        <p>and we can verify this is correct by computing is diameter, girth and the number of vertices since these three properties characterize the graph.</p>
+        <p>and we can verify this is correct by computing its diameter, girth and the number of vertices since these three properties characterize the graph.</p>
 
         <sage>
             <input>P.diameter(), P.girth(), P.num_verts()</input>
@@ -373,7 +375,7 @@
 
         <p>Occasionally the experimental approach to determining hashability will be unsatisfactory, so I offer some comments.</p>
 
-        <p>The output of <c>vector()</c> and <c>matrix()</c> is not hashable, but can be made so by using <c>a.set_immutable()</c> (where <c>a</c> may be a matrix or a vector). The identity matrix is hashable, as you will find out the first time you try to change an entry in it. Subspaces of vector spaces over finite fields are hashable.</p>
+        <p>The output of <c>vector()</c> and <c>matrix()</c> is not hashable, but can be made so by using <c>a.set_immutable()</c> (where <c>a</c> may be a matrix or a vector). Subspaces of vector spaces over finite fields are hashable.</p>
 
         <p>Sage has two classes of sets: <c>set()</c> constructs the Python version and <c>Set()</c> the Sage version. Sage <c>Set</c>s are hashable, Python <c>set</c>s are not. The available operations differ (go figure).</p>
 
