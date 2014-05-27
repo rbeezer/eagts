@@ -19,9 +19,8 @@
         <p>The Sage tutorial at <url href="http://www.sagemath.org/doc/tutorial/index.html"/> is the best starting point, and is very easy to read.  The <q>Constructions</q> manual is of very little use for graphs. The Sage reference manual at <url href="http://www.sagemath.org/doc/reference/index.html"/> is vast. You will eventually need to read the sections on graphs, matrices, vector spaces, finite fields, power series and commutative rings.</p>
 
         <p>If you are not up to speed with python, there are many books and web pages offering help. One
-			web offering we like is the set of: 
-			<url href="http://faculty.msmary.edu/heinold/IntroductionToProgrammingUsingPython_Heinold.pdf">notes by Heinold</url>. 
-			(You can ignore the material there on graphics.)
+			web offering we like is the set of
+			<url href="http://faculty.msmary.edu/heinold/IntroductionToProgrammingUsingPython_Heinold.pdf">notes by Heinold</url>. (For our purposes you can ignore the material there on graphics.)
 The Python Tutorial (<url href="http://docs.python.org/tutorial/"/>) can be useful as a reference.  You need to become comfortable with lists, dictionaries and list comprehensions. You can get quite a way in Sage without knowing anything much about objects and classes, but you will definitely need some familiarity with Python.</p>
 
 <p>If you run into trouble with trying understand a particular command, do not forget that it might be a Python command; reasonably enough these are not explained in the Sage docs.</p>

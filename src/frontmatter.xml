@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the book                            -->
+<!--                                                          -->
+<!--    Explorations in Algebraic Graph Theory with Sage      -->
+<!--                                                          -->
+<!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
+<!-- See the file COPYING for copying conditions.             -->
+
+<frontmatter>
+	
+<preface>
+
+<p>This book is intended to provide a series of illustrations of how the package Sage can be used to work on problems in algebraic graph theory. Algebraic graph theory is a beautiful subject and Sage is an ideal place to experiment with the relevant mathematics: graph theory, linear algebra and permutation groups, along with combinatorics generally.  We hope these notes will provide a useful introduction for student and for researchers, and that they will simultaneously assist in the continual improvement of Sage.</p>
+
+<p>The topics we have chosen are meant to be interesting<mdash/>they are for us<mdash/>and to provide cases where computations in Sage will be useful. We do not offer a course in programming: we assume a minimal level of familiarity with Sage, but we have tried to illustrate a wide range of different computational techniques. As for mathematical background, the reader will need a basic understanding of graphs, linear algebra and the like. We view each topic (or exploration) as a starting point and we hope that some of our readers are encouraged to go elsewhere to learn more.</p>
+
+<p>Since neither publishers nor trees are involved in the production of this text, it will be easy for us to add to add new chapters from time to time, and we hope to do so. We will be happy to accept contributions from other authors. These should agree in spirit with what is already here,
+and adhere to our stylistic standards. We recommend strongly that anyone interested contact us <em>before</em> investing any significant effort. (Our view of what constitutes <q>algebraic graph theory</q> is quite broad.)</p>
+
+</preface>
+	
+<acknowledgements>
+<p>Obviously our first debt is the many people who have worked to produce the package Sage. One of our goals is to show just how useful it can be. Sage itself is built from a number of components, some with an independent existence, our thanks are intended to be inclusive. Sage is just one example of the principle that real progress in mathematics and science is collaborative.</p>
+</acknowledgements>
+	
+<authorbio>
+	<p>Rob Beezer was born in Seattle and has not moved very far, despite a lot of bike riding.</p>
+	<p>Chris Godsil was born in Warragul, which is not as wet in the summer as Seattle, and has more cows.</p>
+</authorbio>
+	
+</frontmatter>
