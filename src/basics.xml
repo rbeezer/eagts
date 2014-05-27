@@ -19,51 +19,55 @@
         <p>The Sage tutorial at <url href="http://www.sagemath.org/doc/tutorial/index.html"/> is the best starting point, and is very easy to read.  The <q>Constructions</q> manual is of very little use for graphs. The Sage reference manual at <url href="http://www.sagemath.org/doc/reference/index.html"/> is vast. You will eventually need to read the sections on graphs, matrices, vector spaces, finite fields, power series and commutative rings.</p>
 
         <p>If you are not up to speed with python, there are many books and web pages offering help. One
-			web offering we like is the set of notes by Heinold: <url href="http://faculty.msmary.edu/heinold/IntroductionToProgrammingUsingPython_Heinold.pdf"/>. (You can ignore the material there on graphics.)
+			web offering we like is the set of: 
+			<url href="http://faculty.msmary.edu/heinold/IntroductionToProgrammingUsingPython_Heinold.pdf">notes by Heinold</url>. 
+			(You can ignore the material there on graphics.)
 The Python Tutorial (<url href="http://docs.python.org/tutorial/"/>) can be useful as a reference.  You need to become comfortable with lists, dictionaries and list comprehensions. You can get quite a way in Sage without knowing anything much about objects and classes, but you will definitely need some familiarity with Python.</p>
 
-        <p>There are two basic ways of running Sage.  One is to start Sage in a terminal window and then type <c>notebook()</c>.  This starts up a web browser and you work from there.</p>
+<p>If you run into trouble with trying understand a particular command, do not forget that it might be a Python command; reasonably enough these are not explained in the Sage docs.</p>
 
-        <p>An alternative is to start Sage in a terminal window and then open up an editor. Set the working directory in Sage to the directory where your files are. (Sage recognizes <c>ls</c>, <c>cd</c> and <c>pwd)</c><mdash/>so don't use <c>ls</c> as the name of a list!) Write your code in the editor, save it as <c>stuff.sage</c> (say), then type  <c> %runfile stuff.sage</c> in your terminal window. Now you can run your code in Sage. You can load as many files as you like, and if you edit a file, load it again.</p>
+</section>
 
-        <p>You can load a file with the command <c>attach stuff.sage</c> and then Sage will automatically reload your file each time you save it.  A disadvantage of this approach is that certain syntax errors in your file can confuse Sage considerably.  In this case you may have to hit control-C (and perhaps wait a bit) to unlock things.  I have found it more convenient just to use the load command, as above.</p>
+<section>
+	<title>Using This Book</title>
+	
+	<p>One key feature of these notes is that we use Sage cells. These contain sage code that you can
+		run by clicking on the evaluate button. For example</p>
+		
+	<sage>
+		<input>1+1</input>
+		<output>2</output>
+	</sage>
+	
+	<p>Some of these cells may define functions of variables which can be used without definition
+	in subsequent Sage cells in <em>the current section</em>. If you evaluate a cell without first
+	previously evaluating its predecessors (in the current session), you may get an error message.
+	Stuff defined in one section is <em>not</em> available in other sections.</p>
+	
+	<p>Note that you may edit the code in a Sage cell and evaluate it. This will allow you, for example, 
+		to investigate the effect of changing parameters on the behavior of some code. You could also
+		copy the code in the cell and paste into a Sage worksheet.</p>
+		
+	<p>One difficulty for the authors is that Sage itself is evolving. The source file for these notes
+		contains the expected output of each command and, as part of the production process, the
+		output of the Sage commands is compared to the predictions. In addition to coping with
+		evolution, this provides a good check for bugs in our code.</p>
+		
+</section>
 
-        <p>You can save data to a file:</p>
-
-        <!-- Do not edit file name below without adjusting doctest script -->
-        <sage>
-            <input>
-            some_list = ['A', 356, x^2]
-            save( some_list, 'testlist-eagts')
-            </input>
-        </sage>
-
-        <p>and reload it with:</p>
-
-        <sage>
-            <input>
-            renamed_list = load('testlist-eagts')
-            renamed_list
-            </input>
-            <output>['A', 356, x^2]</output>
-        </sage>
-
-        <p>(The output to save is not human readable.) When you're working in Sage, on-line help can be obtained using <c>help()</c> and the <c>tab</c> key. Thus typing <c>tab</c> after <c>graphs?</c> or <c>graphs??</c> gives information about the command <c>graphs()</c>.  You will find situations where this does not work.  Tab completion can sometimes save you typing in the full name for some command, but you will also find there are many contexts where it does not.</p>
-
-        <p>Do not forget that the command you are trying to understand may be a Python command; reasonably enough these are not explained in the Sage docs.</p>
-    </section>
-
+    
     <section>
         <title>Basics</title>
 
-        <p>(I'm assuming that you can get Sage running and evaluate the sum 1+1, say.) Sage comes with many graphs preinstalled.  Thus the command</p>
+        <p>Sage comes with many graphs preinstalled.  Thus the command</p>
 
         <sage>
             <input>K = graphs.CompleteGraph(5); K</input>
             <output>Complete graph: Graph on 5 vertices</output>
         </sage>
 
-        <p>sets \(K\) equal to the complete graph on 5 vertices.  Now <c>K.show()</c> produces a drawing of the graph in a separate window. </p>
+         <p>sets \(K\) equal  to the complete graph on 5 vertices. Now  <c>K.show()</c> produces a drawing
+of the graph in a separate window.</p>
 
         <sage>
             <input>K.show()   # not tested</input>
