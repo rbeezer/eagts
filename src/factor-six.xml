@@ -18,7 +18,8 @@
     <section>
         <title>Factors of <m>K_6</m></title>
 
-        <p>A <term>factor</term> of a graph, or more precisely a <term>1-factor</term>, is a subgraph which includes every vertex and is regular of degree \(1\).  For \(K_6\) this is a collection of \(3\) edges with no common vertices.</p>
+        <p>A <term>1-factor</term>, is a subgraph which includes every vertex and is regular of degree \(1\).  (Here we will use <term>factor</term> as an abbreviation for 1-factor; in some contexts people use the term factor to denote a spanning regular graph.)
+For \(K_6\) a 1-factor is a collection of \(3\) edges with no common vertices.</p>
 
         <p>We build \(K_6\) first.  We will work with sets of sets, so we convert the edges of \(K_6\) into two-element sets.  Note that the vertices are integers, <em>starting with zero</em>.  Also, we use the Sage constructor <c>Set()</c> rather than the Python version (<c>set()</c>), since these behave differently and we will have an easier time with the Sage version.  Of course, \(K_6\) has \(6\) vertices and \({6\choose 2}=15\) edges.  We will see these numbers repeatedly throughout this chapter.</p>
 
