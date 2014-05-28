@@ -8,6 +8,8 @@
 <!-- See the file COPYING for copying conditions.             -->
 
 <frontmatter>
+
+<titlepage></titlepage>
 	
 <preface>
 
@@ -20,13 +22,13 @@ and adhere to our stylistic standards. We recommend strongly that anyone interes
 
 </preface>
 	
-<acknowledgements>
+<acknowledgement>
 <p>Obviously our first debt is the many people who have worked to produce the package Sage. One of our goals is to show just how useful it can be. Sage itself is built from a number of components, some with an independent existence, our thanks are intended to be inclusive. Sage is just one example of the principle that real progress in mathematics and science is collaborative.</p>
-</acknowledgements>
+</acknowledgement>
 	
-<authorbio>
+<authorbiography>
 	<p>Rob Beezer was born in Seattle and has not moved very far, despite a lot of bike riding.</p>
 	<p>Chris Godsil was born in Warragul, which is not as wet in the summer as Seattle, and has more cows.</p>
-</authorbio>
+</authorbiography>
 	
 </frontmatter>
