@@ -22,6 +22,9 @@
 
     <date><today /></date>
 
+    <!-- TODO: Add landing page as URL once it exists -->
+    <brandlogo url="" source="images/cover-factorization.png" />
+
     <analytics>
         <google>
             <tracking>UA-6386040-2</tracking>
