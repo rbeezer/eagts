@@ -15,7 +15,7 @@
     <book xml:id="eagts">
         <title>Explorations in Algebraic Graph Theory with Sage</title>
 
-            <xi:include href="preface.xml" />
+            <xi:include href="frontmatter.xml" />
             <xi:include href="basics.xml" />
             <xi:include href="projects.xml" />
             <xi:include href="cayley.xml" />
