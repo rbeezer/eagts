@@ -189,14 +189,14 @@
 		
 		<sage>
 			<input>W3d.diameter(), W3d.is_distance_regular()</input>
-			<output>(2,True)</output>
+			<output>(2, True)</output>
 		</sage>
 		
 		<p>and it has the same characteristic polynomial (and hence the same parameters).</p>
 		
 		<sage>
 			<input>W3d.am().fcp()</input>
-			<output>(x - 12) * (x + 4)^15 * (x - 2)^24)</output>
+			<output>(x - 12) * (x + 4)^15 * (x - 2)^24</output>
 		</sage>
 
     </section>
