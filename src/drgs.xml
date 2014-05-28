@@ -135,14 +135,14 @@
 
         <p>Two points \(u\) and \(v\) are collinear if \(\beta(u,v)=0\). Two lines \(L\) and \(M\) are incident if</p>
 
-        <sage evaluate="no">
-            <input>(L != M) and (L.intersection(M) != V.zero_subspace()) # not tested</input>
+        <sage type="display">
+            <input>(L != M) and (L.intersection(M) != V.zero_subspace())</input>
         </sage>
 
         <p>or if they are not equal and</p>
 
-        <sage evaluate="no">
-            <input>det( L.matrix().stack(M.matrix)) == 0 # not tested</input>
+        <sage type="display">
+            <input>det( L.matrix().stack(M.matrix)) == 0</input>
         </sage>
 
         <p>Elements of our vector space \(V\) are "mutable", so not hashable, and therefore cannot be used as vertices of a graph. This is easily circumvented:</p>
