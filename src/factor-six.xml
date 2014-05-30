@@ -14,7 +14,7 @@
     </author>
 
     <introduction>
-        <p>In this chapter, we start with the complete graph on six vertices, \(K_6\) and begin to construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three disjoint edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine in Chapter<nbsp /><xref ref="hoffman-singleton-graph" /> to create our three ultimate combinatorial structures.</p>
+        <p>In this chapter, we start with the complete graph on six vertices, \(K_6\) and begin to construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three disjoint edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine in Chapter<nbsp /><xref ref="chapter-hoffman-singleton-graph" /> to create our three ultimate combinatorial structures.</p>
     </introduction>
 
     <section>
@@ -53,6 +53,7 @@
             edge_names  # not tested
             </input>
         </sage>
+
         <p>Since \(K_6\) includes every possible edge, a factor is partition of the vertex set into a set of three \(2\)-sets.  We discover \(15\) factors.</p>
 
         <sage>
@@ -145,6 +146,36 @@
         <p>A <term>factorization</term>, or more precisely a <term>\(1\)-factorization</term>, is a partition of the edge set of a graph into \(1\)-factors.  For \(K_6\) this is a partition of the \({6\choose 2}=15\) edges into \(5\) factors with \(3\) edges each.</p>
 
         <p>We will see that \(K_6\) has six distinct factorizations, each isomorphic to the other.  Furthermore, each factor is contained in exactly two of these factorizations, and any pair of factorizations have exactly one factor in common.  So given a factor we can determine a pair of factorizations and given a pair of factorizations we can determine a factor.  These observations will be critical in the following, especially the section on duality.  These claims can be verified analytically <mdash /> we will instead use Sage experimentally.</p>
+
+        <p>Begin by evaluating the next cell, which will re-create the factors of \(K_6\) for use in this section.</p>
+
+        <sage>
+            <input>
+            K6 = graphs.CompleteGraph(6)
+            vertices = K6.vertices()
+            edges = [Set(e) for e in K6.edges(labels=False)]
+            factors = SetPartitions(vertices,[2,2,2]).list()
+            factors = [Set(list(A)) for A in factors]
+            factors
+            </input>
+            <output>
+            [{{0, 1}, {2, 3}, {4, 5}},
+             {{2, 4}, {3, 5}, {0, 1}},
+             {{3, 4}, {2, 5}, {0, 1}},
+             {{1, 3}, {0, 2}, {4, 5}},
+             {{0, 2}, {1, 4}, {3, 5}},
+             {{3, 4}, {1, 5}, {0, 2}},
+             {{1, 2}, {0, 3}, {4, 5}},
+             {{1, 4}, {0, 3}, {2, 5}},
+             {{2, 4}, {1, 5}, {0, 3}},
+             {{1, 2}, {0, 4}, {3, 5}},
+             {{1, 3}, {0, 4}, {2, 5}},
+             {{0, 4}, {2, 3}, {1, 5}},
+             {{1, 2}, {0, 5}, {3, 4}},
+             {{1, 3}, {2, 4}, {0, 5}},
+             {{0, 5}, {2, 3}, {1, 4}}]
+            </output>
+        </sage>
 
         <p>We begin by employing a graph to help us find the factorizations.  The vertices of the graph are the factors of \(K_6\), and we join two vertices if the factors are disjoint.  Then a factorization of \(K_6\) is a clique of size \(5\) in this graph, and there is no possibility of any larger clique because the edge set is exhausted by \(5\) disjoint factors.  So factorizations of \(K_6\) are maximal cliques in this graph, which we record as Sage sets.</p>
 
@@ -243,23 +274,27 @@
             <image source="images/K6-factorization-graph.png"/>
             <caption>Factorization diagram for \(K_6\)</caption>
         </figure>
-
-
-        <p>We will find it convenient later to have names for the factorizations <mdash /> we will use uppercase letters from the end of the alphabet.</p>
-
-        <sage>
-            <input>
-            factorization_names = dict(zip(factorizations, [chr(i) for i in range(ord('U'), ord('a')+6)]))
-            factorization_names  # not tested
-            </input>
-        </sage>
     </section>
 
-
-    <section>
+    <section xml:id="section-faithful-group-action">
         <title>A Faithful Action on Factorizations</title>
 
-        <p>Automorphisms of a graph are permutations of the vertex set, which when applied to pairs of vertices, take edges to edges, and take non-edges to non-edges.  Because every possible edge is present in \(K_6\), <em>every</em> permutation of the vertices is an automorphism.</p>
+        <p>We will need the <c>vertices</c> and <c>factorizations</c> of \(K_6\) in this section, so run the following cell to repeat essential computations from the previous sections.</p>
+
+        <sage xml:id="sage-factorizations">
+            <input>
+            K6 = graphs.CompleteGraph(6)
+            vertices = K6.vertices()
+            edges = [Set(e) for e in K6.edges(labels=False)]
+            factors = SetPartitions(vertices,[2,2,2]).list()
+            factors = [Set(list(A)) for A in factors]
+            factor_graph = Graph([(f1, f2) for f1, f2 in Subsets(factors, 2) if f1.intersection(f2).cardinality() == 0])
+            factorizations = factor_graph.cliques_maximum()
+            factorizations = [Set(f) for f in factorizations]
+            </input>
+        </sage>
+
+        <p>Automorphisms of a graph are permutations of the vertex set, which when applied to pairs of vertices, take edges to edges, and take non-edges to non-edges.  Because every possible edge is present in \(K_6\), <em>every</em> permutation of the vertices is an automorphism.  So we can build this automorphism group easily.</p>
 
         <sage>
             <input>
@@ -271,7 +306,7 @@
 
         <p>In this section we will show that the group of automorphisms of \(K_6\), as a group action on the set of factorizations, is a faithful group action.  This means that no nontrivial element of the group fixes all of the factorizations, or equivalently, the mapping from an automorphism to a permutation of the factorizations is injective.  First, we define a group action on the edges of \(K_6\), use it to define a group action on factors of \(K_6\), and then define a group action on factorizations of \(K_6\).</p>
 
-        <sage>
+        <sage xml:id="sage-permute-factorizations">
             <input>
             def permute_edge(sigma, e):
                 '''Action of a vertex permutation on an edge.'''
@@ -330,26 +365,29 @@
         </sage>
     </section>
 
-
     <section>
     <title>Duality</title>
 
-        <p>Shortly after we built the six factorizations of \(K_6\), we created a graphic which was another version of \(K_6\) with factorizations as vertices and factors labeling (coloring) edges.  This was possible, since as we also demonstrated above, every pair of factorizations have a single factor in common, and each factor is contained in exactly two factorizations.  This version of \(K_6\) is <q>dual</q> to the original \(K_6\), as we will describe in this section.</p>
+        <p>Shortly after we built the six factorizations of \(K_6\), we created a graphic which was another version of \(K_6\) with factorizations as vertices and factors labeling (coloring) edges.  This was possible, since as we also demonstrated above, every pair of factorizations have a single factor in common, and each factor is contained in exactly two factorizations.  This version of \(K_6\) is <q>dual</q> to the original \(K_6\), as we will describe in this section.  We need to create again the <c>factorizations</c> from previous sections of this chapter.</p>
 
-        <p>Build a graph, \(Q\), whose vertices are the factorizations of \(K_6\), with two vertices adjacent if the factorizations have a factor in common.  The code below is a bit overblown, as we expect this graph to be isomorphic to \(K_6\).  To emphasize the situation, we will label the vertices of \(Q\) (factorizations) by using their names, the uppercase letters from the end of the alphabet.</p>
+        <sage copy="sage-factorizations" />
 
+        <p>Build a graph, \(Q\), whose vertices are the factorizations of \(K_6\), with two vertices adjacent if the factorizations have a factor in common.  The code below is a bit overblown, as we expect this graph to be isomorphic to \(K_6\).  To emphasize the situation, we will label the vertices of \(Q\) (factorizations) by using names, uppercase letters from the end of the alphabet.</p>
 
         <sage>
             <input>
             Q = Graph([(f1, f2) for f1, f2 in Subsets(factorizations, 2) if f1.intersection(f2).cardinality() == 1])
+            factorization_names = dict(zip(factorizations, [chr(i) for i in range(ord('U'), ord('a')+6)]))
             Q.relabel(factorization_names)
-            Q.is_isomorphic(graphs.CompleteGraph(6))
+            Q.plot(layout='circular')
             </input>
-        <output>True</output>
         </sage>
 
+        <p>You can see it, but we will let Sage do the work for us.</p>
+
         <sage>
-            <input>Q.plot(layout='circular')</input>
+            <input>Q.is_isomorphic(graphs.CompleteGraph(6))</input>
+            <output>True</output>
         </sage>
 
         <p>By construction, the factorizations of \(K_6\) are the vertices of \(Q\).  The factors of \(K_6\), by the discussion above, are in a bijective correspondence with the edges of \(Q\) (pairs of factorizations).  We illustrate these ideas with functions that accept the factorizations and factors of \(K_6\) (respectively) and return the vertices and edges of \(Q\).  To emphasize the nature of the situation, the trivial function that takes factorizations to vertices will return the factorization names provided by the Python dictionary <c>factorization_names</c>.  We test these functions exhaustively.  Also, notice how the second function employs the first.</p>
@@ -359,11 +397,8 @@
             def factorization2vertex(afactorization):
                 '''Returns a vertex of the dual graph determined by a factorization of the original graph'''
                 return factorization_names[afactorization]
+            [factorization2vertex(fz) for fz in factorizations]
             </input>
-        </sage>
-
-        <sage>
-            <input>[factorization2vertex(fz) for fz in factorizations]</input>
             <output>['U', 'V', 'W', 'X', 'Y', 'Z']</output>
         </sage>
 
@@ -373,11 +408,8 @@
                 '''Returns an edge of the dual graph determined by a factor of the original graph'''
                 endpoints = [fz for fz in factorizations if afactor in fz]
                 return Set([factorization2vertex(avertex) for avertex in endpoints])
+            [factor2edge(f) for f in factors]
             </input>
-        </sage>
-
-        <sage>
-            <input>[factor2edge(f) for f in factors]</input>
             <output>
             [{'X', 'U'},
              {'Y', 'W'},
@@ -407,11 +439,8 @@
                 '''Returns a factor of the dual graph determined by an edge of the original graph'''
                 completions = [f for f in factors if anedge in f]
                 return [factor2edge(f) for f in completions]
+            [edge2factor(e) for e in edges]
             </input>
-        </sage>
-
-        <sage>
-            <input>[edge2factor(e) for e in edges]</input>
             <output>
             [[{'X', 'U'}, {'Y', 'W'}, {'Z', 'V'}],
              [{'Z', 'W'}, {'U', 'V'}, {'Y', 'X'}],
@@ -439,11 +468,8 @@
                 '''Returns the factorization of the dual graph determined by a vertex of the original graph'''
                 incident = [e for e in edges if avertex in e]
                 return [edge2factor(e) for e in incident]
+            [vertex2factorization(v) for v in vertices]
             </input>
-        </sage>
-
-        <sage>
-            <input>[vertex2factorization(v) for v in vertices]</input>
             <output>
             [[[{'X', 'U'}, {'Y', 'W'}, {'Z', 'V'}], [{'Z', 'W'}, {'U', 'V'}, {'Y', 'X'}], [{'Y', 'V'}, {'X', 'W'}, {'Z', 'U'}],
               [{'X', 'Z'}, {'Y', 'U'}, {'W', 'V'}], [{'U', 'W'}, {'X', 'V'}, {'Y', 'Z'}]],
