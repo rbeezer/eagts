@@ -7,7 +7,7 @@
 <!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
 <!-- See the file COPYING for copying conditions.             -->
 
-<chapter xml:id="cayley">
+<chapter xml:id="chapter-cayley">
     <title>Cayley Graphs</title>
     <author>
         <personname>Chris Godsil</personname>
