@@ -7,7 +7,7 @@
 <!-- Copyright (C) 2010-2013  Robert A. Beezer, Chris Godsil  -->
 <!-- See the file COPYING for copying conditions.             -->
 
-<chapter xml:id="hoffman-singleton-graph">
+<chapter xml:id="chapter-hoffman-singleton-graph">
     <title>The Hoffman-Singleton Graph</title>
     <author>
         <personname>Robert A. Beezer</personname>
@@ -16,7 +16,7 @@
     <introduction>
         <p>In this chapter, we use the vertices, edges, factors and factorizations of \(K_6\) to create three interesting combinatorial structures, including the Hoffman-Singleton Graph.</p>
 
-        <p>The computations of the vertices, edges, factors and factorizations from Chapter<nbsp /><xref ref="chapter-factor-six" /> need to be repeated in each section before we can begin.</p>
+        <p>The computations of the vertices, edges, factors and factorizations from Chapter<nbsp /><xref ref="chapter-factor-six" /> will need to be repeated in each section before we can begin.</p>
     </introduction>
 
     <section>
@@ -37,6 +37,10 @@
 
         <p>A finite projective plane of order 4 is equivalent to a set of three mutually orthogonal Latin Squares (see Chapter 12 of  <i>Combinatorial Theory</i>, by Marshall Hall, Jr).  The impossibility  of the projective plane of order \(10\) was only settled in the late 1980s by Clement Lam.</p>
 
+        <p>We first need some of the objects we computed in Chapter<nbsp /><xref ref="chapter-factor-six" />, so evaluate the next cell to get started.</p>
+
+        <sage copy="sage-factorizations" />
+
         <p>We will build a design from our factorizations by first building a graph that describes an incidence relation.  The points of the geometry will be the six vertices of \(K_6\) together with the fifteen factors of \(K_6\).  The lines of the geometry will be the fifteen edges of \(K_6\) along with the six factorizations of \(K_6\).  So we have \(21\) points and \(21\) lines.  The graph will be bipartite with points in one set of the bipartition and lines in the other set.  A vertex will be incident to an edge which contains it, a factor will be incident to an edge if the factor contains the edge, and a factor will be incident to factorization which contains it.</p>
 
         <p>The resulting biparite graph is regular of degree \(5\) on \(42\) vertices with girth \(6\).</p>
@@ -52,7 +56,15 @@
             <output>(42, True, True, 5, 6)</output>
         </sage>
 
-        <p>We can relabel the vertices of a copy of the graph, and then have Sage recognize the bipartite structure before producing a drawing.</p>
+        <p>We can relabel the vertices of a copy of the graph, and then have Sage recognize the bipartite structure before producing a drawing.  First, create the same dictionaries of names we used in Chapter<nbsp /><xref ref="chapter-factor-six" />.</p>
+
+        <sage xml:id="sage-factorization-names">
+            <input>
+            edge_names = dict(zip(edges, [chr(i) for i in range(ord('a'), ord('a')+15)]))
+            factor_names = dict(zip(factors, [chr(i) for i in range(ord('A'), ord('a')+15)]))
+            factorization_names = dict(zip(factorizations, [chr(i) for i in range(ord('U'), ord('a')+6)]))
+            </input>
+        </sage>
 
         <sage>
             <input>
@@ -120,6 +132,10 @@
 
         <p>The Hoffman-Singleton Graph is an amazing structure, which can be created many different ways.  It is best known as a Moore graph: regular of degree \(7\) with odd girth \(5\), on \(50\) vertices, which is the minimum conceivable number.</p>
 
+        <p>We first need some of the objects we computed in Chapter<nbsp /><xref ref="chapter-factor-six" />, so evaluate the next cell to get started.</p>
+
+        <sage copy="sage-factorizations" />
+
         <p>Our construction begins with two new vertices, which Cameron and van Lint call <q>zero</q> and <q>infinity</q> <mdash /> we will shorten the label on the latter to simply <q>inf.</q>  Zero and infinity will be adjacent to each other, zero will be adjacent to each vertex of \(K_6\) and infinity will be adjacent to each factorization of \(K_6\).</p>
 
         <sage>
@@ -183,6 +199,10 @@
 
         <p>The Steiner system, \(S(5,\,6,\,12)\) is a collection of \(132\) \(6\)-sets (<q>blocks</q>), chosen from a \(12\)-set (the <q>points</q>), such that every set of \(5\) points chosen from the \(12\)-set is contained in exactly one of the blocks.  In other words, a \(S(5,\,6,\,12)\) Steiner system is a \(5\)-\((12,6,1)\) design.</p>
 
+        <p>We first need some of the objects we computed in Chapter<nbsp /><xref ref="chapter-factor-six" />, so evaluate the next cell to get started.</p>
+
+        <sage copy="sage-factorizations" />
+
         <p>The \(12\) points for our construction will be the \(6\) vertices of \(K_6\) and the \(6\) factorizations of \(K_6\).  The construction of designs in Sage is not as robust as those of graphs and permutation groups, and require our points to be integers, starting at zero.  We are in good shape with our vertices, and by necessity, we will use a dictionary to map factorizations to the integers \(6\) through \(11\).</p>
 
         <sage>
@@ -190,7 +210,6 @@
         </sage>
 
         <p>The first two blocks of the construction will be the set of all six vertices and the set of all six factorizations.  We will create the blocks as sorted lists.  The sorting is only for the sake of appearance.</p>
-
 
         <sage>
             <input>
@@ -223,7 +242,9 @@
             </input>
         </sage>
 
-        <p>The final \(40\) blocks require more care.  Each of the \({6\choose 3}=20\) sets of triples can be used to create a permutation of the vertices that is a \(3\)-cycle.  While there are two possible ways to create this permutation, either choice leads to the same result in the following procedure.  As we did in the section on the faithful group action, this permutation of the vertices can be used to induce a permutation of the six factorizations.  It is not obvious (details are in van Lint and Wilson), but the induced permutation is a product of two \(3\)-cycles.  We use these two \(3\)-cycles merely to group the six factorizations into two sets of three.  (This decrease in structure partially explains the flexibility in the choice of the initial \(3\)-cycle.)  For each of the two sets of three factorizations so determined, append the three vertices chosen initially, so as to create the final \(20\cdot 2=40\) blocks.</p>
+        <p>The final \(40\) blocks require more care.  Each of the \({6\choose 3}=20\) sets of triples can be used to create a permutation of the vertices that is a \(3\)-cycle.  While there are two possible ways to create this permutation, either choice leads to the same result in the following procedure.  As we did in Section<nbsp /><xref ref="section-faithful-group-action" />, this permutation of the vertices can be used to induce a permutation of the six factorizations.  (so be sure to evalaute the cell below that defines this function.)  It is not obvious (details are in van Lint and Wilson), but the induced permutation is a product of two \(3\)-cycles.  We use these two \(3\)-cycles merely to group the six factorizations into two sets of three.  (This decrease in structure partially explains the flexibility in the choice of the initial \(3\)-cycle.)  For each of the two sets of three factorizations so determined, append the three vertices chosen initially, so as to create the final \(20\cdot 2=40\) blocks.</p>
+
+        <sage copy="sage-permute-factorizations" />
 
         <sage>
             <input>
