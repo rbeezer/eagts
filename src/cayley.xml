@@ -80,7 +80,7 @@
     <section>
         <title>The Higman-Sims Graph</title>
 
-        <p>We construct the famous Higman-Sims graph as a Cayley graph for a permutation group. Our code is based on an interesting paper by Jorgensen and Klin from the Electronic Journal of Combinatorics (<url href="http://www.combinatorics.org/Volume_10/PDF/v10i1r17.pdf"/>). They provide constructions for a number of srg's on 100 vertices.</p>
+        <p>We construct the famous Higman-Sims graph as a Cayley graph for a permutation group. Our code is based on an <url href="http://www.combinatorics.org/Volume_10/PDF/v10i1r17.pdf">interesting paper</url> by Jorgensen and Klin from the Electronic Journal of Combinatorics. They provide constructions for a number of srg's on 100 vertices.</p>
 
         <p>First we form a permutation group.</p>
 
