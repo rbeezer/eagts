@@ -489,9 +489,9 @@
         <p>So notice that we have computed the factors and factorizations of the dual graph \(Q\) by exploiting properties of vertices, edges, factors and factorizations in \(K_6\).  This is in contrast to computing factors and factorizations of \(Q\) with set partition routines, or maximal cliques in an appropriate graph.  The following table summarizes what we mean by saying that \(Q\) is the dual of \(K_6\).</p>
 
         <table>
-            <tgroup cols="3" align="center">
+            <tgroup cols="3" align="left">
                 <thead>
-                    <trow><entry>\(K_6\)</entry><entry>\(Q\)</entry><entry>Function</entry></trow>
+                    <row><entry>\(K_6\)</entry><entry>\(Q\)</entry><entry>Function</entry></row>
                 </thead>
                 <tbody>
                     <row><entry>Factorization</entry><entry>Vertex</entry><entry><c>factorization2vertex</c></entry></row>
