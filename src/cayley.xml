@@ -18,21 +18,21 @@
 
    <p>If \(G\) is a group and \(C\sbs G\) (<ie />, a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             G = DihedralGroup(5)
             C = [G.gen(0), G.gen(1)]
             CG = G.cayley_graph( generators = C)
-            CG.show()  # not tested
+            CG.show()
             </input>
         </sage>
 
         <p>The output is a directed graph, even if \(C\) is inverse-closed; in the latter case we can convert \(G\) to a graph by</p>
 
-        <sage>
+        <sage  doctest="not tested">
             <input>
             CGU = CG.to_undirected()
-            CGU.show()  # not tested
+            CGU.show()
             </input>
         </sage>
 
@@ -51,23 +51,23 @@
 
         <p>Here <c>vector_list</c> is a list of 01-vectors of length \(d\).</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             V = GF(2)^5
             vl = [V([0,1,1,0,0]), V([1,1,0,1,1]), V([1,0,0,0,1])]
             T = cubelike(5, vl)
-            show(T, layout='circular')  # not tested
+            show(T, layout='circular')
             </input>
         </sage>
 
         <p>For a general group, we can use the following construction to create an undirected Cayley graph.</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             G = DihedralGroup(5)
             C = [G.gen(0), G.gen(0)^-1, G.gen(1), G.gen(1)^-1]
             CG = Graph( [ G.list(), lambda g, h: h*g^(-1) in C])
-            CG.show()  # not tested
+            CG.show()
             </input>
         </sage>
 
@@ -345,15 +345,15 @@
 
         <p>The natural choice for the vertices of a cubelike graph are the elements of</p>
 
-        <sage>
-            <input>V = VectorSpace( GF(2)), d)  # not tested</input>
+        <sage doctest="not tested">
+            <input>V = VectorSpace( GF(2)), d)</input>
         </sage>
 
         <p>but these are not hashable. We can make a vector <c>v</c> hashable with <c>v.set_immutable()</c> and use vectors as vertices, or work as follows.  Suppose that <c>vls</c> is a list of vectors from a vector space <c>V</c>.</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
-            G = Graph( [[0..len(vls)-1], lambda i,j: vls[i]-vls[j] in V.list()]) # not tested
+            G = Graph( [[0..len(vls)-1], lambda i,j: vls[i]-vls[j] in V.list()])
             </input>
         </sage>
 

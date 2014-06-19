@@ -65,8 +65,8 @@
          <p>sets \(K\) equal  to the complete graph on 5 vertices. Now  <c>K.show()</c> produces a drawing
 of the graph in a separate window.</p>
 
-        <sage>
-            <input>K.show()   # not tested</input>
+        <sage doctest="not tested">
+            <input>K.show()</input>
         </sage>
 
         <p>The command</p>

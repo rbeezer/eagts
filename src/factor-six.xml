@@ -47,10 +47,10 @@
 
         <p>We will give each of the \(15\) edges a name (an arbitrary lowercase letter) which will make some of our graphs a bit more tidy when displaying them. A Python dictionary (mapping) is a natural way to specify this.</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             edge_names = dict(zip(edges, [chr(i) for i in range(ord('a'), ord('a')+15)]))
-            edge_names  # not tested
+            edge_names
             </input>
         </sage>
 
@@ -123,10 +123,10 @@
             <input>graphs.TutteCoxeterGraph().plot()</input>
         </sage>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             factor_names = dict(zip(factors, [chr(i) for i in range(ord('A'), ord('a')+15)]))
-            factor_names  # not tested
+            factor_names
             </input>
         </sage>
 
@@ -204,7 +204,7 @@
 
         <p>To visualize factorizations, it helps to look at a drawing of \(K_6\) with edges colored according to the factor they belong to.  We build an ad-hoc set of fifteen contrasting colors as RGB triples and assign them to the factors with a Python dictionary.  We will consistently use this color assignment in the remainder.</p>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             twentyseven_colors = [triple for triple in CartesianProduct([0,0.5, 1], [0,0.5, 1], [0,0.5, 1])]
             contrast_colors = [tuple(twentyseven_colors[i]) for i in [0,1,3,5,7,8,9,11,13,18,19,21,22,23,24]]

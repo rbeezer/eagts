@@ -206,11 +206,11 @@
             </input>
         </sage>
 
-        <sage>
+        <sage doctest="not tested">
             <input>
             pm = [(0, 8), (1, 4), (2, 9), (3, 6), (5, 7)]
             CD = chord_dgrm( pm)
-            show(CD)  # not tested
+            show(CD)
             </input>
         </sage>
 
