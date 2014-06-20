@@ -101,7 +101,10 @@
         </sage>
 
         <sage>
-            <input>rf.subs(u=t).O(9)</input>
+            <input>
+            Rt.&lt;t&gt; = QQ[[]]
+            rf.subs(u=t).O(9)
+            </input>
             <output>1 + 2*t + 4*t^2 + 7*t^3 + 13*t^4 + 24*t^5 + 44*t^6 + 81*t^7 + 149*t^8 + O(t^9)</output>
         </sage>
 
@@ -173,6 +176,8 @@
 
         <sage>
             <input>
+            Rt.&lt;t&gt; = QQ[[]]
+            Ct = (1/2)*(1-(1-4*t).sqrt()).shift(-1)
             phi = lambda u: 1+t*u^2
             nr = lambda u: u + (phi(u)-u)/(1-2*t*u)
             </input>
