@@ -332,9 +332,11 @@
             </statement>
         </exercise>
 
-        <p>Sage claims to be able to build the automorphism group of this design, but the routine is broken and would likely produce permutations on \(144\) symbols (all vertices of the point-block incidence graph of the design).  The code below will alert us, through automated testing, when this situation improves.</p>
+        <p>Sage claims to be able to build the automorphism group of this design, but the routine is broken and would likely produce permutations on \(144\) symbols (all vertices of the point-block incidence graph of the design).</p>
 
-        <sage>
+        <!-- The code below will alert us when the situation above improves -->
+
+        <sage type="invisible">
             <input>B.automorphism_group()</input>
             <output>
             Traceback (most recent call last):
