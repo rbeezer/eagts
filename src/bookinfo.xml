@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <docinfo>
-    <editor>
-        <personname>Chris Godsil</personname>
-        <department>Department of Combinatorics and Optimization</department>
-        <institution>University of Waterloo</institution>
-        <email>cgodsil@uwaterloo.ca</email>
-    </editor>
-    <editor>
-        <personname>Robert A. Beezer</personname>
-        <department>Department of Mathematics and Computer Science</department>
-        <institution>University of Puget Sound</institution>
-        <email>beezer@pugetsound.edu</email>
-    </editor>
-
-    <copyright>
-        <year>2011-2013</year>
-        <holder>Robert A. Beezer, Chris Godsil</holder>
-        <shortlicense>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled <q>GNU Free Documentation License</q>.</shortlicense>
-    </copyright>
-
-    <date><today /></date>
 
     <!-- TODO: Add landing page as URL once it exists -->
     <brandlogo url="" source="images/cover-factorization.png" />
+
+    <!-- Not starting something, but the title as first letters  -->
+    <!-- Will be used to prefix titles/names of Sage worksheets, -->
+    <!-- and so makes the Sage Notebook interface easier to use  -->
+    <initialism>EAGTS</initialism>
 
     <analytics>
         <google>
@@ -132,4 +117,5 @@
 \DeclareMathOperator{\Alt}{Alt}
 \newcommand\alt[1]{\Alt(#1)}
     </macros>
+
 </docinfo>
