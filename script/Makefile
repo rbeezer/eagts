@@ -13,22 +13,26 @@ XSL = /home/rob/mathbook/mathbook/xsl
 CSS = /home/rob/mathbook/mathbook/css
 SRC = /home/rob/books/eagts/eagts/src
 IMAGES = $(SRC)/images
-SCRATCH = /tmp/eagts-scratch
+SCRATCH = /tmp/eagts
 
-VERSION = testing
+HTMLOUT = $(SCRATCH)/html
+PDFOUT  = $(SCRATCH)/pdf
+DOCTEST = $(SCRATCH)/doctest
 
-HTMLOUT = $(SCRATCH)/$(VERSION)
-PDFOUT  = $(SCRATCH)/$(VERSION)
-
-SAGE = /sage/sage-5.12/sage
+SAGE = /sage/sage-6.9/sage
+PDFVIEWER = okular
+HTMLVIEWER = firefox
 
 
 html:
 	install -d $(HTMLOUT)
-	cp $(CSS)/mathbook.css $(HTMLOUT)
 	cp -a $(IMAGES) $(HTMLOUT)
+	-rm $(HTMLOUT)/*.html
 	cd $(HTMLOUT); \
-	xsltproc --xinclude  $(XSL)/mathbook-html.xsl $(SRC)/eagts.xml
+	xsltproc --xinclude --stringparam html.knowl.exercise.inline no $(XSL)/mathbook-html.xsl $(SRC)/eagts.xml
+
+viewhtml:
+	$(HTMLVIEWER) $(HTMLOUT)/eagts.html &
 
 pdf:
 	install -d $(PDFOUT)
@@ -39,15 +43,14 @@ pdf:
 	pdflatex eagts.tex
 
 viewpdf:
-	evince $(PDFOUT)/eagts.pdf &
+	$(PDFVIEWER) $(PDFOUT)/eagts.pdf &
 
 # first doctest writes the file "testlist-eagts.sobj" in current directory
 #   this can look suspicious when left behind
-#   also prevents running doctest if working directory is below /tmp
-#   leading dash supresses shutdown on a doctest failure, so rm executes
 doctest:
-	install -d $(SCRATCH)
-	xsltproc --xinclude  $(XSL)/mathbook-sage-doctest.xsl $(SRC)/eagts.xml > $(SCRATCH)/eagts_doctest.py
-	-$(SAGE) -t  $(SCRATCH)/eagts_doctest.py
-	rm testlist-eagts.sobj
+	install -d $(DOCTEST)
+	-rm $(DOCTEST)/*.py
+	cd $(DOCTEST); \
+	xsltproc --xinclude  --stringparam chunk-level 2 $(XSL)/mathbook-sage-doctest.xsl $(SRC)/eagts.xml; \
+	$(SAGE) -tp  *.py
 
