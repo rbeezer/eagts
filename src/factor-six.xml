@@ -489,20 +489,16 @@
         <p>So notice that we have computed the factors and factorizations of the dual graph \(Q\) by exploiting properties of vertices, edges, factors and factorizations in \(K_6\).  This is in contrast to computing factors and factorizations of \(Q\) with set partition routines, or maximal cliques in an appropriate graph.  The following table summarizes what we mean by saying that \(Q\) is the dual of \(K_6\).</p>
 
         <table>
-            <tgroup cols="3" align="left">
-                <thead>
-                    <row><entry>\(K_6\)</entry><entry>\(Q\)</entry><entry>Function</entry></row>
-                </thead>
-                <tbody>
-                    <row><entry>Factorization</entry><entry>Vertex</entry><entry><c>factorization2vertex</c></entry></row>
-                    <row><entry>Factor</entry><entry>Edge</entry><entry><c>factor2edge</c></entry></row>
-                    <row><entry>Edge</entry><entry>Factor</entry><entry><c>edge2factor</c></entry></row>
-                    <row><entry>Vertex</entry><entry>Factorization</entry><entry><c>vertex2factorization</c></entry></row>
-                </tbody>
-            </tgroup>
+            <tabular halign="left">
+                <row bottom="medium">
+                     <cell>\(K_6\)</cell><cell>\(Q\)</cell><cell>Function</cell></row>
+                <row><cell>Factorization</cell><cell>Vertex</cell><cell><c>factorization2vertex</c></cell></row>
+                <row><cell>Factor</cell><cell>Edge</cell><cell><c>factor2edge</c></cell></row>
+                <row><cell>Edge</cell><cell>Factor</cell><cell><c>edge2factor</c></cell></row>
+                <row><cell>Vertex</cell><cell>Factorization</cell><cell><c>vertex2factorization</c></cell></row>
+            </tabular>
             <caption>Factor and factorization correspondences</caption>
         </table>
-
 
         <p>Cameron and van Lint state the following theorem.</p>
 
