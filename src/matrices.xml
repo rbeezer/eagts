@@ -13,7 +13,7 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-continuous-quantum-walks">
         <title>Continuous Quantum Walks</title>
 
         <p>One goal of this section is to introduce you to the joys of numerical linear algebra with Sage.</p>

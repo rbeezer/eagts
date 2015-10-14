@@ -13,7 +13,7 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-pseudosimilar">
         <title>Pseudosimilar Vertices</title>
 
         <p>Vertices \(u\) and \(v\) in a graph \(X\) are <term>similar</term> if there is an automorphism of \(X\) that maps \(u\) to \(v\). If \(u\) and \(v\) are similar, then the vertex-deleted subgraphs \(X\diff u\) and \(X\diff v\) are isomorphic. If \(X\diff u\) and \(X\diff v\) are isomorphic but \(u\) and \(v\) are not similar, we say that they are <term>pseudosimilar</term>. It is not obvious that pairs of pseudosimilar vertices exist, but we will see that they do.</p>
@@ -168,7 +168,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-circle-graphs">
         <title>Circle Graphs</title>
 
         <p>To construct a <term>circle graph</term> we first choose \(n\) pairs of points on a circle in the real plane and then join each pair of points by a straight line, a <term>chord</term>. These chords are the vertices of the circle graph and they are adjacent if and only if they cross.</p>
@@ -248,7 +248,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-line-graphs-covers">
         <title>Line Graphs and Covers</title>
 
         <p>Let \(D\) be the incidence matrix of an orientation of the graph \(X\). Then<me>DD^T = \De -A,\quad D^TD = 2I +S</me> where \(\De\) is the diagonal matrix of valencies of \(X\) and \(S\) is a symmetric matrix with zero diagonal and off-diagonal entries from \(\{0,1,-1\}\). In other words, \(S\) is a <term>signed adjacency matrix</term>. The entries of \(S\) are indexed by \(E(X)\), and the \(ab\)-entry is non-zero if and only if the edges \(a\) and \(b\) are adjacent in the line graph \(L(X)\) of \(X\), so we have a signed adjacency matrix for \(L(X)\).</p>

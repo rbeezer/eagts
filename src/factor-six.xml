@@ -17,7 +17,7 @@
         <p>In this chapter, we start with the complete graph on six vertices, \(K_6\) and begin to construct three diverse and remarkable combinatorial structures.  This material follows Chapter 6, <q>A property of the number six</q> of <q>Designs, Graphs, Codes and their Links</q> by P.J. Cameron and J.H. van Lint, who in turn credit lectures of G. Higman.  We begin with the vertices and edges of the complete graph, and then create sets of three disjoint edges known as \(1\)-factors.  Collections of \(1\)-factors become factorizations of the original complete graph.  Vertices, edges, factors and factorizations then all combine in Chapter<nbsp /><xref ref="chapter-hoffman-singleton-graph" /> to create our three ultimate combinatorial structures.</p>
     </introduction>
 
-    <section>
+    <section xml:id="section-factors-k6">
         <title>Factors of <m>K_6</m></title>
 
         <p>A <term>1-factor</term>, is a subgraph which includes every vertex and is regular of degree \(1\).  (Here we will use <term>factor</term> as an abbreviation for 1-factor; in some contexts people use the term factor to denote a spanning regular graph.)  For \(K_6\) a 1-factor is a collection of \(3\) edges with no common vertices.</p>
@@ -140,7 +140,7 @@
         </sage>
     </section>
 
-    <section>
+    <section xml:id="section-factorizations-k6">
         <title>Factorizations of <m>K_6</m></title>
 
         <p>A <term>factorization</term>, or more precisely a <term>\(1\)-factorization</term>, is a partition of the edge set of a graph into \(1\)-factors.  For \(K_6\) this is a partition of the \({6\choose 2}=15\) edges into \(5\) factors with \(3\) edges each.</p>
@@ -365,7 +365,7 @@
         </sage>
     </section>
 
-    <section>
+    <section xml:id="section-duality">
     <title>Duality</title>
 
         <p>Shortly after we built the six factorizations of \(K_6\), we created a graphic which was another version of \(K_6\) with factorizations as vertices and factors labeling (coloring) edges.  This was possible, since as we also demonstrated above, every pair of factorizations have a single factor in common, and each factor is contained in exactly two factorizations.  This version of \(K_6\) is <q>dual</q> to the original \(K_6\), as we will describe in this section.  We need to create again the <c>factorizations</c> from previous sections of this chapter.</p>

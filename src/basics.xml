@@ -13,7 +13,7 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-getting-information">
         <title>Getting Information</title>
 
         <p>The <url href="http://www.sagemath.org/doc/tutorial/index.html">Sage tutorial</url> is the best starting point, and is very easy to read.  The <q>Constructions</q> manual is of very little use for graphs. The <url href="http://www.sagemath.org/doc/reference/index.html">Sage reference manual</url> is vast. You will eventually need to read the sections on graphs, matrices, vector spaces, finite fields, power series and commutative rings.</p>
@@ -24,7 +24,7 @@
 
 </section>
 
-<section>
+<section xml:id="section-using-book">
 	<title>Using This Book</title>
 	
 	<p>One key feature of these notes is that we use Sage cells. These contain sage code that you can
@@ -52,7 +52,7 @@
 </section>
 
     
-    <section>
+    <section xml:id="section-basics">
         <title>Basics</title>
 
         <p>Sage comes with many graphs preinstalled.  Thus the command</p>
@@ -182,7 +182,7 @@ of the graph in a separate window.</p>
     </section>
 
 
-    <section>
+    <section xml:id="section-vertices-edges">
         <title>Fiddling with Vertices and Edges</title>
         <p>Although we can get a lot done with the graphs already in Sage, most of the time we will need to construct our own. The simplest approach is to modify one of the prebuilt graphs.</p>
 
@@ -307,7 +307,7 @@ of the graph in a separate window.</p>
     </section>
 
 
-    <section>
+    <section xml:id="section-graph-constructor">
         <title>Graph()</title>
 
         <p>The command <c>Graph()</c> provides a very useful way to construct graphs. To begin, we will invoke it in the form <c>X = Graph( [vertices, adj_pred] )</c>. There is just one argument, a list consisting of the the vertices is the vertex set of X (itself a list), and a predicate (or function) <c>adj_pred</c> that takes two vertices \(u\) and \(v\) and returns <c>True</c> or <c>False</c> according as they are adjacent or not.</p>
@@ -368,7 +368,7 @@ of the graph in a separate window.</p>
     </section>
 
 
-    <section>
+    <section xml:id="section-vertices">
         <title>Vertices</title>
 
         <p>In Sage, the vertices of a graph must be hashable. You can test if this holds by applying the function <c>hash()</c> to whatever you propose to use as a vertex. If it is not hashable you'll get an error message informing you of the fact, if it is hashable you'll get back an integer.</p>

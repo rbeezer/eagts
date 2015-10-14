@@ -13,7 +13,7 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-forbidden-words">
         <title>Forbidden Words</title>
 
         <p>Let \(\al\) denote a binary string, and let \(L\) denote the set of binary of binary strings that do not contain \(\al\) as a substring. How many strings are there in \(L\) with length \(n\)?</p>
@@ -71,7 +71,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-fractions-series">
         <title>Fractions and Series</title>
 
         <p>Many generating series can be expressed as rational functions, and such expressions provide useful information. We illustrate this. First we create a ring of polynomials, and the corresponding field of fractions. (We will not need the latter, as it happens.)</p>
@@ -128,7 +128,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-solving-equations">
         <title>Solving Equations</title>
         <p>If \(C(t)\) denotes the generating series for the Catalan numbers, then <me>C(t) = 1+tC(t)^2.</me> From this it follows that <me>C(t) = \frac{1}{2t}(1-\sqrt{(1-4t)}).</me>We can implement this as follows:</p>
 
@@ -167,7 +167,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-newton-raphson">
         <title>Newton-Raphson</title>
 
         <p>We can find a solution to our equation \(C(t) =\Phi(C(t))\) more efficiently by using Newton-Raphson. Note that \(\Phi\) is a power series (actually polynomial in \(u\)) and<me>\Phi(C_0+\de) \approx \Phi(C_0) +\Phi'(C_0)\de;</me> this works provided \(\de\) is divisible by a power of \(t\). So if \(C_0\) is an approximate solution to \(\Phi(C(t))=C(t)\), then our aim is to choose \(\de\) so that <me>C_0 + \de = \Phi(C_0) +\Phi'(C_0)\de,</me> which implies that <me>\de = \frac{\Phi(C_0)-C_0}{1-\Phi'(C_0)}.</me> Hence our proposed update formula is now <me>C_{n+1} = C_n + \frac{\Phi(C_n)-C_n}{1-\Phi'(C_n)}</me> Here <me>\Phi'(C_n(t)) = 2tC_n(t).</me></p>
@@ -206,7 +206,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-counting-trees">
         <title>Counting Trees</title>
 
         <p>Our aim is to derive the generating series for the number of trees on \(n\) vertices (or, more precisely, the number of isomorphism classes of tress on \(n\) vertices). We use \(R(x)\) to denote the generating series for rooted trees on \(n\) vertices. We can check that <me>R(x) = x+x^2+2x^2+\ldots</me> The problem is to get further. We do not have an explicit formula for \(R(x)\), just an equation: <me>R(x) = x\exp\left(\sum_{k\ge1}\frac{1}{k}R(x^k)\right).</me> We use the technology from the previous sections to solve this.</p> 

@@ -13,7 +13,7 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-distance-regularity">
         <title>Distance Regularity</title>
 
         <p>First some code to allow us to test if a graph is distance regular. The main use of this is to provide a test that some graph we have constructed is distance regular.</p>
@@ -95,7 +95,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-generalized-quadrangles">
         <title>Generalized Quadrangles</title>
 
         <p>A <term>generalized quadrangle</term> is an incidence structure of points and lines such that<ol>
@@ -202,7 +202,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-mclaughlin-graph">
         <title>The McLaughlin Graph</title>
 
         <p>A partition \((S,\comp{S})\) of \(V(G)\) determines a bipartite subgraph of \(G\); if we replace this subgraph by its bipartite complement, we say that the resulting graph is obtained by <term>switching</term> on \(S\) (or on \(\comp{S}\)). If \(S\) is the neighborhood of a vertex \(u\) in \(G\), then after switching on \(S\) the vertex \(u\) is isolated.</p>
@@ -276,7 +276,7 @@
        
     </section>
 
-    <section>
+    <section xml:id="section-drackns">
         <title>Drackns: Generating Parameter Sets</title>
 
         <p>We are interested in distance-regular antipodal covers of \(K_n\). We construct a <term>cover</term> of index \(r\) of a graph \(X\) (or an <term>\(r\)-fold cover</term>) as follows. Choose a function \(f\) from the arcs (ordered pairs of adjacent vertices of \(X\)) to the symmetric group \(\sym r\), such that <me>F((v,u)) =f((u,v))^{-1}</me> The vertex set of the cover \(X^f\) is <me>V(X)\times \{1,\ldots,r\}</me> and \((u,i)\sim (v,j)\) if \(j = i^{f(u,v)}\). Less formally, we replace each vertex of \(V(X)\) by a coclique of size \(r\), and cocliques corresponding to adjacent vertices are joined by a matching of size \(r\). The \(r\)-cocliques are called the <term>fibers</term> of the cover.</p>

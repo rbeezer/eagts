@@ -13,10 +13,10 @@
         <personname>Chris Godsil</personname>
     </author>
 
-    <section>
+    <section xml:id="section-cayley-graphs">
         <title>Cayley Graphs</title>
 
-   <p>If \(G\) is a group and \(C\sbs G\) (<ie />, a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):</p>
+        <p>If \(G\) is a group and \(C\sbs G\) (<ie />, a list of some elements of \(G\)), then we can produce the Cayley graph \(X(G,C)\):</p>
 
         <sage doctest="not tested">
             <input>
@@ -77,7 +77,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-higman-sims">
         <title>The Higman-Sims Graph</title>
 
         <p>We construct the famous Higman-Sims graph as a Cayley graph for a permutation group. Our code is based on an <url href="http://www.combinatorics.org/Volume_10/PDF/v10i1r17.pdf">interesting paper</url> by Jorgensen and Klin from the Electronic Journal of Combinatorics. They provide constructions for a number of srg's on 100 vertices.</p>
@@ -188,7 +188,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-600-cell">
         <title>The 600-Cell</title>
 
         <p>It's a wikifact that if \(f:=(1+\sqrt{5})/2\), then the vertices of a 600-cell centered at the origin of 4-space with edges of length \(1/f\) can be given as follows: <ol>
@@ -338,7 +338,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-cubelike">
         <title>Cubelike Graphs</title>
 
         <p>A cubelike graph is a Cayley graph for \(\ints_2^d\). The connection set of such a graph can be encoded by a \(d\times m\) matrix with distinct columns. If \(M\) is such a matrix then we can get a list of its columns with <c>cols = M.columns()</c> and we can recover \(M\) with <c>M = Matrix(cols).transpose()</c>.</p>

@@ -19,7 +19,7 @@
         <p>The computations of the vertices, edges, factors and factorizations from Chapter<nbsp /><xref ref="chapter-factor-six" /> will need to be repeated in each section before we can begin.</p>
     </introduction>
 
-    <section>
+    <section xml:id="section-projective-plane-4">
         <title>Projective Plane of Order 4</title>
 
         <p>A <term>projective plane</term> of order \(n\) is a \(2-(n^2+n+1, n+1, 1)\) design.  Such a design is therefore a collection of sets (called <term>blocks</term>), each of size \(n+1\), chosen from a universal set of size \(n^2+n+1\), with the property that any \(2\) elements chosen from the universal set is contained in exactly \(1\) of the blocks.</p>
@@ -127,7 +127,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-hoffman-singleton">
         <title>Hoffman-Singleton Graph</title>
 
         <p>The Hoffman-Singleton Graph is an amazing structure, which can be created many different ways.  It is best known as a Moore graph: regular of degree \(7\) with odd girth \(5\), on \(50\) vertices, which is the minimum conceivable number.</p>
@@ -194,7 +194,7 @@
     </section>
 
 
-    <section>
+    <section xml:id="section-steiner-5-6-12">
         <title>The Steiner System <m>S(5,\,6,\,12)</m></title>
 
         <p>The Steiner system, \(S(5,\,6,\,12)\) is a collection of \(132\) \(6\)-sets (<q>blocks</q>), chosen from a \(12\)-set (the <q>points</q>), such that every set of \(5\) points chosen from the \(12\)-set is contained in exactly one of the blocks.  In other words, a \(S(5,\,6,\,12)\) Steiner system is a \(5\)-\((12,6,1)\) design.</p>
